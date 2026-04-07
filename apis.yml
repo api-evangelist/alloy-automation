@@ -8,11 +8,11 @@ description: >-
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 tags:
-  - iPaaS
-  - Integrations
-  - Unified API
   - Automation
   - Embedded Integrations
+  - Integrations
+  - iPaaS
+  - Unified API
   - Workflows
 url: >-
   https://raw.githubusercontent.com/api-evangelist/alloy-automation/refs/heads/main/apis.yml
@@ -29,8 +29,8 @@ apis:
       logic for every app.
     humanURL: https://runalloy.com/platform/connectivity-api/
     tags:
-      - Integrations
       - Connectivity
+      - Integrations
       - Unified API
     properties:
       - type: Documentation
@@ -45,10 +45,10 @@ apis:
       single standardized interface.
     humanURL: https://docs.runalloy.com/unified-api/1.0.0/getting-started/quick-start/
     tags:
-      - Unified API
       - Commerce
       - CRM
       - ERP
+      - Unified API
     properties:
       - type: Documentation
         url: https://docs.runalloy.com/unified-api/1.0.0/getting-started/quick-start/
