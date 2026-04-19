@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.runalloy.com/schemas/alloy-embedded-workflow_error-schema.json",
+  "title": "WorkflowError",
+  "type": "object",
+  "description": "A workflow execution error record",
+  "properties": {
+    "errorId": {
+      "type": "string",
+      "description": "Unique identifier for the error"
+    },
+    "workflowId": {
+      "type": "string",
+      "description": "Workflow identifier where the error occurred"
+    },
+    "message": {
+      "type": "string",
+      "description": "Human-readable error description"
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the error occurred"
+    }
+  }
+}

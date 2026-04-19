@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.runalloy.com/schemas/alloy-connectivity-create_user_request-schema.json",
+  "title": "CreateUserRequest",
+  "type": "object",
+  "description": "Request body for creating a new user",
+  "properties": {
+    "username": {
+      "type": "string",
+      "description": "Unique username or external identifier"
+    }
+  },
+  "required": [
+    "username"
+  ]
+}

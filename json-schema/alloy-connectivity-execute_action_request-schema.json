@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.runalloy.com/schemas/alloy-connectivity-execute_action_request-schema.json",
+  "title": "ExecuteActionRequest",
+  "type": "object",
+  "description": "Request body for executing a connector action",
+  "properties": {
+    "userId": {
+      "type": "string",
+      "description": "Identifier of the user executing the action"
+    },
+    "credentialId": {
+      "type": "string",
+      "description": "Credential identifier to use for authentication"
+    },
+    "parameters": {
+      "type": "object",
+      "description": "Action-specific parameters"
+    }
+  },
+  "required": [
+    "userId",
+    "credentialId"
+  ]
+}

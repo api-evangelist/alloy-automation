@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.runalloy.com/schemas/alloy-embedded-success_response-schema.json",
+  "title": "SuccessResponse",
+  "type": "object",
+  "description": "Standard success response",
+  "properties": {
+    "success": {
+      "type": "boolean",
+      "description": "Whether the operation succeeded"
+    },
+    "message": {
+      "type": "string",
+      "description": "Human-readable success message"
+    }
+  }
+}

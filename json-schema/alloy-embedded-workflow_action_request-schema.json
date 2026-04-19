@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.runalloy.com/schemas/alloy-embedded-workflow_action_request-schema.json",
+  "title": "WorkflowActionRequest",
+  "type": "object",
+  "description": "Request body for workflow lifecycle actions",
+  "properties": {
+    "workflowId": {
+      "type": "string",
+      "description": "Unique identifier of the workflow"
+    },
+    "userId": {
+      "type": "string",
+      "description": "Identifier of the user"
+    }
+  },
+  "required": [
+    "workflowId",
+    "userId"
+  ]
+}

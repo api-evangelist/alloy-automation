@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.runalloy.com/schemas/alloy-connectivity-token_response-schema.json",
+  "title": "TokenResponse",
+  "type": "object",
+  "description": "JWT token response",
+  "properties": {
+    "token": {
+      "type": "string",
+      "description": "Short-lived JSON Web Token"
+    }
+  }
+}

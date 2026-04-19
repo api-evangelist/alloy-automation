@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.runalloy.com/schemas/alloy-embedded-trigger_event_request-schema.json",
+  "title": "TriggerEventRequest",
+  "type": "object",
+  "description": "Request body for triggering a custom workflow event",
+  "properties": {
+    "userId": {
+      "type": "string",
+      "description": "Identifier of the user triggering the event"
+    },
+    "event": {
+      "type": "string",
+      "description": "Event name to trigger"
+    },
+    "data": {
+      "type": "object",
+      "description": "Event payload data"
+    }
+  },
+  "required": [
+    "userId",
+    "event"
+  ]
+}

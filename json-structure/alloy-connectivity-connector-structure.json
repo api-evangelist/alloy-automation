@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://docs.runalloy.com/structures/alloy-connectivity-connector-structure.json",
+  "title": "Connector",
+  "type": "object",
+  "description": "A third-party application connector available in Alloy",
+  "properties": {
+    "connectorId": {
+      "type": "xs:string",
+      "description": "Unique identifier for the connector"
+    },
+    "name": {
+      "type": "xs:string",
+      "description": "Display name of the connector"
+    },
+    "category": {
+      "type": "xs:string",
+      "description": "Connector category"
+    },
+    "iconUrl": {
+      "type": "xs:string",
+      "description": "URL to the connector icon"
+    },
+    "actionCount": {
+      "type": "xs:integer",
+      "description": "Number of available actions for this connector"
+    }
+  }
+}

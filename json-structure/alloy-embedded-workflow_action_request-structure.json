@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://docs.runalloy.com/structures/alloy-embedded-workflow_action_request-structure.json",
+  "title": "WorkflowActionRequest",
+  "type": "object",
+  "description": "Request body for workflow lifecycle actions",
+  "properties": {
+    "workflowId": {
+      "type": "xs:string",
+      "description": "Unique identifier of the workflow"
+    },
+    "userId": {
+      "type": "xs:string",
+      "description": "Identifier of the user"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "schema": "https://schema.org/",
+    "alloy": "https://runalloy.com/vocab/",
+    "userId": {"@id": "alloy:userId", "@type": "xsd:string"},
+    "username": {"@id": "schema:identifier", "@type": "xsd:string"},
+    "fullName": {"@id": "schema:name", "@type": "xsd:string"},
+    "createdAt": {"@id": "schema:dateCreated", "@type": "xsd:dateTime"},
+    "token": {"@id": "alloy:jwtToken", "@type": "xsd:string"},
+    "integrationId": {"@id": "alloy:integrationId", "@type": "xsd:string"},
+    "name": {"@id": "schema:name", "@type": "xsd:string"},
+    "category": {"@id": "schema:category", "@type": "xsd:string"},
+    "iconUrl": {"@id": "schema:image", "@type": "@id"},
+    "installed": {"@id": "alloy:installed", "@type": "xsd:boolean"},
+    "integrations": {"@id": "alloy:integrations", "@container": "@list"},
+    "workflowId": {"@id": "alloy:workflowId", "@type": "xsd:string"},
+    "status": {"@id": "schema:status", "@type": "xsd:string"},
+    "executedAt": {"@id": "schema:dateCreated", "@type": "xsd:dateTime"},
+    "duration": {"@id": "alloy:durationMs", "@type": "xsd:integer"},
+    "errorId": {"@id": "alloy:errorId", "@type": "xsd:string"},
+    "message": {"@id": "schema:description", "@type": "xsd:string"},
+    "occurredAt": {"@id": "schema:dateCreated", "@type": "xsd:dateTime"},
+    "success": {"@id": "alloy:success", "@type": "xsd:boolean"},
+    "event": {"@id": "alloy:eventName", "@type": "xsd:string"},
+    "data": {"@id": "alloy:data"},
+    "error": {"@id": "alloy:errorCode", "@type": "xsd:string"},
+    "version": {"@id": "schema:version", "@type": "xsd:string"}
+  }
+}

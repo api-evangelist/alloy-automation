@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.runalloy.com/schemas/alloy-connectivity-action_result-schema.json",
+  "title": "ActionResult",
+  "type": "object",
+  "description": "Result of a connector action execution",
+  "properties": {
+    "success": {
+      "type": "boolean",
+      "description": "Whether the action executed successfully"
+    },
+    "data": {
+      "type": "object",
+      "description": "Action result data"
+    }
+  }
+}

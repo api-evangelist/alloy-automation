@@ -1,0 +1,101 @@
+name: Integration Platform
+description: >-
+  Workflow capability composition for building and managing native integrations
+  using the Alloy Automation platform. Supports embedded iPaaS, connectivity API,
+  and MCP-based AI integration workflows.
+version: 2025-09
+capabilities:
+  - shared/embedded.yaml
+  - shared/connectivity.yaml
+workflows:
+  - id: user-integration-setup
+    name: User Integration Setup
+    description: Onboard a new user and configure their first integration
+    steps:
+      - step: create-user
+        capability: embedded
+        operation: createUser
+        description: Create the end user in Alloy
+      - step: generate-token
+        capability: embedded
+        operation: generateUserToken
+        description: Generate JWT for frontend SDK operations
+      - step: list-integrations
+        capability: embedded
+        operation: listIntegrations
+        description: Show available integrations to the user
+  - id: connector-action-flow
+    name: Connector Action Flow
+    description: Discover and execute actions on a third-party connector
+    steps:
+      - step: list-connectors
+        capability: connectivity
+        operation: listConnectors
+        description: Discover available connectors
+      - step: list-resources
+        capability: connectivity
+        operation: listConnectorResources
+        description: Discover resources in a connector
+      - step: get-action
+        capability: connectivity
+        operation: getConnectorAction
+        description: Get action schema and parameters
+      - step: create-credential
+        capability: connectivity
+        operation: createCredential
+        description: Create credentials for the connector
+      - step: execute-action
+        capability: connectivity
+        operation: executeConnectorAction
+        description: Execute the connector action
+  - id: workflow-monitoring
+    name: Workflow Monitoring
+    description: Monitor workflow health and handle errors
+    steps:
+      - step: list-errors
+        capability: embedded
+        operation: listWorkflowErrors
+        description: Check for workflow execution errors
+      - step: list-logs
+        capability: embedded
+        operation: listWorkflowLogs
+        description: Review execution history
+      - step: deactivate-on-error
+        capability: embedded
+        operation: deactivateWorkflow
+        description: Disable workflow if persistent errors
+tools:
+  - id: create-user
+    capability: embedded
+    operation: createUser
+    description: Create an end user in the Alloy platform
+  - id: list-integrations
+    capability: embedded
+    operation: listIntegrations
+    description: List available integrations for a user
+  - id: trigger-event
+    capability: embedded
+    operation: triggerEvent
+    description: Trigger a custom workflow event
+  - id: list-connectors
+    capability: connectivity
+    operation: listConnectors
+    description: List all available third-party connectors
+  - id: execute-action
+    capability: connectivity
+    operation: executeConnectorAction
+    description: Execute a connector action for a user
+  - id: create-credential
+    capability: connectivity
+    operation: createCredential
+    description: Store connector credentials for a user
+  - id: list-workflow-errors
+    capability: embedded
+    operation: listWorkflowErrors
+    description: Retrieve workflow execution errors
+  - id: upgrade-workflow
+    capability: embedded
+    operation: upgradeWorkflow
+    description: Upgrade a user's workflow to a new version
+rest_port: 8080
+mcp_port: 9090

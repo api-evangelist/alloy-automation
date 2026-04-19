@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://docs.runalloy.com/structures/alloy-connectivity-action_result-structure.json",
+  "title": "ActionResult",
+  "type": "object",
+  "description": "Result of a connector action execution",
+  "properties": {
+    "success": {
+      "type": "xs:boolean",
+      "description": "Whether the action executed successfully"
+    },
+    "data": {
+      "type": "object",
+      "description": "Action result data"
+    }
+  }
+}

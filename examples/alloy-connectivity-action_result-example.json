@@ -1,0 +1,11 @@
+{
+  "success": true,
+  "data": {
+    "orders": [
+      {
+        "id": "order_001",
+        "total": 99.99
+      }
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.runalloy.com/schemas/alloy-embedded-integration_list-schema.json",
+  "title": "IntegrationList",
+  "type": "object",
+  "description": "List of available integrations",
+  "properties": {
+    "integrations": {
+      "type": "array",
+      "description": "List of integration records",
+      "items": {
+        "type": "object"
+      }
+    }
+  }
+}

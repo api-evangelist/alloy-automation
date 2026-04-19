@@ -17,26 +17,68 @@ tags:
 url: >-
   https://raw.githubusercontent.com/api-evangelist/alloy-automation/refs/heads/main/apis.yml
 created: '2026-03-16'
-modified: '2026-03-26'
+modified: '2026-04-19'
 specificationVersion: '0.19'
 apis:
+  - aid: alloy-automation:embedded-api
+    name: Alloy Automation Embedded API
+    description: >-
+      The Alloy Embedded API enables SaaS companies to embed native integration
+      workflows directly in their products. Manage end users, retrieve available
+      integrations, trigger events, monitor workflow execution, and control workflow
+      lifecycle for your embedded iPaaS experience.
+    humanURL: https://docs.runalloy.com/embedded/quick-start
+    baseURL: https://embedded.runalloy.com/2025-09
+    tags:
+      - Embedded
+      - iPaaS
+      - Workflows
+      - Users
+    properties:
+      - type: Documentation
+        url: https://docs.runalloy.com/embedded/quick-start
+      - type: OpenAPI
+        url: openapi/alloy-automation-embedded.yaml
+      - type: JSONSchema
+        url: json-schema/alloy-embedded-user-schema.json
+      - type: JSONStructure
+        url: json-structure/alloy-embedded-user-structure.json
+      - type: JSONLD
+        url: json-ld/alloy-automation-embedded-context.jsonld
+      - type: Example
+        url: examples/alloy-embedded-user-example.json
+      - type: NaftikoCapability
+        url: capabilities/shared/embedded.yaml
+
   - aid: alloy-automation:connectivity-api
     name: Alloy Automation Connectivity API
     description: >-
-      The Connectivity API from Alloy Automation embeds native integrations via a
-      single endpoint, providing a standardized and scalable way to build
-      third-party integrations directly into your product without writing custom
-      logic for every app.
-    humanURL: https://runalloy.com/platform/connectivity-api/
+      The Alloy Connectivity API enables companies to build native integration UIs
+      with a single API endpoint. Manage users, discover connector resources, configure
+      credentials, and execute connector actions across 1000+ third-party applications.
+    humanURL: https://docs.runalloy.com/connectivity-api/quick-start
+    baseURL: https://production.runalloy.com
     tags:
       - Connectivity
       - Integrations
       - Unified API
+      - Connectors
     properties:
       - type: Documentation
-        url: https://docs.runalloy.com/
+        url: https://docs.runalloy.com/connectivity-api/quick-start
       - type: OpenAPI
-        url: https://docs.runalloy.com/
+        url: openapi/alloy-automation-connectivity.yaml
+      - type: JSONSchema
+        url: json-schema/alloy-connectivity-connector-schema.json
+      - type: JSONStructure
+        url: json-structure/alloy-connectivity-connector-structure.json
+      - type: JSONLD
+        url: json-ld/alloy-automation-connectivity-context.jsonld
+      - type: Example
+        url: examples/alloy-connectivity-connector-example.json
+      - type: NaftikoCapability
+        url: capabilities/shared/connectivity.yaml
+
   - aid: alloy-automation:unified-api
     name: Alloy Automation Unified API
     description: >-
@@ -44,6 +86,7 @@ apis:
       integrations across commerce, CRM, ERP, and other categories through a
       single standardized interface.
     humanURL: https://docs.runalloy.com/unified-api/1.0.0/getting-started/quick-start/
+    baseURL: https://production.runalloy.com
     tags:
       - Commerce
       - CRM
@@ -52,41 +95,104 @@ apis:
     properties:
       - type: Documentation
         url: https://docs.runalloy.com/unified-api/1.0.0/getting-started/quick-start/
-  - aid: alloy-automation:embedded
-    name: Alloy Automation Embedded
-    description: >-
-      Alloy Embedded turns integration requests into marketplace offerings,
-      handling infrastructure from auth to deployment to observability so teams
-      can focus on building core product functionality.
-    humanURL: https://runalloy.com/platform/embedded/
-    tags:
-      - Embedded
-      - iPaaS
-      - Marketplace
-    properties:
-      - type: Documentation
-        url: https://docs.runalloy.com/
+
 common:
-  - type: Website
-    url: https://runalloy.com/
-  - type: Documentation
-    url: https://docs.runalloy.com/
-  - type: Blog
-    url: https://runalloy.com/blog/
-  - type: Pricing
-    url: https://runalloy.com/platform/pricing/
+  - url: https://runalloy.com/
+    type: Website
+  - url: https://docs.runalloy.com/
+    type: Documentation
+  - url: https://runalloy.com/blog/
+    type: Blog
+  - url: https://runalloy.com/platform/pricing/
+    type: Pricing
+  - url: https://status.runalloy.com/
+    type: StatusPage
+  - url: https://runalloy.com/about-us/
+    type: About
+  - url: https://github.com/alloy-automation
+    type: GitHubOrganization
+  - url: https://github.com/alloy-automation/alloy-node
+    title: Node.js SDK
+    type: SDK
+  - url: https://github.com/alloy-automation/alloy-python
+    title: Python SDK
+    type: SDK
+  - url: https://www.linkedin.com/company/alloy-automation
+    type: LinkedIn
+  - url: rules/alloy-automation-spectral-rules.yml
+    type: SpectralRules
+  - url: vocabulary/alloy-automation-vocabulary.yaml
+    type: Vocabulary
+  - url: capabilities/integration-platform.yaml
+    type: NaftikoCapability
+  - type: Features
+    data:
+      - name: Embedded iPaaS
+        description: >-
+          Drag-and-drop orchestration platform for shipping native integrations
+          directly in your SaaS product, handling auth, deployment, and observability.
+      - name: Connectivity API
+        description: >-
+          Single endpoint to access 1000+ third-party app connectors with built-in
+          credential management, resource discovery, and real-time action execution.
+      - name: MCP Server
+        description: >-
+          Model Context Protocol server providing AI agents secure, remote-hosted
+          access to 1000+ tools with built-in context, permissioning, and authentication.
+      - name: Workflow Builder
+        description: >-
+          Visual workflow builder with logic blocks (Branch, If-Else, Iterate,
+          Error Handler) and data transformation for building complex automation flows.
+      - name: Installation Manager
+        description: >-
+          Self-service integration marketplace experience enabling end users to
+          discover, install, and configure integrations within your product.
+      - name: Custom Connectors
+        description: >-
+          Build custom connectors for proprietary or internal APIs using Alloy's
+          connector framework with custom OAuth and authentication handling.
+      - name: Webhook Support
+        description: >-
+          Custom event triggers and webhook destinations for real-time integration
+          workflows responding to external events.
+      - name: Compliance Controls
+        description: >-
+          GDPR, CCPA, HIPAA, and SOC 2 compliance with user data purging, static
+          IP addresses, encryption, and SSO/SAML support.
+  - type: UseCases
+    data:
+      - name: Native Integration Marketplace
+        description: >-
+          Embed a branded integration marketplace in your SaaS product allowing
+          customers to self-serve connections to Shopify, Salesforce, NetSuite, and 1000+ apps.
+      - name: AI Agent Integration
+        description: >-
+          Connect LLM-powered AI agents to third-party business applications using
+          the Alloy MCP server with Claude, LangChain, and Vercel AI SDK.
+      - name: E-Commerce Automation
+        description: >-
+          Automate order management, returns, 3PL fulfillment, and inventory sync
+          across Shopify, BigCommerce, WooCommerce, and marketplace platforms.
+      - name: Accounting Integration
+        description: >-
+          Sync general ledger entries, invoices, and journal entries between your
+          platform and QuickBooks, NetSuite, Xero, and SAP.
   - type: Integrations
-    url: https://runalloy.com/integrations/
-  - type: About
-    url: https://runalloy.com/about-us/
-  - type: GitHub Organization
-    url: https://github.com/alloy-automation
-  - type: Node SDK
-    url: https://github.com/alloy-automation/alloy-node
-  - type: Python SDK
-    url: https://github.com/alloy-automation/alloy-python
-  - type: LinkedIn
-    url: https://www.linkedin.com/company/alloy-automation
+    data:
+      - name: Shopify
+        description: E-commerce order management, product catalog, and customer data integration
+      - name: Salesforce
+        description: CRM contact, opportunity, and account sync integration
+      - name: QuickBooks
+        description: Accounting GL sync, invoice creation, and payment reconciliation
+      - name: HubSpot
+        description: CRM and marketing automation contact and deal sync
+      - name: Claude
+        description: Anthropic Claude AI agent integration via Alloy MCP server
+      - name: LangChain
+        description: LangChain AI agent integration using Alloy MCP tools
+      - name: Vercel AI SDK
+        description: Vercel AI SDK integration for building AI-powered workflows
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

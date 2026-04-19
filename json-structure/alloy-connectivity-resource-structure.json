@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://docs.runalloy.com/structures/alloy-connectivity-resource-structure.json",
+  "title": "Resource",
+  "type": "object",
+  "description": "A resource entity available in a connector",
+  "properties": {
+    "resourceId": {
+      "type": "xs:string",
+      "description": "Unique identifier for the resource"
+    },
+    "name": {
+      "type": "xs:string",
+      "description": "Display name of the resource"
+    },
+    "description": {
+      "type": "xs:string",
+      "description": "Description of the resource"
+    },
+    "actions": {
+      "type": "array",
+      "description": "List of supported action names for this resource"
+    }
+  }
+}

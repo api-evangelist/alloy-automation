@@ -1,0 +1,46 @@
+name: Connectivity
+description: Shared capability definition for Alloy Connectivity API operations
+version: 2025-09
+base_url: https://production.runalloy.com
+auth:
+  type: bearer
+  header: Authorization
+operations:
+  - id: createUser
+    method: POST
+    path: /users
+    summary: Create a user for connector access
+  - id: generateUserToken
+    method: GET
+    path: /users/{userId}/token
+    summary: Generate JWT for user authentication
+  - id: listConnectors
+    method: GET
+    path: /connectors
+    summary: List available third-party connectors
+  - id: listConnectorResources
+    method: GET
+    path: /connectors/{connectorId}/resources
+    summary: List resources available in a connector
+  - id: getConnectorAction
+    method: GET
+    path: /connectors/{connectorId}/actions/{actionId}
+    summary: Get action schema and parameters
+  - id: executeConnectorAction
+    method: POST
+    path: /connectors/{connectorId}/actions/{actionId}/execute
+    summary: Execute a connector action
+  - id: getCredentialMetadata
+    method: GET
+    path: /connectors/{connectorId}/credentials/metadata
+    summary: Get authentication requirements for a connector
+  - id: createCredential
+    method: POST
+    path: /connectors/{connectorId}/credentials
+    summary: Create a credential for a connector
+  - id: listCredentials
+    method: GET
+    path: /connectors/{connectorId}/credentials
+    summary: List credentials for a user on a connector
+rest_port: 8102
+mcp_port: 9102

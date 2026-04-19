@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.runalloy.com/schemas/alloy-embedded-integration-schema.json",
+  "title": "Integration",
+  "type": "object",
+  "description": "An available integration in the Alloy catalog",
+  "properties": {
+    "integrationId": {
+      "type": "string",
+      "description": "Unique identifier for the integration"
+    },
+    "name": {
+      "type": "string",
+      "description": "Display name of the integration"
+    },
+    "category": {
+      "type": "string",
+      "description": "Integration category"
+    },
+    "iconUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to the integration icon"
+    },
+    "installed": {
+      "type": "boolean",
+      "description": "Whether the integration is installed for the user"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://docs.runalloy.com/structures/alloy-connectivity-connector_list-structure.json",
+  "title": "ConnectorList",
+  "type": "object",
+  "description": "List of available connectors",
+  "properties": {
+    "connectors": {
+      "type": "array",
+      "description": "List of connector records"
+    }
+  }
+}

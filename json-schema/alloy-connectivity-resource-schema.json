@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.runalloy.com/schemas/alloy-connectivity-resource-schema.json",
+  "title": "Resource",
+  "type": "object",
+  "description": "A resource entity available in a connector",
+  "properties": {
+    "resourceId": {
+      "type": "string",
+      "description": "Unique identifier for the resource"
+    },
+    "name": {
+      "type": "string",
+      "description": "Display name of the resource"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the resource"
+    },
+    "actions": {
+      "type": "array",
+      "description": "List of supported action names for this resource",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

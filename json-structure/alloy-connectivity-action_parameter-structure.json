@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://docs.runalloy.com/structures/alloy-connectivity-action_parameter-structure.json",
+  "title": "ActionParameter",
+  "type": "object",
+  "description": "A parameter definition for a connector action",
+  "properties": {
+    "name": {
+      "type": "xs:string",
+      "description": "Parameter name"
+    },
+    "type": {
+      "type": "xs:string",
+      "description": "Parameter data type"
+    },
+    "required": {
+      "type": "xs:boolean",
+      "description": "Whether the parameter is required"
+    },
+    "description": {
+      "type": "xs:string",
+      "description": "Description of the parameter"
+    }
+  }
+}

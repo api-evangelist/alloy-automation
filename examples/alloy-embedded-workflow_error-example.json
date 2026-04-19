@@ -1,0 +1,6 @@
+{
+  "errorId": "err_001",
+  "workflowId": "wf_xyz456",
+  "message": "Connection timeout to Shopify",
+  "occurredAt": "2026-04-19T09:30:00Z"
+}

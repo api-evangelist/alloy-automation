@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.runalloy.com/schemas/alloy-connectivity-connector_action-schema.json",
+  "title": "ConnectorAction",
+  "type": "object",
+  "description": "A specific action available for a connector",
+  "properties": {
+    "actionId": {
+      "type": "string",
+      "description": "Unique identifier for the action"
+    },
+    "name": {
+      "type": "string",
+      "description": "Display name of the action"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of what the action does"
+    },
+    "parameters": {
+      "type": "array",
+      "description": "Parameters accepted by this action",
+      "items": {
+        "type": "object"
+      }
+    }
+  }
+}

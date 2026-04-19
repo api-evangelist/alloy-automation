@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://docs.runalloy.com/structures/alloy-connectivity-error_response-structure.json",
+  "title": "ErrorResponse",
+  "type": "object",
+  "description": "Standard error response",
+  "properties": {
+    "error": {
+      "type": "xs:string",
+      "description": "Error code or type"
+    },
+    "message": {
+      "type": "xs:string",
+      "description": "Human-readable error description"
+    }
+  }
+}

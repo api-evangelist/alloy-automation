@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://docs.runalloy.com/structures/alloy-connectivity-create_user_request-structure.json",
+  "title": "CreateUserRequest",
+  "type": "object",
+  "description": "Request body for creating a new user",
+  "properties": {
+    "username": {
+      "type": "xs:string",
+      "description": "Unique username or external identifier"
+    }
+  }
+}

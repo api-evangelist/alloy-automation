@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://docs.runalloy.com/structures/alloy-embedded-upgrade_workflow_request-structure.json",
+  "title": "UpgradeWorkflowRequest",
+  "type": "object",
+  "description": "Request body for upgrading a workflow",
+  "properties": {
+    "userId": {
+      "type": "xs:string",
+      "description": "Identifier of the user"
+    },
+    "version": {
+      "type": "xs:string",
+      "description": "Target version to upgrade to"
+    }
+  }
+}

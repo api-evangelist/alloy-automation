@@ -1,0 +1,6 @@
+{
+  "actionId": "list-orders",
+  "name": "List Orders",
+  "description": "Retrieve a list of Shopify orders",
+  "parameters": []
+}
