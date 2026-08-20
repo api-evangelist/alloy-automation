@@ -1,0 +1,131 @@
+{
+  "item": [
+    {
+      "id": "53194871-5305-403a-8d76-5326d50f955b",
+      "name": "Integrations",
+      "description": {
+        "content": "Available connectors and a user's enabled integrations.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d70239c1-b312-49d9-8325-c6d582bafcf0",
+          "name": "List integrations / connectors",
+          "request": {
+            "name": "List integrations / connectors",
+            "description": {
+              "content": "Lists the connectors available to power your integration marketplace, or the integrations enabled for a specific user when userId is supplied.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "integrations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "userId",
+                  "value": "<string>",
+                  "description": "When present, scopes the list to a user's enabled integrations."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "bf00328f-aba9-4792-9600-4fd10a9af02d",
+              "name": "A list of integrations",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "userId",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"integrations\": [\n    {\n      \"connectorId\": \"string\",\n      \"name\": \"string\",\n      \"category\": \"string\",\n      \"authType\": \"oauth2\"\n    },\n    {\n      \"connectorId\": \"string\",\n      \"name\": \"string\",\n      \"category\": \"string\",\n      \"authType\": \"basic\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://embedded.runalloy.com/2024-03",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "beaad951-69cf-4c45-9c49-034e10ef328c",
+    "name": "Alloy Automation Embedded & Unified Connectivity Integrations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Alloy Automation is an embedded integration platform (iPaaS) and Unified API for SaaS products. The Embedded product provisions end-user records, per-user credentials/connections, and short-lived JWTs to render Alloy's embedded UI. The Connectivity API discovers connectors, resources, and actions and executes typed actions against a user's credential. The Passthrough API proxies raw requests to a third-party provider using a stored credential. The Unified API normalizes Commerce, CRM, and Accounting objects across many providers behind a single interface. All endpoints use dated versioning (2024-03) and Bearer API key authentication; per-user JWTs secure the embedded frontend.\n\nContact Support:\n Name: Alloy Automation Support",
+      "type": "text/plain"
+    }
+  }
+}

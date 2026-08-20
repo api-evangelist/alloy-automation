@@ -1,0 +1,114 @@
+openapi: 3.0.3
+info:
+  title: Alloy Automation Embedded & Unified Connectivity Events API
+  description: Alloy Automation is an embedded integration platform (iPaaS) and Unified API for SaaS products. The Embedded product provisions end-user records, per-user credentials/connections, and short-lived JWTs to render Alloy's embedded UI. The Connectivity API discovers connectors, resources, and actions and executes typed actions against a user's credential. The Passthrough API proxies raw requests to a third-party provider using a stored credential. The Unified API normalizes Commerce, CRM, and Accounting objects across many providers behind a single interface. All endpoints use dated versioning (2024-03) and Bearer API key authentication; per-user JWTs secure the embedded frontend.
+  version: 2024-03
+  contact:
+    name: Alloy Automation Support
+    url: https://docs.runalloy.com
+  termsOfService: https://runalloy.com/terms/
+servers:
+- url: https://embedded.runalloy.com/2024-03
+  description: Embedded, Connectivity, Passthrough, and Unified API (2024-03)
+security:
+- bearerAuth: []
+tags:
+- name: Events
+  description: Execution events and observability.
+paths:
+  /events:
+    get:
+      operationId: listEvents
+      tags:
+      - Events
+      summary: List events
+      description: Lists execution and provider events for observability. Supports pagination via cursor.
+      parameters:
+      - name: userId
+        in: query
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/Cursor'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: A page of events
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  events:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Event'
+                  pageInfo:
+                    $ref: '#/components/schemas/PageInfo'
+  /events/{eventId}:
+    parameters:
+    - name: eventId
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      operationId: getEvent
+      tags:
+      - Events
+      summary: Retrieve an event
+      responses:
+        '200':
+          description: The event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+components:
+  schemas:
+    Event:
+      type: object
+      properties:
+        eventId:
+          type: string
+        userId:
+          type: string
+        type:
+          type: string
+        status:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        data:
+          type: object
+          additionalProperties: true
+    PageInfo:
+      type: object
+      properties:
+        hasNextPage:
+          type: boolean
+        nextCursor:
+          type: string
+  parameters:
+    Cursor:
+      name: cursor
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Opaque pagination cursor from a prior pageInfo.
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 50
+        maximum: 250
+      description: Maximum number of records to return per page.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Bearer API key in the Authorization header, e.g. `Authorization: Bearer YOUR_API_KEY`. Frontend calls use a per-user JWT instead of the master key.'

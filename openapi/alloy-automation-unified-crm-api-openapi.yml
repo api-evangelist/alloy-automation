@@ -1,0 +1,193 @@
+openapi: 3.0.3
+info:
+  title: Alloy Automation Embedded & Unified Connectivity Unified CRM API
+  description: Alloy Automation is an embedded integration platform (iPaaS) and Unified API for SaaS products. The Embedded product provisions end-user records, per-user credentials/connections, and short-lived JWTs to render Alloy's embedded UI. The Connectivity API discovers connectors, resources, and actions and executes typed actions against a user's credential. The Passthrough API proxies raw requests to a third-party provider using a stored credential. The Unified API normalizes Commerce, CRM, and Accounting objects across many providers behind a single interface. All endpoints use dated versioning (2024-03) and Bearer API key authentication; per-user JWTs secure the embedded frontend.
+  version: 2024-03
+  contact:
+    name: Alloy Automation Support
+    url: https://docs.runalloy.com
+  termsOfService: https://runalloy.com/terms/
+servers:
+- url: https://embedded.runalloy.com/2024-03
+  description: Embedded, Connectivity, Passthrough, and Unified API (2024-03)
+security:
+- bearerAuth: []
+tags:
+- name: Unified CRM
+  description: Normalized CRM objects (contacts, companies, deals).
+paths:
+  /crm/contacts:
+    get:
+      operationId: listContacts
+      tags:
+      - Unified CRM
+      summary: List contacts
+      parameters:
+      - $ref: '#/components/parameters/ConnectionId'
+      - $ref: '#/components/parameters/Cursor'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: A page of contacts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contacts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Contact'
+                  pageInfo:
+                    $ref: '#/components/schemas/PageInfo'
+    post:
+      operationId: createContact
+      tags:
+      - Unified CRM
+      summary: Create a contact
+      parameters:
+      - $ref: '#/components/parameters/ConnectionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contact'
+      responses:
+        '200':
+          description: Contact created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+  /crm/companies:
+    get:
+      operationId: listCompanies
+      tags:
+      - Unified CRM
+      summary: List companies
+      parameters:
+      - $ref: '#/components/parameters/ConnectionId'
+      - $ref: '#/components/parameters/Cursor'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: A page of companies
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  companies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Company'
+                  pageInfo:
+                    $ref: '#/components/schemas/PageInfo'
+  /crm/deals:
+    get:
+      operationId: listDeals
+      tags:
+      - Unified CRM
+      summary: List deals
+      parameters:
+      - $ref: '#/components/parameters/ConnectionId'
+      - $ref: '#/components/parameters/Cursor'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: A page of deals
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deals:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Deal'
+                  pageInfo:
+                    $ref: '#/components/schemas/PageInfo'
+components:
+  schemas:
+    Company:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        domain:
+          type: string
+        remoteId:
+          type: string
+    Deal:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        amount:
+          type: number
+        currency:
+          type: string
+        stage:
+          type: string
+        companyId:
+          type: string
+        remoteId:
+          type: string
+    Contact:
+      type: object
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        companyId:
+          type: string
+        remoteId:
+          type: string
+    PageInfo:
+      type: object
+      properties:
+        hasNextPage:
+          type: boolean
+        nextCursor:
+          type: string
+  parameters:
+    ConnectionId:
+      name: connectionId
+      in: query
+      required: true
+      schema:
+        type: string
+      description: The connected account (credential) to read/write unified data through.
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 50
+        maximum: 250
+      description: Maximum number of records to return per page.
+    Cursor:
+      name: cursor
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Opaque pagination cursor from a prior pageInfo.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Bearer API key in the Authorization header, e.g. `Authorization: Bearer YOUR_API_KEY`. Frontend calls use a per-user JWT instead of the master key.'

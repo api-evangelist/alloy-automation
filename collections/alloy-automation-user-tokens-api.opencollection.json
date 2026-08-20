@@ -1,0 +1,43 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Alloy Automation Embedded & Unified Connectivity User Tokens API",
+    "version": "2024-03"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "User Tokens",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate a new JWT for a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://embedded.runalloy.com/2024-03/users/:userId/token",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The Alloy end-user record ID."
+              }
+            ]
+          },
+          "docs": "Generates a short-lived JSON Web Token (JWT) for the user, used to securely render the Embedded Modal / Alloy Link in your frontend."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

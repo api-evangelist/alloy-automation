@@ -1,0 +1,114 @@
+openapi: 3.0.3
+info:
+  title: Alloy Automation Embedded & Unified Connectivity Users API
+  description: Alloy Automation is an embedded integration platform (iPaaS) and Unified API for SaaS products. The Embedded product provisions end-user records, per-user credentials/connections, and short-lived JWTs to render Alloy's embedded UI. The Connectivity API discovers connectors, resources, and actions and executes typed actions against a user's credential. The Passthrough API proxies raw requests to a third-party provider using a stored credential. The Unified API normalizes Commerce, CRM, and Accounting objects across many providers behind a single interface. All endpoints use dated versioning (2024-03) and Bearer API key authentication; per-user JWTs secure the embedded frontend.
+  version: 2024-03
+  contact:
+    name: Alloy Automation Support
+    url: https://docs.runalloy.com
+  termsOfService: https://runalloy.com/terms/
+servers:
+- url: https://embedded.runalloy.com/2024-03
+  description: Embedded, Connectivity, Passthrough, and Unified API (2024-03)
+security:
+- bearerAuth: []
+tags:
+- name: Users
+  description: End-user records that scope credentials, integrations, and executions.
+paths:
+  /users:
+    post:
+      operationId: createUser
+      tags:
+      - Users
+      summary: Create a user
+      description: Creates an end-user record in Alloy and returns its userId.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        '200':
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    get:
+      operationId: listUsers
+      tags:
+      - Users
+      summary: List users
+      description: Lists the end-user records in your Alloy account.
+      responses:
+        '200':
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+  /users/{userId}:
+    parameters:
+    - $ref: '#/components/parameters/UserId'
+    get:
+      operationId: getUser
+      tags:
+      - Users
+      summary: Retrieve a single user
+      responses:
+        '200':
+          description: The user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    delete:
+      operationId: deleteUser
+      tags:
+      - Users
+      summary: Delete a user
+      responses:
+        '200':
+          description: User deleted
+components:
+  parameters:
+    UserId:
+      name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The Alloy end-user record ID.
+  schemas:
+    User:
+      type: object
+      properties:
+        userId:
+          type: string
+        username:
+          type: string
+        fullName:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    CreateUserRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Optional external username / label for the user.
+        fullName:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Bearer API key in the Authorization header, e.g. `Authorization: Bearer YOUR_API_KEY`. Frontend calls use a per-user JWT instead of the master key.'

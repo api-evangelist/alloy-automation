@@ -1,0 +1,227 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Alloy Automation Embedded & Unified API",
+    "version": "2024-03"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": { "name": "Create a user", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://embedded.runalloy.com/2024-03/users",
+            "body": { "type": "json", "data": "{\n  \"username\": \"acme-customer-1\"\n}" }
+          },
+          "docs": "Creates an end-user record in Alloy and returns its userId."
+        },
+        {
+          "info": { "name": "List users", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://embedded.runalloy.com/2024-03/users"
+          },
+          "docs": "Lists the end-user records in your Alloy account."
+        },
+        {
+          "info": { "name": "Retrieve a single user", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://embedded.runalloy.com/2024-03/users/{{userId}}"
+          },
+          "docs": "Retrieves a single user by userId."
+        },
+        {
+          "info": { "name": "Generate a new JWT for a user", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://embedded.runalloy.com/2024-03/users/{{userId}}/token"
+          },
+          "docs": "Generates a short-lived per-user JWT to render the embedded frontend."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Credentials",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": { "name": "List a user's credentials", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://embedded.runalloy.com/2024-03/users/{{userId}}/credentials"
+          },
+          "docs": "Lists the credential IDs (connections) created for a user."
+        },
+        {
+          "info": { "name": "Create a credential for a user", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://embedded.runalloy.com/2024-03/users/{{userId}}/credentials",
+            "body": { "type": "json", "data": "{\n  \"app\": \"shopify\",\n  \"data\": {}\n}" }
+          },
+          "docs": "Creates a credential for a user based on the connector's metadata."
+        },
+        {
+          "info": { "name": "Retrieve credential structures", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://embedded.runalloy.com/2024-03/metadata/credentials?app=shopify"
+          },
+          "docs": "Returns the auth fields required to add a credential for an app."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Integrations & Connectivity",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": { "name": "List integrations / connectors", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://embedded.runalloy.com/2024-03/integrations"
+          },
+          "docs": "Lists connectors to power your integration marketplace."
+        },
+        {
+          "info": { "name": "List a connector's actions", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://embedded.runalloy.com/2024-03/connectors/{{connectorId}}/actions"
+          },
+          "docs": "Lists the actions an end-user can perform for a connector."
+        },
+        {
+          "info": { "name": "Execute an action", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://embedded.runalloy.com/2024-03/actions/execute",
+            "body": { "type": "json", "data": "{\n  \"credentialId\": \"{{credentialId}}\",\n  \"action\": \"listContacts\",\n  \"input\": {}\n}" }
+          },
+          "docs": "Executes a typed connector action against a user's credential."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Passthrough",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": { "name": "Make a passthrough request", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://embedded.runalloy.com/2024-03/passthrough?credentialId={{credentialId}}",
+            "body": { "type": "json", "data": "{\n  \"method\": \"GET\",\n  \"path\": \"/admin/api/2024-01/orders.json\"\n}" }
+          },
+          "docs": "Makes a raw request to a third-party API using a stored credentialId."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Events",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": { "name": "List events", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://embedded.runalloy.com/2024-03/events?limit=50"
+          },
+          "docs": "Lists execution and provider events for observability."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Unified Commerce",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": { "name": "List products", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://embedded.runalloy.com/2024-03/commerce/products?connectionId={{connectionId}}"
+          },
+          "docs": "Lists products across ecommerce providers via the unified model."
+        },
+        {
+          "info": { "name": "List orders", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://embedded.runalloy.com/2024-03/commerce/orders?connectionId={{connectionId}}"
+          },
+          "docs": "Lists orders across ecommerce providers via the unified model."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Unified CRM",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": { "name": "List contacts", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://embedded.runalloy.com/2024-03/crm/contacts?connectionId={{connectionId}}"
+          },
+          "docs": "Lists contacts across CRM providers via the unified model."
+        },
+        {
+          "info": { "name": "List deals", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://embedded.runalloy.com/2024-03/crm/deals?connectionId={{connectionId}}"
+          },
+          "docs": "Lists deals across CRM providers via the unified model."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Unified Accounting",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": { "name": "List accounts", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://embedded.runalloy.com/2024-03/accounting/accounts?connectionId={{connectionId}}"
+          },
+          "docs": "Lists chart-of-accounts entries across accounting providers."
+        },
+        {
+          "info": { "name": "List invoices", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://embedded.runalloy.com/2024-03/accounting/invoices?connectionId={{connectionId}}"
+          },
+          "docs": "Lists invoices across accounting providers via the unified model."
+        }
+      ]
+    }
+  ]
+}

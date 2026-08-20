@@ -1,0 +1,80 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Alloy Automation Embedded & Unified Connectivity API",
+    "version": "2024-03"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Connectivity",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List a connector's resources",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://embedded.runalloy.com/2024-03/connectors/:connectorId/resources",
+            "params": [
+              {
+                "name": "connectorId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Lists the entities (resources) a connector exposes."
+        },
+        {
+          "info": {
+            "name": "List a connector's actions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://embedded.runalloy.com/2024-03/connectors/:connectorId/actions",
+            "params": [
+              {
+                "name": "connectorId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "resource",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Lists the actions an end-user can perform for a connector, optionally scoped to a resource."
+        },
+        {
+          "info": {
+            "name": "Execute an action",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://embedded.runalloy.com/2024-03/actions/execute",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Executes a typed connector action against a user's credential and returns the provider's response."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

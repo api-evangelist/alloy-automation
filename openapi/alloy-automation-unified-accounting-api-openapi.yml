@@ -1,0 +1,163 @@
+openapi: 3.0.3
+info:
+  title: Alloy Automation Embedded & Unified Connectivity Unified Accounting API
+  description: Alloy Automation is an embedded integration platform (iPaaS) and Unified API for SaaS products. The Embedded product provisions end-user records, per-user credentials/connections, and short-lived JWTs to render Alloy's embedded UI. The Connectivity API discovers connectors, resources, and actions and executes typed actions against a user's credential. The Passthrough API proxies raw requests to a third-party provider using a stored credential. The Unified API normalizes Commerce, CRM, and Accounting objects across many providers behind a single interface. All endpoints use dated versioning (2024-03) and Bearer API key authentication; per-user JWTs secure the embedded frontend.
+  version: 2024-03
+  contact:
+    name: Alloy Automation Support
+    url: https://docs.runalloy.com
+  termsOfService: https://runalloy.com/terms/
+servers:
+- url: https://embedded.runalloy.com/2024-03
+  description: Embedded, Connectivity, Passthrough, and Unified API (2024-03)
+security:
+- bearerAuth: []
+tags:
+- name: Unified Accounting
+  description: Normalized accounting objects (accounts, invoices).
+paths:
+  /accounting/accounts:
+    get:
+      operationId: listAccounts
+      tags:
+      - Unified Accounting
+      summary: List accounts
+      description: Lists accounts from the connected ledger's chart of accounts.
+      parameters:
+      - $ref: '#/components/parameters/ConnectionId'
+      - $ref: '#/components/parameters/Cursor'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: A page of accounts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accounts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Account'
+                  pageInfo:
+                    $ref: '#/components/schemas/PageInfo'
+    post:
+      operationId: createAccount
+      tags:
+      - Unified Accounting
+      summary: Create an account
+      parameters:
+      - $ref: '#/components/parameters/ConnectionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+      responses:
+        '200':
+          description: Account created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+  /accounting/invoices:
+    get:
+      operationId: listInvoices
+      tags:
+      - Unified Accounting
+      summary: List invoices
+      parameters:
+      - $ref: '#/components/parameters/ConnectionId'
+      - $ref: '#/components/parameters/Cursor'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: A page of invoices
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  invoices:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Invoice'
+                  pageInfo:
+                    $ref: '#/components/schemas/PageInfo'
+components:
+  parameters:
+    Cursor:
+      name: cursor
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Opaque pagination cursor from a prior pageInfo.
+    ConnectionId:
+      name: connectionId
+      in: query
+      required: true
+      schema:
+        type: string
+      description: The connected account (credential) to read/write unified data through.
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 50
+        maximum: 250
+      description: Maximum number of records to return per page.
+  schemas:
+    Account:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+        classification:
+          type: string
+        currency:
+          type: string
+        remoteId:
+          type: string
+    PageInfo:
+      type: object
+      properties:
+        hasNextPage:
+          type: boolean
+        nextCursor:
+          type: string
+    Invoice:
+      type: object
+      properties:
+        id:
+          type: string
+        number:
+          type: string
+        contactId:
+          type: string
+        totalAmount:
+          type: number
+        currency:
+          type: string
+        status:
+          type: string
+        issueDate:
+          type: string
+          format: date
+        dueDate:
+          type: string
+          format: date
+        remoteId:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Bearer API key in the Authorization header, e.g. `Authorization: Bearer YOUR_API_KEY`. Frontend calls use a per-user JWT instead of the master key.'

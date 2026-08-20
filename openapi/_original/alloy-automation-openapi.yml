@@ -1,0 +1,944 @@
+openapi: 3.0.3
+info:
+  title: Alloy Automation Embedded & Unified API
+  description: >-
+    Alloy Automation is an embedded integration platform (iPaaS) and Unified API
+    for SaaS products. The Embedded product provisions end-user records, per-user
+    credentials/connections, and short-lived JWTs to render Alloy's embedded UI.
+    The Connectivity API discovers connectors, resources, and actions and executes
+    typed actions against a user's credential. The Passthrough API proxies raw
+    requests to a third-party provider using a stored credential. The Unified API
+    normalizes Commerce, CRM, and Accounting objects across many providers behind a
+    single interface. All endpoints use dated versioning (2024-03) and Bearer API
+    key authentication; per-user JWTs secure the embedded frontend.
+  version: '2024-03'
+  contact:
+    name: Alloy Automation Support
+    url: https://docs.runalloy.com
+  termsOfService: https://runalloy.com/terms/
+servers:
+  - url: https://embedded.runalloy.com/2024-03
+    description: Embedded, Connectivity, Passthrough, and Unified API (2024-03)
+security:
+  - bearerAuth: []
+tags:
+  - name: Users
+    description: End-user records that scope credentials, integrations, and executions.
+  - name: User Tokens
+    description: Per-user JWTs for rendering the embedded frontend.
+  - name: Credentials
+    description: Third-party connections held by a user, plus credential metadata.
+  - name: Integrations
+    description: Available connectors and a user's enabled integrations.
+  - name: Connectivity
+    description: Discover resources/actions and execute typed actions.
+  - name: Passthrough
+    description: Raw proxied requests to a provider via a stored credential.
+  - name: Events
+    description: Execution events and observability.
+  - name: Unified Commerce
+    description: Normalized commerce objects (products, orders, customers).
+  - name: Unified CRM
+    description: Normalized CRM objects (contacts, companies, deals).
+  - name: Unified Accounting
+    description: Normalized accounting objects (accounts, invoices).
+paths:
+  /users:
+    post:
+      operationId: createUser
+      tags: [Users]
+      summary: Create a user
+      description: Creates an end-user record in Alloy and returns its userId.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        '200':
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    get:
+      operationId: listUsers
+      tags: [Users]
+      summary: List users
+      description: Lists the end-user records in your Alloy account.
+      responses:
+        '200':
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+  /users/{userId}:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    get:
+      operationId: getUser
+      tags: [Users]
+      summary: Retrieve a single user
+      responses:
+        '200':
+          description: The user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    delete:
+      operationId: deleteUser
+      tags: [Users]
+      summary: Delete a user
+      responses:
+        '200':
+          description: User deleted
+  /users/{userId}/token:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    post:
+      operationId: generateUserToken
+      tags: [User Tokens]
+      summary: Generate a new JWT for a user
+      description: >-
+        Generates a short-lived JSON Web Token (JWT) for the user, used to securely
+        render the Embedded Modal / Alloy Link in your frontend.
+      responses:
+        '200':
+          description: A user JWT
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: Short-lived per-user JWT.
+  /users/{userId}/credentials:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    get:
+      operationId: listUserCredentials
+      tags: [Credentials]
+      summary: List a user's credentials
+      responses:
+        '200':
+          description: The user's credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  credentials:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Credential'
+    post:
+      operationId: createCredential
+      tags: [Credentials]
+      summary: Create a credential for a user
+      description: >-
+        Creates a credential (connection) for a user. Use the credential metadata
+        endpoint to learn which auth fields a connector requires.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCredentialRequest'
+      responses:
+        '200':
+          description: Credential created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Credential'
+  /users/{userId}/credentials/{credentialId}:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+      - $ref: '#/components/parameters/CredentialId'
+    get:
+      operationId: getCredential
+      tags: [Credentials]
+      summary: Retrieve a credential
+      responses:
+        '200':
+          description: The credential
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Credential'
+    delete:
+      operationId: deleteCredential
+      tags: [Credentials]
+      summary: Delete a credential
+      responses:
+        '200':
+          description: Credential deleted
+  /metadata/credentials:
+    get:
+      operationId: getCredentialMetadata
+      tags: [Credentials]
+      summary: Retrieve credential structures
+      description: >-
+        Returns the basic structure of the data that must be provided when adding a
+        credential manually for an app, used before calling the create credential
+        endpoint.
+      parameters:
+        - name: app
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Connector/app identifier to scope the credential metadata to.
+      responses:
+        '200':
+          description: Credential metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CredentialMetadata'
+  /integrations:
+    get:
+      operationId: listIntegrations
+      tags: [Integrations]
+      summary: List integrations / connectors
+      description: >-
+        Lists the connectors available to power your integration marketplace, or the
+        integrations enabled for a specific user when userId is supplied.
+      parameters:
+        - name: userId
+          in: query
+          required: false
+          schema:
+            type: string
+          description: When present, scopes the list to a user's enabled integrations.
+      responses:
+        '200':
+          description: A list of integrations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  integrations:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Integration'
+  /connectors/{connectorId}/resources:
+    parameters:
+      - name: connectorId
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: listConnectorResources
+      tags: [Connectivity]
+      summary: List a connector's resources
+      description: Lists the entities (resources) a connector exposes.
+      responses:
+        '200':
+          description: Connector resources
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resources:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Resource'
+  /connectors/{connectorId}/actions:
+    parameters:
+      - name: connectorId
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: listConnectorActions
+      tags: [Connectivity]
+      summary: List a connector's actions
+      description: >-
+        Lists the actions an end-user can perform for a connector, optionally scoped
+        to a resource.
+      parameters:
+        - name: resource
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Connector actions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  actions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Action'
+  /actions/execute:
+    post:
+      operationId: executeAction
+      tags: [Connectivity]
+      summary: Execute an action
+      description: >-
+        Executes a typed connector action against a user's credential and returns
+        the provider's response.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExecuteActionRequest'
+      responses:
+        '200':
+          description: Action result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionResult'
+  /passthrough:
+    post:
+      operationId: passthroughRequest
+      tags: [Passthrough]
+      summary: Make a passthrough request
+      description: >-
+        Makes a raw, authenticated request to a third-party API using a stored
+        credentialId. Alloy attaches the provider auth and refreshes tokens; you
+        supply the provider's native request path, method, headers, and body.
+      parameters:
+        - name: credentialId
+          in: query
+          required: true
+          schema:
+            type: string
+          description: The end-user credential ID to authenticate the request with.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PassthroughRequest'
+      responses:
+        '200':
+          description: The proxied provider response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+  /events:
+    get:
+      operationId: listEvents
+      tags: [Events]
+      summary: List events
+      description: >-
+        Lists execution and provider events for observability. Supports pagination
+        via cursor.
+      parameters:
+        - name: userId
+          in: query
+          required: false
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: A page of events
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  events:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Event'
+                  pageInfo:
+                    $ref: '#/components/schemas/PageInfo'
+  /events/{eventId}:
+    parameters:
+      - name: eventId
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: getEvent
+      tags: [Events]
+      summary: Retrieve an event
+      responses:
+        '200':
+          description: The event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+  /commerce/products:
+    get:
+      operationId: listProducts
+      tags: [Unified Commerce]
+      summary: List products
+      parameters:
+        - $ref: '#/components/parameters/ConnectionId'
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: A page of products
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  products:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+                  pageInfo:
+                    $ref: '#/components/schemas/PageInfo'
+  /commerce/orders:
+    get:
+      operationId: listOrders
+      tags: [Unified Commerce]
+      summary: List orders
+      parameters:
+        - $ref: '#/components/parameters/ConnectionId'
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: A page of orders
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Order'
+                  pageInfo:
+                    $ref: '#/components/schemas/PageInfo'
+  /commerce/customers:
+    get:
+      operationId: listCommerceCustomers
+      tags: [Unified Commerce]
+      summary: List commerce customers
+      parameters:
+        - $ref: '#/components/parameters/ConnectionId'
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: A page of commerce customers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  customers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CommerceCustomer'
+                  pageInfo:
+                    $ref: '#/components/schemas/PageInfo'
+  /crm/contacts:
+    get:
+      operationId: listContacts
+      tags: [Unified CRM]
+      summary: List contacts
+      parameters:
+        - $ref: '#/components/parameters/ConnectionId'
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: A page of contacts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contacts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Contact'
+                  pageInfo:
+                    $ref: '#/components/schemas/PageInfo'
+    post:
+      operationId: createContact
+      tags: [Unified CRM]
+      summary: Create a contact
+      parameters:
+        - $ref: '#/components/parameters/ConnectionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contact'
+      responses:
+        '200':
+          description: Contact created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+  /crm/companies:
+    get:
+      operationId: listCompanies
+      tags: [Unified CRM]
+      summary: List companies
+      parameters:
+        - $ref: '#/components/parameters/ConnectionId'
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: A page of companies
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  companies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Company'
+                  pageInfo:
+                    $ref: '#/components/schemas/PageInfo'
+  /crm/deals:
+    get:
+      operationId: listDeals
+      tags: [Unified CRM]
+      summary: List deals
+      parameters:
+        - $ref: '#/components/parameters/ConnectionId'
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: A page of deals
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deals:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Deal'
+                  pageInfo:
+                    $ref: '#/components/schemas/PageInfo'
+  /accounting/accounts:
+    get:
+      operationId: listAccounts
+      tags: [Unified Accounting]
+      summary: List accounts
+      description: Lists accounts from the connected ledger's chart of accounts.
+      parameters:
+        - $ref: '#/components/parameters/ConnectionId'
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: A page of accounts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accounts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Account'
+                  pageInfo:
+                    $ref: '#/components/schemas/PageInfo'
+    post:
+      operationId: createAccount
+      tags: [Unified Accounting]
+      summary: Create an account
+      parameters:
+        - $ref: '#/components/parameters/ConnectionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+      responses:
+        '200':
+          description: Account created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+  /accounting/invoices:
+    get:
+      operationId: listInvoices
+      tags: [Unified Accounting]
+      summary: List invoices
+      parameters:
+        - $ref: '#/components/parameters/ConnectionId'
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: A page of invoices
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  invoices:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Invoice'
+                  pageInfo:
+                    $ref: '#/components/schemas/PageInfo'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Bearer API key in the Authorization header, e.g.
+        `Authorization: Bearer YOUR_API_KEY`. Frontend calls use a per-user JWT
+        instead of the master key.
+  parameters:
+    UserId:
+      name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The Alloy end-user record ID.
+    CredentialId:
+      name: credentialId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The end-user credential (connection) ID.
+    ConnectionId:
+      name: connectionId
+      in: query
+      required: true
+      schema:
+        type: string
+      description: The connected account (credential) to read/write unified data through.
+    Cursor:
+      name: cursor
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Opaque pagination cursor from a prior pageInfo.
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 50
+        maximum: 250
+      description: Maximum number of records to return per page.
+  schemas:
+    CreateUserRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Optional external username / label for the user.
+        fullName:
+          type: string
+    User:
+      type: object
+      properties:
+        userId:
+          type: string
+        username:
+          type: string
+        fullName:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    CreateCredentialRequest:
+      type: object
+      required: [app]
+      properties:
+        app:
+          type: string
+          description: Connector/app identifier the credential is for.
+        data:
+          type: object
+          additionalProperties: true
+          description: Auth field values, shaped per the credential metadata.
+    Credential:
+      type: object
+      properties:
+        credentialId:
+          type: string
+        app:
+          type: string
+        userId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    CredentialMetadata:
+      type: object
+      properties:
+        app:
+          type: string
+        fields:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              label:
+                type: string
+              type:
+                type: string
+              required:
+                type: boolean
+    Integration:
+      type: object
+      properties:
+        connectorId:
+          type: string
+        name:
+          type: string
+        category:
+          type: string
+        authType:
+          type: string
+          enum: [oauth2, apiKey, basic]
+    Resource:
+      type: object
+      properties:
+        name:
+          type: string
+        label:
+          type: string
+    Action:
+      type: object
+      properties:
+        name:
+          type: string
+        label:
+          type: string
+        resource:
+          type: string
+        parameters:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+    ExecuteActionRequest:
+      type: object
+      required: [credentialId, action]
+      properties:
+        credentialId:
+          type: string
+        connectorId:
+          type: string
+        action:
+          type: string
+        input:
+          type: object
+          additionalProperties: true
+    ActionResult:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: object
+          additionalProperties: true
+    PassthroughRequest:
+      type: object
+      required: [method, path]
+      properties:
+        method:
+          type: string
+          enum: [GET, POST, PUT, PATCH, DELETE]
+        path:
+          type: string
+          description: The provider-native request path, e.g. /admin/api/2024-01/orders.json
+        headers:
+          type: object
+          additionalProperties:
+            type: string
+        body:
+          type: object
+          additionalProperties: true
+    Event:
+      type: object
+      properties:
+        eventId:
+          type: string
+        userId:
+          type: string
+        type:
+          type: string
+        status:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        data:
+          type: object
+          additionalProperties: true
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        sku:
+          type: string
+        price:
+          type: number
+        currency:
+          type: string
+        remoteId:
+          type: string
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+        orderNumber:
+          type: string
+        totalPrice:
+          type: number
+        currency:
+          type: string
+        status:
+          type: string
+        customerId:
+          type: string
+        remoteId:
+          type: string
+    CommerceCustomer:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        remoteId:
+          type: string
+    Contact:
+      type: object
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        companyId:
+          type: string
+        remoteId:
+          type: string
+    Company:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        domain:
+          type: string
+        remoteId:
+          type: string
+    Deal:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        amount:
+          type: number
+        currency:
+          type: string
+        stage:
+          type: string
+        companyId:
+          type: string
+        remoteId:
+          type: string
+    Account:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+        classification:
+          type: string
+        currency:
+          type: string
+        remoteId:
+          type: string
+    Invoice:
+      type: object
+      properties:
+        id:
+          type: string
+        number:
+          type: string
+        contactId:
+          type: string
+        totalAmount:
+          type: number
+        currency:
+          type: string
+        status:
+          type: string
+        issueDate:
+          type: string
+          format: date
+        dueDate:
+          type: string
+          format: date
+        remoteId:
+          type: string
+    PageInfo:
+      type: object
+      properties:
+        hasNextPage:
+          type: boolean
+        nextCursor:
+          type: string

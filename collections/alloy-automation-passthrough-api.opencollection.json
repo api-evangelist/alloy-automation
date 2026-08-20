@@ -1,0 +1,47 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Alloy Automation Embedded & Unified Connectivity Passthrough API",
+    "version": "2024-03"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Passthrough",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Make a passthrough request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://embedded.runalloy.com/2024-03/passthrough",
+            "params": [
+              {
+                "name": "credentialId",
+                "value": "",
+                "type": "query",
+                "description": "The end-user credential ID to authenticate the request with."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Makes a raw, authenticated request to a third-party API using a stored credentialId. Alloy attaches the provider auth and refreshes tokens; you supply the provider's native request path, method, headers, and body."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

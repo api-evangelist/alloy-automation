@@ -1,0 +1,274 @@
+{
+  "info": {
+    "name": "Alloy Automation Embedded & Unified API",
+    "description": "Embedded iPaaS, Connectivity, Passthrough, and Unified (Commerce/CRM/Accounting) API for Alloy Automation (runalloy.com). Dated versioning 2024-03; Bearer API key auth with per-user JWTs for the embedded frontend.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      { "key": "token", "value": "{{apiKey}}", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://embedded.runalloy.com/2024-03" },
+    { "key": "apiKey", "value": "" },
+    { "key": "userId", "value": "" },
+    { "key": "credentialId", "value": "" },
+    { "key": "connectorId", "value": "" },
+    { "key": "connectionId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Create a user",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/users", "host": ["{{baseUrl}}"], "path": ["users"] },
+            "body": { "mode": "raw", "raw": "{\n  \"username\": \"acme-customer-1\"\n}", "options": { "raw": { "language": "json" } } },
+            "description": "Creates an end-user record in Alloy and returns its userId."
+          }
+        },
+        {
+          "name": "List users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/users", "host": ["{{baseUrl}}"], "path": ["users"] },
+            "description": "Lists the end-user records in your Alloy account."
+          }
+        },
+        {
+          "name": "Retrieve a single user",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/users/{{userId}}", "host": ["{{baseUrl}}"], "path": ["users", "{{userId}}"] },
+            "description": "Retrieves a single user by userId."
+          }
+        },
+        {
+          "name": "Generate a new JWT for a user",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/users/{{userId}}/token", "host": ["{{baseUrl}}"], "path": ["users", "{{userId}}", "token"] },
+            "description": "Generates a short-lived per-user JWT to render the embedded frontend."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Credentials",
+      "item": [
+        {
+          "name": "List a user's credentials",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/users/{{userId}}/credentials", "host": ["{{baseUrl}}"], "path": ["users", "{{userId}}", "credentials"] },
+            "description": "Lists the credential IDs (connections) created for a user."
+          }
+        },
+        {
+          "name": "Create a credential for a user",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/users/{{userId}}/credentials", "host": ["{{baseUrl}}"], "path": ["users", "{{userId}}", "credentials"] },
+            "body": { "mode": "raw", "raw": "{\n  \"app\": \"shopify\",\n  \"data\": {}\n}", "options": { "raw": { "language": "json" } } },
+            "description": "Creates a credential for a user based on the connector's metadata."
+          }
+        },
+        {
+          "name": "Retrieve credential structures",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/metadata/credentials?app=shopify",
+              "host": ["{{baseUrl}}"],
+              "path": ["metadata", "credentials"],
+              "query": [{ "key": "app", "value": "shopify" }]
+            },
+            "description": "Returns the auth fields required to add a credential for an app."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Integrations & Connectivity",
+      "item": [
+        {
+          "name": "List integrations / connectors",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/integrations", "host": ["{{baseUrl}}"], "path": ["integrations"] },
+            "description": "Lists connectors to power your integration marketplace."
+          }
+        },
+        {
+          "name": "List a connector's actions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/connectors/{{connectorId}}/actions", "host": ["{{baseUrl}}"], "path": ["connectors", "{{connectorId}}", "actions"] },
+            "description": "Lists the actions an end-user can perform for a connector."
+          }
+        },
+        {
+          "name": "Execute an action",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/actions/execute", "host": ["{{baseUrl}}"], "path": ["actions", "execute"] },
+            "body": { "mode": "raw", "raw": "{\n  \"credentialId\": \"{{credentialId}}\",\n  \"action\": \"listContacts\",\n  \"input\": {}\n}", "options": { "raw": { "language": "json" } } },
+            "description": "Executes a typed connector action against a user's credential."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Passthrough",
+      "item": [
+        {
+          "name": "Make a passthrough request",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/passthrough?credentialId={{credentialId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["passthrough"],
+              "query": [{ "key": "credentialId", "value": "{{credentialId}}" }]
+            },
+            "body": { "mode": "raw", "raw": "{\n  \"method\": \"GET\",\n  \"path\": \"/admin/api/2024-01/orders.json\"\n}", "options": { "raw": { "language": "json" } } },
+            "description": "Makes a raw request to a third-party API using a stored credentialId."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Events",
+      "item": [
+        {
+          "name": "List events",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/events?limit=50",
+              "host": ["{{baseUrl}}"],
+              "path": ["events"],
+              "query": [{ "key": "limit", "value": "50" }]
+            },
+            "description": "Lists execution and provider events for observability."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Unified Commerce",
+      "item": [
+        {
+          "name": "List products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/commerce/products?connectionId={{connectionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["commerce", "products"],
+              "query": [{ "key": "connectionId", "value": "{{connectionId}}" }]
+            },
+            "description": "Lists products across ecommerce providers via the unified model."
+          }
+        },
+        {
+          "name": "List orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/commerce/orders?connectionId={{connectionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["commerce", "orders"],
+              "query": [{ "key": "connectionId", "value": "{{connectionId}}" }]
+            },
+            "description": "Lists orders across ecommerce providers via the unified model."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Unified CRM",
+      "item": [
+        {
+          "name": "List contacts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/crm/contacts?connectionId={{connectionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["crm", "contacts"],
+              "query": [{ "key": "connectionId", "value": "{{connectionId}}" }]
+            },
+            "description": "Lists contacts across CRM providers via the unified model."
+          }
+        },
+        {
+          "name": "List deals",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/crm/deals?connectionId={{connectionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["crm", "deals"],
+              "query": [{ "key": "connectionId", "value": "{{connectionId}}" }]
+            },
+            "description": "Lists deals across CRM providers via the unified model."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Unified Accounting",
+      "item": [
+        {
+          "name": "List accounts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/accounting/accounts?connectionId={{connectionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["accounting", "accounts"],
+              "query": [{ "key": "connectionId", "value": "{{connectionId}}" }]
+            },
+            "description": "Lists chart-of-accounts entries across accounting providers."
+          }
+        },
+        {
+          "name": "List invoices",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/accounting/invoices?connectionId={{connectionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["accounting", "invoices"],
+              "query": [{ "key": "connectionId", "value": "{{connectionId}}" }]
+            },
+            "description": "Lists invoices across accounting providers via the unified model."
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "provider": "alloy-automation",
+  "sources": [
+    "alloy-automation-connectivity-api-openapi.yml",
+    "alloy-automation-credentials-api-openapi.yml",
+    "alloy-automation-events-api-openapi.yml",
+    "alloy-automation-integrations-api-openapi.yml",
+    "alloy-automation-passthrough-api-openapi.yml",
+    "alloy-automation-unified-accounting-api-openapi.yml",
+    "alloy-automation-unified-commerce-api-openapi.yml",
+    "alloy-automation-unified-crm-api-openapi.yml",
+    "alloy-automation-user-tokens-api-openapi.yml",
+    "alloy-automation-users-api-openapi.yml"
+  ],
+  "outputs": [
+    "alloy-automation-connectivity-api-openapi.yml",
+    "alloy-automation-credentials-api-openapi.yml",
+    "alloy-automation-events-api-openapi.yml",
+    "alloy-automation-integrations-api-openapi.yml",
+    "alloy-automation-passthrough-api-openapi.yml",
+    "alloy-automation-unified-accounting-api-openapi.yml",
+    "alloy-automation-unified-commerce-api-openapi.yml",
+    "alloy-automation-unified-crm-api-openapi.yml",
+    "alloy-automation-user-tokens-api-openapi.yml",
+    "alloy-automation-users-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

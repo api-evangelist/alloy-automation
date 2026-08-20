@@ -1,0 +1,123 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Alloy Automation
+providerId: alloy-automation
+created: '2026-07-01'
+modified: '2026-07-01'
+reconciled: false
+tags:
+- iPaaS
+- Integration
+- Unified API
+- Embedded
+- SaaS
+- Plans
+description: >-
+  Alloy Automation sells its Embedded iPaaS, Connectivity API, and Unified API as
+  a sales-led B2B platform. Public self-serve pricing is not published as fixed
+  monthly tiers; packaging is quote-based and typically scales on the number of
+  connected end-users (connected accounts / credentials), the connectors enabled,
+  and API/action execution volume. The tiers below reflect the platform's public
+  packaging shape (a lower-cost embedded starter, a scaling growth tier, and an
+  enterprise tier) and should be confirmed with Alloy sales during reconciliation.
+notes: >-
+  Alloy does not publish per-unit list prices for the platform; contact sales for a
+  quote. Values here are structural placeholders, not confirmed dollar amounts.
+sources:
+- https://runalloy.com/
+- https://runalloy.com/platform/embedded/
+- https://runalloy.com/platform/connectivity-api/
+- https://docs.runalloy.com/platform
+plans:
+- id: alloy-automation-starter
+  name: Starter / Embedded
+  type: subscription
+  description: >-
+    Entry packaging for embedding Alloy's white-labeled integrations and Unified
+    API into a product, with a capped number of connected end-users and connectors.
+  entries:
+  - label: Connected Users
+    name: connected_users
+    type: quota
+    metric: connected_users
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: contact sales (scales per connected end-user)
+    userMultiplied: true
+  - label: Enabled Connectors
+    name: connectors
+    type: quota
+    metric: connectors
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Embedded iPaaS
+  - name: Connectivity API
+  - name: Unified API
+  - name: Passthrough API
+- id: alloy-automation-growth
+  name: Growth
+  type: subscription
+  description: >-
+    Scaling packaging with higher connected-user and execution volumes, expanded
+    connector coverage, and higher throughput for the Connectivity and Unified APIs.
+  entries:
+  - label: Connected Users
+    name: connected_users
+    type: quota
+    metric: connected_users
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: contact sales (scales per connected end-user)
+    userMultiplied: true
+  - label: Action Executions
+    name: action_executions
+    type: usage
+    metric: executions
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1000
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Embedded iPaaS
+  - name: Connectivity API
+  - name: Unified API
+  - name: Passthrough API
+  - name: Events / Webhooks
+- id: alloy-automation-enterprise
+  name: Enterprise
+  type: enterprise
+  description: >-
+    Volume commitments, higher rate limits, custom connectors, dedicated support,
+    SLAs (99.9% uptime), and negotiated terms. Contact Alloy sales.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Custom Volume Pricing
+  - name: Custom Connectors
+  - name: 99.9% Uptime SLA
+  - name: Dedicated Support
+  - name: MCP Gateway
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

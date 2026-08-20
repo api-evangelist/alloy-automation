@@ -1,0 +1,77 @@
+openapi: 3.0.3
+info:
+  title: Alloy Automation Embedded & Unified Connectivity Passthrough API
+  description: Alloy Automation is an embedded integration platform (iPaaS) and Unified API for SaaS products. The Embedded product provisions end-user records, per-user credentials/connections, and short-lived JWTs to render Alloy's embedded UI. The Connectivity API discovers connectors, resources, and actions and executes typed actions against a user's credential. The Passthrough API proxies raw requests to a third-party provider using a stored credential. The Unified API normalizes Commerce, CRM, and Accounting objects across many providers behind a single interface. All endpoints use dated versioning (2024-03) and Bearer API key authentication; per-user JWTs secure the embedded frontend.
+  version: 2024-03
+  contact:
+    name: Alloy Automation Support
+    url: https://docs.runalloy.com
+  termsOfService: https://runalloy.com/terms/
+servers:
+- url: https://embedded.runalloy.com/2024-03
+  description: Embedded, Connectivity, Passthrough, and Unified API (2024-03)
+security:
+- bearerAuth: []
+tags:
+- name: Passthrough
+  description: Raw proxied requests to a provider via a stored credential.
+paths:
+  /passthrough:
+    post:
+      operationId: passthroughRequest
+      tags:
+      - Passthrough
+      summary: Make a passthrough request
+      description: Makes a raw, authenticated request to a third-party API using a stored credentialId. Alloy attaches the provider auth and refreshes tokens; you supply the provider's native request path, method, headers, and body.
+      parameters:
+      - name: credentialId
+        in: query
+        required: true
+        schema:
+          type: string
+        description: The end-user credential ID to authenticate the request with.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PassthroughRequest'
+      responses:
+        '200':
+          description: The proxied provider response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+components:
+  schemas:
+    PassthroughRequest:
+      type: object
+      required:
+      - method
+      - path
+      properties:
+        method:
+          type: string
+          enum:
+          - GET
+          - POST
+          - PUT
+          - PATCH
+          - DELETE
+        path:
+          type: string
+          description: The provider-native request path, e.g. /admin/api/2024-01/orders.json
+        headers:
+          type: object
+          additionalProperties:
+            type: string
+        body:
+          type: object
+          additionalProperties: true
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Bearer API key in the Authorization header, e.g. `Authorization: Bearer YOUR_API_KEY`. Frontend calls use a per-user JWT instead of the master key.'

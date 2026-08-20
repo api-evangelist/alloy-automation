@@ -1,0 +1,109 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Alloy Automation Embedded & Unified Connectivity Unified Accounting API",
+    "version": "2024-03"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Unified Accounting",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List accounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://embedded.runalloy.com/2024-03/accounting/accounts",
+            "params": [
+              {
+                "name": "connectionId",
+                "value": "",
+                "type": "query",
+                "description": "The connected account (credential) to read/write unified data through."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Opaque pagination cursor from a prior pageInfo."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of records to return per page."
+              }
+            ]
+          },
+          "docs": "Lists accounts from the connected ledger's chart of accounts."
+        },
+        {
+          "info": {
+            "name": "Create an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://embedded.runalloy.com/2024-03/accounting/accounts",
+            "params": [
+              {
+                "name": "connectionId",
+                "value": "",
+                "type": "query",
+                "description": "The connected account (credential) to read/write unified data through."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an account"
+        },
+        {
+          "info": {
+            "name": "List invoices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://embedded.runalloy.com/2024-03/accounting/invoices",
+            "params": [
+              {
+                "name": "connectionId",
+                "value": "",
+                "type": "query",
+                "description": "The connected account (credential) to read/write unified data through."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Opaque pagination cursor from a prior pageInfo."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of records to return per page."
+              }
+            ]
+          },
+          "docs": "List invoices"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

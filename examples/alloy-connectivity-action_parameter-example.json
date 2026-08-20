@@ -1,6 +1,0 @@
-{
-  "name": "limit",
-  "type": "integer",
-  "required": false,
-  "description": "Maximum number of orders to return"
-}

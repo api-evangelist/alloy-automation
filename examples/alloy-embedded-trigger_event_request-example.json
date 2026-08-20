@@ -1,8 +1,0 @@
-{
-  "userId": "usr_abc123",
-  "event": "order.created",
-  "data": {
-    "orderId": "ord-789",
-    "amount": 150.0
-  }
-}

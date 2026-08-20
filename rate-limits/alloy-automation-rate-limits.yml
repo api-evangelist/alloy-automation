@@ -1,0 +1,74 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Alloy Automation
+providerId: alloy-automation
+created: '2026-07-01'
+modified: '2026-07-01'
+reconciled: false
+tags:
+- iPaaS
+- Integration
+- Unified API
+- Embedded
+- SaaS
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  Alloy Automation applies platform rate limiting and retry logic across the
+  Embedded, Connectivity, Passthrough, and Unified APIs. Alloy also mediates the
+  rate limits of each downstream third-party provider it proxies (via the
+  Passthrough and Unified APIs), so effective throughput for a given connector is
+  bounded by both Alloy's limits and the provider's own limits. Specific numeric
+  RPM/RPS values are not published and vary by plan; verify with Alloy during
+  reconciliation.
+notes: >-
+  Numeric limits are not published on Alloy's public site; they are plan-dependent
+  and enforced per API key and per connected credential. Downstream provider limits
+  are surfaced as errors from the underlying platform on Passthrough/Unified calls.
+sources:
+- https://docs.runalloy.com/platform
+- https://docs.runalloy.com/embedded/passthrough-api
+- https://runalloy.com/platform/connectivity-api/
+responseCodes:
+  throttled: 429
+limits:
+- name: Platform Requests
+  scope: api_key
+  metric: requests
+  limit: see provider documentation
+  notes: Plan-dependent request rate per API key across Alloy endpoints.
+- name: Action Executions
+  scope: api_key
+  metric: executions
+  limit: see provider documentation
+  notes: Connectivity API action executions are metered and plan-limited.
+- name: Passthrough Requests
+  scope: credential
+  metric: requests
+  limit: bounded by downstream provider
+  notes: >-
+    A passthrough call is subject to the target provider's own rate limits;
+    provider 429s are surfaced back to the caller.
+- name: Unified API Reads
+  scope: connection
+  metric: requests
+  limit: bounded by downstream provider
+  notes: >-
+    Unified list/read calls fan out to the connected provider and inherit that
+    provider's rate limits per connected account.
+policies:
+- name: Retry Logic
+  description: >-
+    Alloy provides built-in retry logic and error handling; clients should still
+    implement exponential backoff with jitter and honor Retry-After on 429s.
+- name: Per-Credential Isolation
+  description: >-
+    Limits and provider throttling are tracked per connected credential so one
+    end-user's load does not exhaust another's quota.
+- name: Tiered Limits
+  description: Rate limits increase with higher plans and enterprise agreements.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,145 @@
+openapi: 3.0.3
+info:
+  title: Alloy Automation Embedded & Unified Connectivity API
+  description: Alloy Automation is an embedded integration platform (iPaaS) and Unified API for SaaS products. The Embedded product provisions end-user records, per-user credentials/connections, and short-lived JWTs to render Alloy's embedded UI. The Connectivity API discovers connectors, resources, and actions and executes typed actions against a user's credential. The Passthrough API proxies raw requests to a third-party provider using a stored credential. The Unified API normalizes Commerce, CRM, and Accounting objects across many providers behind a single interface. All endpoints use dated versioning (2024-03) and Bearer API key authentication; per-user JWTs secure the embedded frontend.
+  version: 2024-03
+  contact:
+    name: Alloy Automation Support
+    url: https://docs.runalloy.com
+  termsOfService: https://runalloy.com/terms/
+servers:
+- url: https://embedded.runalloy.com/2024-03
+  description: Embedded, Connectivity, Passthrough, and Unified API (2024-03)
+security:
+- bearerAuth: []
+tags:
+- name: Connectivity
+  description: Discover resources/actions and execute typed actions.
+paths:
+  /connectors/{connectorId}/resources:
+    parameters:
+    - name: connectorId
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      operationId: listConnectorResources
+      tags:
+      - Connectivity
+      summary: List a connector's resources
+      description: Lists the entities (resources) a connector exposes.
+      responses:
+        '200':
+          description: Connector resources
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resources:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Resource'
+  /connectors/{connectorId}/actions:
+    parameters:
+    - name: connectorId
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      operationId: listConnectorActions
+      tags:
+      - Connectivity
+      summary: List a connector's actions
+      description: Lists the actions an end-user can perform for a connector, optionally scoped to a resource.
+      parameters:
+      - name: resource
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Connector actions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  actions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Action'
+  /actions/execute:
+    post:
+      operationId: executeAction
+      tags:
+      - Connectivity
+      summary: Execute an action
+      description: Executes a typed connector action against a user's credential and returns the provider's response.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExecuteActionRequest'
+      responses:
+        '200':
+          description: Action result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionResult'
+components:
+  schemas:
+    ExecuteActionRequest:
+      type: object
+      required:
+      - credentialId
+      - action
+      properties:
+        credentialId:
+          type: string
+        connectorId:
+          type: string
+        action:
+          type: string
+        input:
+          type: object
+          additionalProperties: true
+    Action:
+      type: object
+      properties:
+        name:
+          type: string
+        label:
+          type: string
+        resource:
+          type: string
+        parameters:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+    Resource:
+      type: object
+      properties:
+        name:
+          type: string
+        label:
+          type: string
+    ActionResult:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: object
+          additionalProperties: true
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Bearer API key in the Authorization header, e.g. `Authorization: Bearer YOUR_API_KEY`. Frontend calls use a per-user JWT instead of the master key.'

@@ -1,0 +1,14 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/alloy-automation-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  description: 'Bearer API key in the Authorization header, e.g. `Authorization: Bearer [example key]`.
+    Frontend calls use a per-user JWT instead of the master key.'
+  sources:
+  - openapi/alloy-automation-openapi.yml

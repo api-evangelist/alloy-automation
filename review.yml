@@ -1,0 +1,73 @@
+aid: alloy-automation
+name: Alloy Automation
+review:
+  question: Does Alloy Automation expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-01'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was created. Alloy Automation's public API surface is
+    REST/HTTPS only. Asynchronous delivery is handled via outbound webhooks
+    (event notifications), which are provider-to-consumer HTTP callbacks rather
+    than a documented WebSocket channel. Under current API Evangelist scope,
+    webhooks alone (without an SSE stream or WebSocket channel on Alloy's own
+    endpoints) were not modeled as AsyncAPI here; the Events API is documented as
+    a pollable REST resource in the OpenAPI.
+findings:
+  summary: |
+    Alloy Automation does not publish a documented public WebSocket API. The
+    Embedded, Connectivity, Passthrough, and Unified APIs are all REST over HTTPS
+    under https://embedded.runalloy.com/2024-03 with dated (2024-03) versioning.
+    Authentication is a Bearer API key for server-to-server calls and a short-lived
+    per-user JWT for rendering the embedded frontend. Event delivery is via outbound
+    webhooks and a pollable Events resource; no realtime ws:// or wss:// channel is
+    documented.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://embedded.runalloy.com/2024-03
+      documented: true
+    - protocol: Webhooks
+      scheme: https
+      note: Outbound HTTP callbacks for event notifications; provider-to-consumer, not a client-opened stream.
+      documented: true
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented in Alloy's platform, embedded, connectivity, passthrough, or unified API references as of the review date.
+  endpointsConfirmedRest:
+    - POST   https://embedded.runalloy.com/2024-03/users
+    - GET    https://embedded.runalloy.com/2024-03/users
+    - GET    https://embedded.runalloy.com/2024-03/users/{userId}
+    - POST   https://embedded.runalloy.com/2024-03/users/{userId}/token
+    - GET    https://embedded.runalloy.com/2024-03/users/{userId}/credentials
+    - POST   https://embedded.runalloy.com/2024-03/users/{userId}/credentials
+    - GET    https://embedded.runalloy.com/2024-03/metadata/credentials
+    - GET    https://embedded.runalloy.com/2024-03/integrations
+    - POST   https://embedded.runalloy.com/2024-03/actions/execute
+    - POST   https://embedded.runalloy.com/2024-03/passthrough?credentialId={credentialId}
+    - GET    https://embedded.runalloy.com/2024-03/events
+    - GET    https://embedded.runalloy.com/2024-03/commerce/orders
+    - GET    https://embedded.runalloy.com/2024-03/crm/contacts
+    - GET    https://embedded.runalloy.com/2024-03/accounting/accounts
+sources:
+  - url: https://docs.runalloy.com/platform
+    type: Documentation
+    note: Platform overview describes Embedded iPaaS, Connectivity/Unified API, and MCP Gateway; REST-based.
+  - url: https://docs.runalloy.com/connectivity-api/quick-start
+    type: Documentation
+    note: Connectivity API is a single REST interface (create user, discover connectors, execute action).
+  - url: https://docs.runalloy.com/embedded/passthrough-api
+    type: Documentation
+    note: Passthrough uses POST /2024-03/passthrough?credentialId=...; HTTPS REST proxy, no WebSocket.
+  - url: https://docs.runalloy.com/reference/embedded/generate-jwt-token/
+    type: APIReference
+    note: Per-user JWT generation for embedded frontend; REST.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface exists. Asynchronous behavior is limited to
+    outbound webhooks and a pollable REST Events resource, both modeled within the
+    OpenAPI (Events API) rather than as a separate AsyncAPI document.

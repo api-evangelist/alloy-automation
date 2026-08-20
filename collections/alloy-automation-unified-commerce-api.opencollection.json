@@ -1,0 +1,117 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Alloy Automation Embedded & Unified Connectivity Unified Commerce API",
+    "version": "2024-03"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Unified Commerce",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List products",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://embedded.runalloy.com/2024-03/commerce/products",
+            "params": [
+              {
+                "name": "connectionId",
+                "value": "",
+                "type": "query",
+                "description": "The connected account (credential) to read/write unified data through."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Opaque pagination cursor from a prior pageInfo."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of records to return per page."
+              }
+            ]
+          },
+          "docs": "List products"
+        },
+        {
+          "info": {
+            "name": "List orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://embedded.runalloy.com/2024-03/commerce/orders",
+            "params": [
+              {
+                "name": "connectionId",
+                "value": "",
+                "type": "query",
+                "description": "The connected account (credential) to read/write unified data through."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Opaque pagination cursor from a prior pageInfo."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of records to return per page."
+              }
+            ]
+          },
+          "docs": "List orders"
+        },
+        {
+          "info": {
+            "name": "List commerce customers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://embedded.runalloy.com/2024-03/commerce/customers",
+            "params": [
+              {
+                "name": "connectionId",
+                "value": "",
+                "type": "query",
+                "description": "The connected account (credential) to read/write unified data through."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Opaque pagination cursor from a prior pageInfo."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of records to return per page."
+              }
+            ]
+          },
+          "docs": "List commerce customers"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

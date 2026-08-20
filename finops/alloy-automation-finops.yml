@@ -1,0 +1,125 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Alloy Automation
+providerId: alloy-automation
+created: '2026-07-01'
+modified: '2026-07-01'
+reconciled: false
+tags:
+- iPaaS
+- Integration
+- Unified API
+- Embedded
+- SaaS
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Alloy Automation spend. Alloy is a sales-led embedded integration
+  platform; cost typically scales on connected end-users (connected accounts /
+  credentials), the set of enabled connectors, and action/API execution volume
+  across the Connectivity, Passthrough, and Unified APIs, plus an enterprise
+  platform commitment. Because Alloy proxies downstream SaaS providers, cost
+  allocation should also account for the value/volume flowing through each connector
+  per customer.
+notes: >-
+  Alloy does not publish per-unit list pricing; billing is contract-based. Meters
+  below describe the natural cost drivers to tag and allocate, not published rates.
+sources:
+- https://runalloy.com/
+- https://runalloy.com/platform/embedded/
+- https://docs.runalloy.com/platform
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Alloy Automation
+serviceCategory: Integration Platform
+billingModel:
+  pricingCategory: Committed-Use
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Usage
+  - Purchase
+  - Adjustment
+focusColumns:
+  ServiceName: Alloy Automation Platform
+  ServiceCategory: Integration Platform
+  ProviderName: Alloy Automation
+  PublisherName: Alloy Automation
+  InvoiceIssuerName: Alloy Automation
+  BillingCurrency: USD
+  ChargeCategory: Usage
+  PricingCategory: Committed-Use
+meters:
+- name: connected_users
+  description: Distinct end-users with at least one active connection, the primary cost driver.
+  unit: users
+  aggregation: max
+  dimensions:
+  - account
+  - plan
+- name: connectors_enabled
+  description: Number of third-party connectors enabled for embedding.
+  unit: connectors
+  aggregation: max
+  dimensions:
+  - account
+  - connector
+- name: action_executions
+  description: Connectivity API action executions run against user credentials.
+  unit: executions
+  aggregation: sum
+  dimensions:
+  - account
+  - connector
+  - user
+- name: passthrough_requests
+  description: Raw proxied requests made to downstream providers via a credential.
+  unit: requests
+  aggregation: sum
+  dimensions:
+  - account
+  - connector
+  - user
+- name: unified_api_requests
+  description: Unified Commerce/CRM/Accounting list, read, and write calls.
+  unit: requests
+  aggregation: sum
+  dimensions:
+  - account
+  - category
+  - connector
+- name: events
+  description: Execution and provider events emitted / delivered via webhooks.
+  unit: events
+  aggregation: sum
+  dimensions:
+  - account
+  - connector
+principles:
+- name: Visibility
+  description: >-
+    Tag executions, passthrough, and unified calls by connector and end-user to see
+    where integration cost concentrates.
+- name: Allocation
+  description: >-
+    Map connected-user counts and connector usage to the customers/teams that drive
+    them so integration spend can be charged back per account.
+- name: Optimization
+  description: >-
+    Prefer the Unified API for standardized reads over bespoke passthrough where it
+    reduces call volume; retire unused connectors and stale credentials; batch reads
+    and use pagination limits sensibly.
+- name: Accountability
+  description: >-
+    Review connected-user growth and execution volume monthly against the committed
+    plan; renegotiate tier before overage.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
