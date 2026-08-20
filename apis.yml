@@ -25,6 +25,13 @@ image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/alloy-auto
 tags:
 - iPaaS
 - Integration
+- Unified-API
+- Embedded
+- Software-as-a-Service
+- Automation
+tags_raw:
+- iPaaS
+- Integration
 - Unified API
 - Embedded
 - SaaS
@@ -95,6 +102,8 @@ apis:
   humanURL: https://docs.runalloy.com/reference/embedded/get-a-user
   baseURL: https://embedded.runalloy.com/2024-03
   tags:
+  - Event
+  tags_raw:
   - Events
   properties:
   - type: OpenAPI
@@ -123,6 +132,8 @@ apis:
   humanURL: https://docs.runalloy.com/reference/embedded/get-a-user
   baseURL: https://embedded.runalloy.com/2024-03
   tags:
+  - Integration
+  tags_raw:
   - Integrations
   properties:
   - type: OpenAPI
@@ -291,6 +302,8 @@ apis:
   humanURL: https://docs.runalloy.com/reference/embedded/get-a-user
   baseURL: https://embedded.runalloy.com/2024-03
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
