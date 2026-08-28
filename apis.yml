@@ -8,6 +8,18 @@ description: Alloy Automation (runalloy.com) is an embedded integration platform
   provide a single REST interface for connecting to hundreds of third-party platforms
   across commerce, CRM, and accounting. All APIs use dated versioning (2024-03), a
   Bearer API key, and per-user credentials/tokens.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: paid
   onboarding: self-serve
