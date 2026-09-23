@@ -1,16 +1,7 @@
 {
   "provider": "alloy-automation",
   "sources": [
-    "alloy-automation-connectivity-api-openapi.yml",
-    "alloy-automation-credentials-api-openapi.yml",
-    "alloy-automation-events-api-openapi.yml",
-    "alloy-automation-integrations-api-openapi.yml",
-    "alloy-automation-passthrough-api-openapi.yml",
-    "alloy-automation-unified-accounting-api-openapi.yml",
-    "alloy-automation-unified-commerce-api-openapi.yml",
-    "alloy-automation-unified-crm-api-openapi.yml",
-    "alloy-automation-user-tokens-api-openapi.yml",
-    "alloy-automation-users-api-openapi.yml"
+    "_original/alloy-automation-openapi.yml"
   ],
   "outputs": [
     "alloy-automation-connectivity-api-openapi.yml",
@@ -19,14 +10,29 @@
     "alloy-automation-integrations-api-openapi.yml",
     "alloy-automation-passthrough-api-openapi.yml",
     "alloy-automation-unified-accounting-api-openapi.yml",
-    "alloy-automation-unified-commerce-api-openapi.yml",
     "alloy-automation-unified-crm-api-openapi.yml",
+    "alloy-automation-unified-commerce-api-openapi.yml",
     "alloy-automation-user-tokens-api-openapi.yml",
     "alloy-automation-users-api-openapi.yml"
   ],
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "alloy-automation-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "alloy-automation-connectivity-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "alloy-automation-credentials-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "alloy-automation-events-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "alloy-automation-integrations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "alloy-automation-passthrough-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "alloy-automation-unified-accounting-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "alloy-automation-unified-commerce-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "alloy-automation-unified-crm-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "alloy-automation-user-tokens-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "alloy-automation-users-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

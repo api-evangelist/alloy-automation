@@ -1,7 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: Alloy Automation Embedded & Unified Connectivity API
-  description: Alloy Automation is an embedded integration platform (iPaaS) and Unified API for SaaS products. The Embedded product provisions end-user records, per-user credentials/connections, and short-lived JWTs to render Alloy's embedded UI. The Connectivity API discovers connectors, resources, and actions and executes typed actions against a user's credential. The Passthrough API proxies raw requests to a third-party provider using a stored credential. The Unified API normalizes Commerce, CRM, and Accounting objects across many providers behind a single interface. All endpoints use dated versioning (2024-03) and Bearer API key authentication; per-user JWTs secure the embedded frontend.
+  description: Alloy Automation is an embedded integration platform (iPaaS) and Unified API for SaaS products.
   version: 2024-03
   contact:
     name: Alloy Automation Support
@@ -109,20 +109,6 @@ components:
         input:
           type: object
           additionalProperties: true
-    Action:
-      type: object
-      properties:
-        name:
-          type: string
-        label:
-          type: string
-        resource:
-          type: string
-        parameters:
-          type: array
-          items:
-            type: object
-            additionalProperties: true
     Resource:
       type: object
       properties:
@@ -138,6 +124,20 @@ components:
         data:
           type: object
           additionalProperties: true
+    Action:
+      type: object
+      properties:
+        name:
+          type: string
+        label:
+          type: string
+        resource:
+          type: string
+        parameters:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
   securitySchemes:
     bearerAuth:
       type: http
