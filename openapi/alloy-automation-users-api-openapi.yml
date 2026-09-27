@@ -78,15 +78,15 @@ paths:
         '200':
           description: User deleted
 components:
-  parameters:
-    UserId:
-      name: userId
-      in: path
-      required: true
-      schema:
-        type: string
-      description: The Alloy end-user record ID.
   schemas:
+    CreateUserRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Optional external username / label for the user.
+        fullName:
+          type: string
     User:
       type: object
       properties:
@@ -99,14 +99,14 @@ components:
         createdAt:
           type: string
           format: date-time
-    CreateUserRequest:
-      type: object
-      properties:
-        username:
-          type: string
-          description: Optional external username / label for the user.
-        fullName:
-          type: string
+  parameters:
+    UserId:
+      name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The Alloy end-user record ID.
   securitySchemes:
     bearerAuth:
       type: http

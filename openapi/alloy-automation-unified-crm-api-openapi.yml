@@ -110,6 +110,15 @@ paths:
                     $ref: '#/components/schemas/PageInfo'
 components:
   parameters:
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 50
+        maximum: 250
+      description: Maximum number of records to return per page.
     ConnectionId:
       name: connectionId
       in: query
@@ -124,15 +133,6 @@ components:
       schema:
         type: string
       description: Opaque pagination cursor from a prior pageInfo.
-    Limit:
-      name: limit
-      in: query
-      required: false
-      schema:
-        type: integer
-        default: 50
-        maximum: 250
-      description: Maximum number of records to return per page.
   schemas:
     Company:
       type: object
@@ -142,23 +142,6 @@ components:
         name:
           type: string
         domain:
-          type: string
-        remoteId:
-          type: string
-    Deal:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        amount:
-          type: number
-        currency:
-          type: string
-        stage:
-          type: string
-        companyId:
           type: string
         remoteId:
           type: string
@@ -181,6 +164,23 @@ components:
         email:
           type: string
         phone:
+          type: string
+        companyId:
+          type: string
+        remoteId:
+          type: string
+    Deal:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        amount:
+          type: number
+        currency:
+          type: string
+        stage:
           type: string
         companyId:
           type: string

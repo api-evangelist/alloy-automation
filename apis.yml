@@ -42,7 +42,7 @@ x-docs-hosting: vercel
 tags:
 - iPaaS
 - Integration
-- Unified-API
+- Unified API
 - Embedded
 - Software-as-a-Service
 - Automation
@@ -53,6 +53,7 @@ tags_raw:
 - Embedded
 - SaaS
 - Automation
+- Unified-API
 created: '2026-07-01'
 modified: '2026-07-01'
 specificationVersion: '0.23'
