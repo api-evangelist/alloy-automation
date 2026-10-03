@@ -90,6 +90,23 @@ paths:
                     $ref: '#/components/schemas/PageInfo'
 components:
   schemas:
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+        orderNumber:
+          type: string
+        totalPrice:
+          type: number
+        currency:
+          type: string
+        status:
+          type: string
+        customerId:
+          type: string
+        remoteId:
+          type: string
     Product:
       type: object
       properties:
@@ -118,23 +135,6 @@ components:
           type: string
         remoteId:
           type: string
-    Order:
-      type: object
-      properties:
-        id:
-          type: string
-        orderNumber:
-          type: string
-        totalPrice:
-          type: number
-        currency:
-          type: string
-        status:
-          type: string
-        customerId:
-          type: string
-        remoteId:
-          type: string
     PageInfo:
       type: object
       properties:
@@ -143,6 +143,13 @@ components:
         nextCursor:
           type: string
   parameters:
+    ConnectionId:
+      name: connectionId
+      in: query
+      required: true
+      schema:
+        type: string
+      description: The connected account (credential) to read/write unified data through.
     Limit:
       name: limit
       in: query
@@ -152,13 +159,6 @@ components:
         default: 50
         maximum: 250
       description: Maximum number of records to return per page.
-    ConnectionId:
-      name: connectionId
-      in: query
-      required: true
-      schema:
-        type: string
-      description: The connected account (credential) to read/write unified data through.
     Cursor:
       name: cursor
       in: query

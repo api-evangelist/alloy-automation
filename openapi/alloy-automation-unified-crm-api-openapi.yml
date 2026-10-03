@@ -109,30 +109,6 @@ paths:
                   pageInfo:
                     $ref: '#/components/schemas/PageInfo'
 components:
-  parameters:
-    Limit:
-      name: limit
-      in: query
-      required: false
-      schema:
-        type: integer
-        default: 50
-        maximum: 250
-      description: Maximum number of records to return per page.
-    ConnectionId:
-      name: connectionId
-      in: query
-      required: true
-      schema:
-        type: string
-      description: The connected account (credential) to read/write unified data through.
-    Cursor:
-      name: cursor
-      in: query
-      required: false
-      schema:
-        type: string
-      description: Opaque pagination cursor from a prior pageInfo.
   schemas:
     Company:
       type: object
@@ -142,30 +118,6 @@ components:
         name:
           type: string
         domain:
-          type: string
-        remoteId:
-          type: string
-    PageInfo:
-      type: object
-      properties:
-        hasNextPage:
-          type: boolean
-        nextCursor:
-          type: string
-    Contact:
-      type: object
-      properties:
-        id:
-          type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-        email:
-          type: string
-        phone:
-          type: string
-        companyId:
           type: string
         remoteId:
           type: string
@@ -186,6 +138,54 @@ components:
           type: string
         remoteId:
           type: string
+    Contact:
+      type: object
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        companyId:
+          type: string
+        remoteId:
+          type: string
+    PageInfo:
+      type: object
+      properties:
+        hasNextPage:
+          type: boolean
+        nextCursor:
+          type: string
+  parameters:
+    ConnectionId:
+      name: connectionId
+      in: query
+      required: true
+      schema:
+        type: string
+      description: The connected account (credential) to read/write unified data through.
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 50
+        maximum: 250
+      description: Maximum number of records to return per page.
+    Cursor:
+      name: cursor
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Opaque pagination cursor from a prior pageInfo.
   securitySchemes:
     bearerAuth:
       type: http
