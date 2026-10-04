@@ -345,6 +345,9 @@ apis:
   - type: APIReference
     url: https://docs.runalloy.com/reference/unified-api/create-account-1/
 common:
+- type: CapabilityMap
+  url: capabilities/alloy-automation-capability-edges.yml
+  name: Alloy Automation Business Capability Map
 - type: AgenticAccess
   url: agentic-access/alloy-automation-agentic-access.yml
 - type: DomainSecurity

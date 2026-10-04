@@ -1,0 +1,37 @@
+slug: alloy-automation
+provider: Alloy Automation
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 2
+edges:
+- tag: Unified Accounting
+  spec_file: alloy-automation-unified-accounting-api-openapi.yml
+  capability_id: BC-200
+  capability_id_l1: BC-200
+  capability_name: Financial Management
+  confidence: 0.8
+  evidence: GET /accounting/accounts  List accounts; POST /accounting/accounts  Create an account; GET
+    /accounting/invoices  List invoices
+  reason: Unified read/write access to ledger accounts and invoices across accounting systems clearly
+    realises Financial Management. Evidence spans both chart-of-accounts/GL (accounts) and invoicing (invoices),
+    so no single L2 is named unambiguously; mapped at L1.
+- tag: Unified CRM
+  spec_file: alloy-automation-unified-crm-api-openapi.yml
+  capability_id: BC-420
+  capability_id_l1: BC-420
+  capability_name: Customer Relationship Management
+  confidence: 0.8
+  evidence: 'GET /crm/contacts  List contacts; GET /crm/companies  List companies; GET /crm/deals  List
+    deals; schemas: Company, Deal, Contact'
+  reason: Unified CRM object model (contacts, companies, deals) is customer relationship data management.
+    Contacts/companies point to customer data management while deals point to pipeline, so the L1 is the
+    honest level.
