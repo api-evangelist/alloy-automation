@@ -66,13 +66,6 @@ paths:
                 $ref: '#/components/schemas/Event'
 components:
   schemas:
-    PageInfo:
-      type: object
-      properties:
-        hasNextPage:
-          type: boolean
-        nextCursor:
-          type: string
     Event:
       type: object
       properties:
@@ -90,7 +83,21 @@ components:
         data:
           type: object
           additionalProperties: true
+    PageInfo:
+      type: object
+      properties:
+        hasNextPage:
+          type: boolean
+        nextCursor:
+          type: string
   parameters:
+    Cursor:
+      name: cursor
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Opaque pagination cursor from a prior pageInfo.
     Limit:
       name: limit
       in: query
@@ -100,13 +107,6 @@ components:
         default: 50
         maximum: 250
       description: Maximum number of records to return per page.
-    Cursor:
-      name: cursor
-      in: query
-      required: false
-      schema:
-        type: string
-      description: Opaque pagination cursor from a prior pageInfo.
   securitySchemes:
     bearerAuth:
       type: http

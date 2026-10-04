@@ -94,20 +94,13 @@ paths:
                 $ref: '#/components/schemas/ActionResult'
 components:
   schemas:
-    Action:
+    Resource:
       type: object
       properties:
         name:
           type: string
         label:
           type: string
-        resource:
-          type: string
-        parameters:
-          type: array
-          items:
-            type: object
-            additionalProperties: true
     ActionResult:
       type: object
       properties:
@@ -116,13 +109,6 @@ components:
         data:
           type: object
           additionalProperties: true
-    Resource:
-      type: object
-      properties:
-        name:
-          type: string
-        label:
-          type: string
     ExecuteActionRequest:
       type: object
       required:
@@ -138,6 +124,20 @@ components:
         input:
           type: object
           additionalProperties: true
+    Action:
+      type: object
+      properties:
+        name:
+          type: string
+        label:
+          type: string
+        resource:
+          type: string
+        parameters:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
   securitySchemes:
     bearerAuth:
       type: http

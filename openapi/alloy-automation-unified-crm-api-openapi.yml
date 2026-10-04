@@ -109,7 +109,38 @@ paths:
                   pageInfo:
                     $ref: '#/components/schemas/PageInfo'
 components:
+  parameters:
+    Cursor:
+      name: cursor
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Opaque pagination cursor from a prior pageInfo.
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 50
+        maximum: 250
+      description: Maximum number of records to return per page.
+    ConnectionId:
+      name: connectionId
+      in: query
+      required: true
+      schema:
+        type: string
+      description: The connected account (credential) to read/write unified data through.
   schemas:
+    PageInfo:
+      type: object
+      properties:
+        hasNextPage:
+          type: boolean
+        nextCursor:
+          type: string
     Company:
       type: object
       properties:
@@ -118,23 +149,6 @@ components:
         name:
           type: string
         domain:
-          type: string
-        remoteId:
-          type: string
-    Deal:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        amount:
-          type: number
-        currency:
-          type: string
-        stage:
-          type: string
-        companyId:
           type: string
         remoteId:
           type: string
@@ -155,37 +169,23 @@ components:
           type: string
         remoteId:
           type: string
-    PageInfo:
+    Deal:
       type: object
       properties:
-        hasNextPage:
-          type: boolean
-        nextCursor:
+        id:
           type: string
-  parameters:
-    ConnectionId:
-      name: connectionId
-      in: query
-      required: true
-      schema:
-        type: string
-      description: The connected account (credential) to read/write unified data through.
-    Limit:
-      name: limit
-      in: query
-      required: false
-      schema:
-        type: integer
-        default: 50
-        maximum: 250
-      description: Maximum number of records to return per page.
-    Cursor:
-      name: cursor
-      in: query
-      required: false
-      schema:
-        type: string
-      description: Opaque pagination cursor from a prior pageInfo.
+        name:
+          type: string
+        amount:
+          type: number
+        currency:
+          type: string
+        stage:
+          type: string
+        companyId:
+          type: string
+        remoteId:
+          type: string
   securitySchemes:
     bearerAuth:
       type: http

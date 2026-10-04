@@ -86,21 +86,37 @@ paths:
                   pageInfo:
                     $ref: '#/components/schemas/PageInfo'
 components:
+  parameters:
+    Cursor:
+      name: cursor
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Opaque pagination cursor from a prior pageInfo.
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 50
+        maximum: 250
+      description: Maximum number of records to return per page.
+    ConnectionId:
+      name: connectionId
+      in: query
+      required: true
+      schema:
+        type: string
+      description: The connected account (credential) to read/write unified data through.
   schemas:
-    Account:
+    PageInfo:
       type: object
       properties:
-        id:
-          type: string
-        name:
-          type: string
-        type:
-          type: string
-        classification:
-          type: string
-        currency:
-          type: string
-        remoteId:
+        hasNextPage:
+          type: boolean
+        nextCursor:
           type: string
     Invoice:
       type: object
@@ -125,37 +141,21 @@ components:
           format: date
         remoteId:
           type: string
-    PageInfo:
+    Account:
       type: object
       properties:
-        hasNextPage:
-          type: boolean
-        nextCursor:
+        id:
           type: string
-  parameters:
-    ConnectionId:
-      name: connectionId
-      in: query
-      required: true
-      schema:
-        type: string
-      description: The connected account (credential) to read/write unified data through.
-    Limit:
-      name: limit
-      in: query
-      required: false
-      schema:
-        type: integer
-        default: 50
-        maximum: 250
-      description: Maximum number of records to return per page.
-    Cursor:
-      name: cursor
-      in: query
-      required: false
-      schema:
-        type: string
-      description: Opaque pagination cursor from a prior pageInfo.
+        name:
+          type: string
+        type:
+          type: string
+        classification:
+          type: string
+        currency:
+          type: string
+        remoteId:
+          type: string
   securitySchemes:
     bearerAuth:
       type: http

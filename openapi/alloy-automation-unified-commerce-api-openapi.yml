@@ -107,6 +107,13 @@ components:
           type: string
         remoteId:
           type: string
+    PageInfo:
+      type: object
+      properties:
+        hasNextPage:
+          type: boolean
+        nextCursor:
+          type: string
     Product:
       type: object
       properties:
@@ -135,21 +142,14 @@ components:
           type: string
         remoteId:
           type: string
-    PageInfo:
-      type: object
-      properties:
-        hasNextPage:
-          type: boolean
-        nextCursor:
-          type: string
   parameters:
-    ConnectionId:
-      name: connectionId
+    Cursor:
+      name: cursor
       in: query
-      required: true
+      required: false
       schema:
         type: string
-      description: The connected account (credential) to read/write unified data through.
+      description: Opaque pagination cursor from a prior pageInfo.
     Limit:
       name: limit
       in: query
@@ -159,13 +159,13 @@ components:
         default: 50
         maximum: 250
       description: Maximum number of records to return per page.
-    Cursor:
-      name: cursor
+    ConnectionId:
+      name: connectionId
       in: query
-      required: false
+      required: true
       schema:
         type: string
-      description: Opaque pagination cursor from a prior pageInfo.
+      description: The connected account (credential) to read/write unified data through.
   securitySchemes:
     bearerAuth:
       type: http
