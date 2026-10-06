@@ -55,7 +55,7 @@ tags_raw:
 - Automation
 - Unified-API
 created: '2026-07-01'
-modified: '2026-07-01'
+modified: '2026-10-06'
 specificationVersion: '0.23'
 apis:
 - aid: alloy-automation:alloy-automation-connectivity-api
@@ -345,6 +345,8 @@ apis:
   - type: APIReference
     url: https://docs.runalloy.com/reference/unified-api/create-account-1/
 common:
+- url: https://runalloy.com/blog/
+  type: Blog
 - type: CapabilityMap
   url: capabilities/alloy-automation-capability-edges.yml
   name: Alloy Automation Business Capability Map
