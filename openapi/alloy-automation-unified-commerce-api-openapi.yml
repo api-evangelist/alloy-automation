@@ -90,6 +90,19 @@ paths:
                     $ref: '#/components/schemas/PageInfo'
 components:
   schemas:
+    CommerceCustomer:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        remoteId:
+          type: string
     Order:
       type: object
       properties:
@@ -129,27 +142,7 @@ components:
           type: string
         remoteId:
           type: string
-    CommerceCustomer:
-      type: object
-      properties:
-        id:
-          type: string
-        email:
-          type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-        remoteId:
-          type: string
   parameters:
-    Cursor:
-      name: cursor
-      in: query
-      required: false
-      schema:
-        type: string
-      description: Opaque pagination cursor from a prior pageInfo.
     Limit:
       name: limit
       in: query
@@ -159,6 +152,13 @@ components:
         default: 50
         maximum: 250
       description: Maximum number of records to return per page.
+    Cursor:
+      name: cursor
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Opaque pagination cursor from a prior pageInfo.
     ConnectionId:
       name: connectionId
       in: query

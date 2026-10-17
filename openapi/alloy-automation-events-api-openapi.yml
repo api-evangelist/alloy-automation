@@ -65,6 +65,23 @@ paths:
               schema:
                 $ref: '#/components/schemas/Event'
 components:
+  parameters:
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 50
+        maximum: 250
+      description: Maximum number of records to return per page.
+    Cursor:
+      name: cursor
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Opaque pagination cursor from a prior pageInfo.
   schemas:
     Event:
       type: object
@@ -90,23 +107,6 @@ components:
           type: boolean
         nextCursor:
           type: string
-  parameters:
-    Cursor:
-      name: cursor
-      in: query
-      required: false
-      schema:
-        type: string
-      description: Opaque pagination cursor from a prior pageInfo.
-    Limit:
-      name: limit
-      in: query
-      required: false
-      schema:
-        type: integer
-        default: 50
-        maximum: 250
-      description: Maximum number of records to return per page.
   securitySchemes:
     bearerAuth:
       type: http

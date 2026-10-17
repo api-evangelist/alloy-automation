@@ -94,21 +94,6 @@ paths:
                 $ref: '#/components/schemas/ActionResult'
 components:
   schemas:
-    Resource:
-      type: object
-      properties:
-        name:
-          type: string
-        label:
-          type: string
-    ActionResult:
-      type: object
-      properties:
-        status:
-          type: string
-        data:
-          type: object
-          additionalProperties: true
     ExecuteActionRequest:
       type: object
       required:
@@ -124,6 +109,21 @@ components:
         input:
           type: object
           additionalProperties: true
+    ActionResult:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: object
+          additionalProperties: true
+    Resource:
+      type: object
+      properties:
+        name:
+          type: string
+        label:
+          type: string
     Action:
       type: object
       properties:
