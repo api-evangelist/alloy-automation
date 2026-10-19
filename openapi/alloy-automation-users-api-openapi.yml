@@ -1,114 +1,794 @@
 openapi: 3.2.0
 info:
-  title: Alloy Automation Embedded & Unified Users API
-  description: Alloy Automation is an embedded integration platform (iPaaS) and Unified API for SaaS products.
-  version: 2024-03
-  contact:
-    name: Alloy Automation Support
-    url: https://docs.runalloy.com
-  termsOfService: https://runalloy.com/terms/
+  title: Embedded 2025-09 Users API
+  version: '5.0'
 servers:
-- url: https://embedded.runalloy.com/2024-03
-  description: Embedded, Connectivity, Passthrough, and Unified API (2024-03)
-security:
-- bearerAuth: []
+- url: https://production.runalloy.com
 tags:
 - name: Users
-  description: End-user records that scope credentials, integrations, and executions.
 paths:
-  /users:
-    post:
-      operationId: createUser
-      tags:
-      - Users
-      summary: Create a user
-      description: Creates an end-user record in Alloy and returns its userId.
+  /users/{userId}:
+    put:
+      summary: Update a user
+      description: Updates a user given a specified userId. This endpoint allows you to update a username or fullName and returns the updated user object.
+      operationId: update-a-user
+      parameters:
+      - name: userId
+        in: path
+        description: 'The Id of the user you want to lookup. Returned from the Create User endpoint. Note: you can also use the Embedded user''s `username` in this field.'
+        schema:
+          type: string
+        required: true
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
       requestBody:
-        required: false
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateUserRequest'
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: The unique identifier of the user
+                fullName:
+                  type: string
+                  description: The name of the user
       responses:
         '200':
-          description: User created
+          description: '200'
           content:
             application/json:
+              examples:
+                Result:
+                  value:
+                    userId: 6323d7c9122ae69742a5d0a2
+                    fullName: Gregg Mojica
+                    username: greggmojica
               schema:
-                $ref: '#/components/schemas/User'
-    get:
-      operationId: listUsers
+                type: object
+                properties:
+                  userId:
+                    type: string
+                    example: 6323d7c9122ae69742a5d0a2
+                  fullName:
+                    type: string
+                    example: Gregg Mojica
+                  username:
+                    type: string
+                    example: greggmojica
+        '401':
+          description: '401'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    message: Unauthorized
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+      deprecated: false
+      security: []
       tags:
       - Users
-      summary: List users
-      description: Lists the end-user records in your Alloy account.
+    get:
+      summary: Retrieve a single user
+      description: Returns a specific user given a userId and any active workflows associated with the user.
+      operationId: get-a-user
+      parameters:
+      - name: userId
+        in: path
+        description: 'The Id of the user you want to lookup. Returned from the Create User endpoint. Note: you can also use the Embedded user''s `username` in this field.'
+        schema:
+          type: string
+        required: true
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
       responses:
         '200':
-          description: A list of users
+          description: '200'
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  users:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/User'
-  /users/{userId}:
-    parameters:
-    - $ref: '#/components/parameters/UserId'
-    get:
-      operationId: getUser
+                  userId:
+                    type: string
+                    example: 6323d7c9122ae69742a5d0a2
+                  fullName:
+                    type: string
+                    example: Gregg Mojica
+                  username:
+                    type: string
+                    example: support@runalloy.com
+                required:
+                - userId
+                - fullName
+                - username
+              examples:
+                Result:
+                  value:
+                    userId: 6323d7c9122ae69742a5d0a2
+                    fullName: Gregg Mojica
+                    username: support@runalloy.com
+      deprecated: false
+      security: []
       tags:
       - Users
-      summary: Retrieve a single user
+    delete:
+      summary: Delete a user
+      description: This endpoint deletes a user account. It is most commonly used when a user stops being a customer of your platform or in conjunction with a GDPR compliance request. Note that this endpoint only deletes the user's account – not any corresponding workflow logs or other data. To remove that data as part of a compliance request, see our 'Delete User Logs' endpoint
+      operationId: delete-a-user
+      parameters:
+      - name: userId
+        in: path
+        description: 'The Id of the user you want to lookup. Returned from the Create User endpoint. Note: you can also use the Embedded user''s `username` in this field.'
+        schema:
+          type: string
+        required: true
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
       responses:
         '200':
-          description: The user
+          description: '200'
           content:
             application/json:
+              examples:
+                Result:
+                  value:
+                    success: true
               schema:
-                $ref: '#/components/schemas/User'
-    delete:
-      operationId: deleteUser
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                    default: true
+        '401':
+          description: '401'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    message: Unauthorized
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+      deprecated: false
+      security: []
       tags:
       - Users
-      summary: Delete a user
+  /users/:
+    post:
+      summary: Create a user
+      description: Creates a new user in your Embedded account. The user record acts like a "container" to store all the integrations, workflows, and credentials for any given user. Returns a user identifier.
+      operationId: create-a-user
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - username
+              properties:
+                fullName:
+                  type: string
+                  description: The name of the user you want to create. Typically a full name.
+                username:
+                  type: string
+                  description: The username to be associated with the user.  To easily identify a customer, we recommend using a friendly username such as an email for example. The username must be unique (this acts as an identifier to reference and lookup a given merchant on your platform).
       responses:
         '200':
-          description: User deleted
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    userId: xyz123abc098754
+              schema:
+                type: object
+                properties:
+                  userId:
+                    type: string
+                    example: xyz123abc098754
+        '401':
+          description: '401'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      security: []
+      tags:
+      - Users
+  /users:
+    get:
+      summary: Retrieve a list of all users
+      description: Returns a list of all users created in your Embedded account.
+      operationId: list-all-users
+      parameters:
+      - name: parentWorkflowId
+        in: query
+        description: You can pass a parentWorkflowId if you wish to list users for a specific workflow.
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    data:
+                    - userId: 6323d7c9122ae69742a5d0a2
+                      username: gregg
+                      fullName: Gregg Mojica
+                    - userId: 6323d7cf9ae88f59bf66ce63
+                      username: sara
+                      fullName: Sara Du
+                    - userId: 6323d7e159479ba26d80fcc8
+                      fullName: William Jackson
+                    - userId: 6323d7f090020baf1091b151
+                      username: izzy@gmail.com
+                      fullName: Izzy Jackson
+                    - userId: 6323d7da4b764bfe02cacaef
+                      username: jose@example.com
+                      fullName: Jose Santos
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        userId:
+                          type: string
+                          example: 6323d7c9122ae69742a5d0a2
+                        username:
+                          type: string
+                          example: gregg
+                        fullName:
+                          type: string
+                          example: Gregg Mojica
+        '401':
+          description: '401'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    message: Unauthorized
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+      deprecated: false
+      security: []
+      tags:
+      - Users
+  /users/{userId}/token:
+    get:
+      summary: Generate a new JWT for a user
+      description: This endpoint is used to generate a new user token in the form of a JSON Web Token (JWT) which is required to securely render the Embedded Modal in your application. Once retrieved, you'll want to pass this token to your frontend.
+      operationId: generate-jwt-token
+      parameters:
+      - name: userId
+        in: query
+        description: 'The Id of the user you want to lookup. Returned from the Create User endpoint. Note: you can also use the Embedded user''s `username` in this field.'
+        schema:
+          type: string
+        required: true
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      x-code-samples:
+      - lang: cURL
+        source: "curl -X GET \"https://production.runalloy.com/users/{userId}/token?userId={{userId}}\" \\\n  -H \"Authorization: bearer YOUR_API_KEY\" \\\n  -H \"x-api-version: 2025-09\"\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://production.runalloy.com/users/{userId}/token\"\nparams = {\"userId\": \"{{userId}}\"}\nheaders = {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n}\n\nresponse = requests.get(url, params=params, headers=headers)\nprint(response.json())\n"
+      - lang: JavaScript
+        source: "const userId = \"{{userId}}\";\nconst url = `https://production.runalloy.com/users/${userId}/token?userId=${userId}`;\n\nfetch(url, {\n  method: \"GET\",\n  headers: {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n  }\n})\n  .then(response => response.json())\n  .then(data => console.log(data))\n  .catch(error => console.error(\"Error:\", error));\n"
+      - lang: PHP
+        source: "<?php\n$userId = \"{{userId}}\";\n$url = \"https://production.runalloy.com/users/{$userId}/token?userId=\" . urlencode($userId);\n\n$ch = curl_init($url);\ncurl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\ncurl_setopt($ch, CURLOPT_HTTPHEADER, [\n    \"Authorization: bearer YOUR_API_KEY\",\n    \"x-api-version: 2025-09\"\n]);\n\n$response = curl_exec($ch);\ncurl_close($ch);\n$data = json_decode($response, true);\nprint_r($data);\n?>\n"
+      - lang: Go
+        source: "package main\n\nimport (\n    \"encoding/json\"\n    \"fmt\"\n    \"io\"\n    \"net/http\"\n    \"net/url\"\n)\n\nfunc main() {\n    userId := \"{{userId}}\"\n    baseURL := \"https://production.runalloy.com/users/\" + userId + \"/token\"\n    params := url.Values{}\n    params.Add(\"userId\", userId)\n    fullURL := baseURL + \"?\" + params.Encode()\n\n    req, _ := http.NewRequest(\"GET\", fullURL, nil)\n    req.Header.Set(\"Authorization\", \"bearer YOUR_API_KEY\")\n    req.Header.Set(\"x-api-version\", \"2025-09\")\n\n    client := &http.Client{}\n    resp, _ := client.Do(req)\n    defer resp.Body.Close()\n\n    body, _ := io.ReadAll(resp.Body)\n    var data map[string]interface{}\n    json.Unmarshal(body, &data)\n    fmt.Println(data)\n}\n"
+      - lang: Java
+        source: "import java.net.HttpURLConnection;\nimport java.net.URL;\nimport java.io.BufferedReader;\nimport java.io.InputStreamReader;\nimport com.google.gson.Gson;\nimport java.util.Map;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String userId = \"{{userId}}\";\n        String baseUrl = \"https://production.runalloy.com/users/\" + userId + \"/token\";\n        String urlString = baseUrl + \"?userId=\" + java.net.URLEncoder.encode(userId, \"UTF-8\");\n        \n        URL url = new URL(urlString);\n        HttpURLConnection conn = (HttpURLConnection) url.openConnection();\n        conn.setRequestMethod(\"GET\");\n        conn.setRequestProperty(\"Authorization\", \"bearer YOUR_API_KEY\");\n        conn.setRequestProperty(\"x-api-version\", \"2025-09\");\n        \n        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));\n        String inputLine;\n        StringBuilder response = new StringBuilder();\n        while ((inputLine = in.readLine()) != null) {\n            response.append(inputLine);\n        }\n        in.close();\n        \n        Gson gson = new Gson();\n        Map<String, Object> data = gson.fromJson(response.toString(), Map.class);\n        System.out.println(data);\n    }\n}\n"
+      - lang: Ruby
+        source: 'require ''net/http''
+
+          require ''json''
+
+          require ''uri''
+
+
+          userId = "{{userId}}"
+
+          base_url = "https://production.runalloy.com/users/#{userId}/token"
+
+          uri = URI(base_url)
+
+          params = { userId: userId }
+
+          uri.query = URI.encode_www_form(params)
+
+
+          http = Net::HTTP.new(uri.host, uri.port)
+
+          http.use_ssl = true
+
+
+          request = Net::HTTP::Get.new(uri)
+
+          request[''Authorization''] = ''bearer YOUR_API_KEY''
+
+          request[''x-api-version''] = ''2025-09''
+
+
+          response = http.request(request)
+
+          data = JSON.parse(response.body)
+
+          puts data
+
+          '
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    token: XXXXXXXXXXXXXX.YYYYYYYYYYYYYY.ZZZZZZZZZZZZZZ
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: XXXXXXXXXXXXXX.YYYYYYYYYYYYYY.ZZZZZZZZZZZZZZ
+      deprecated: false
+      security: []
+      tags:
+      - Users
+  /users/{userId}/deactivate-workflows:
+    put:
+      summary: Deactivate workflows for a user
+      description: 'Deactivates all active workflows for a user in bulk.
+
+
+        This endpoint may be used to perform a bulk operation such as temporarily disabling a user''s account in lieu of deleting the user account if the user wants to "pause" their account.'
+      operationId: disable-all-workflows-for-a-user
+      parameters:
+      - name: userId
+        in: path
+        description: The Id of the user you want to lookup. Returned from the Create User endpoint
+        schema:
+          type: string
+        required: true
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    message: Success
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Success
+      deprecated: false
+      security: []
+      tags:
+      - Users
+  /users/{userId}/logs:
+    delete:
+      summary: Delete all logs for a user
+      description: 'This endpoint deletes all historical logs associated with a user and is most commonly used in conjunction with a compliance request such as GDPR. This endpoint requires a userId.
+
+
+        Note that this action cannot be undone.'
+      operationId: delete-logs-for-a-user
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      - name: userId
+        in: query
+        description: The Id of the user you want delete logs for. Returned from the Create User endpoint
+        schema:
+          type: string
+        required: true
+      x-code-samples:
+      - lang: cURL
+        source: "curl -X DELETE \"https://production.runalloy.com/users/{userId}/logs?userId={{userId}}\" \\\n  -H \"Authorization: bearer YOUR_API_KEY\" \\\n  -H \"x-api-version: 2025-09\"\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://production.runalloy.com/users/{userId}/logs\"\nparams = {\"userId\": \"{{userId}}\"}\nheaders = {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n}\n\nresponse = requests.delete(url, params=params, headers=headers)\nprint(response.json())\n"
+      - lang: JavaScript
+        source: "const userId = \"{{userId}}\";\nconst url = `https://production.runalloy.com/users/${userId}/logs?userId=${userId}`;\n\nfetch(url, {\n  method: \"DELETE\",\n  headers: {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n  }\n})\n  .then(response => response.json())\n  .then(data => console.log(data))\n  .catch(error => console.error(\"Error:\", error));\n"
+      - lang: PHP
+        source: "<?php\n$userId = \"{{userId}}\";\n$url = \"https://production.runalloy.com/users/{$userId}/logs?userId=\" . urlencode($userId);\n\n$ch = curl_init($url);\ncurl_setopt($ch, CURLOPT_CUSTOMREQUEST, \"DELETE\");\ncurl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\ncurl_setopt($ch, CURLOPT_HTTPHEADER, [\n    \"Authorization: bearer YOUR_API_KEY\",\n    \"x-api-version: 2025-09\"\n]);\n\n$response = curl_exec($ch);\ncurl_close($ch);\n$data = json_decode($response, true);\nprint_r($data);\n?>\n"
+      - lang: Go
+        source: "package main\n\nimport (\n    \"encoding/json\"\n    \"fmt\"\n    \"io\"\n    \"net/http\"\n    \"net/url\"\n)\n\nfunc main() {\n    userId := \"{{userId}}\"\n    baseURL := \"https://production.runalloy.com/users/\" + userId + \"/logs\"\n    params := url.Values{}\n    params.Add(\"userId\", userId)\n    fullURL := baseURL + \"?\" + params.Encode()\n\n    req, _ := http.NewRequest(\"DELETE\", fullURL, nil)\n    req.Header.Set(\"Authorization\", \"bearer YOUR_API_KEY\")\n    req.Header.Set(\"x-api-version\", \"2025-09\")\n\n    client := &http.Client{}\n    resp, _ := client.Do(req)\n    defer resp.Body.Close()\n\n    body, _ := io.ReadAll(resp.Body)\n    var data map[string]interface{}\n    json.Unmarshal(body, &data)\n    fmt.Println(data)\n}\n"
+      - lang: Java
+        source: "import java.net.HttpURLConnection;\nimport java.net.URL;\nimport java.io.BufferedReader;\nimport java.io.InputStreamReader;\nimport com.google.gson.Gson;\nimport java.util.Map;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String userId = \"{{userId}}\";\n        String baseUrl = \"https://production.runalloy.com/users/\" + userId + \"/logs\";\n        String urlString = baseUrl + \"?userId=\" + java.net.URLEncoder.encode(userId, \"UTF-8\");\n        \n        URL url = new URL(urlString);\n        HttpURLConnection conn = (HttpURLConnection) url.openConnection();\n        conn.setRequestMethod(\"DELETE\");\n        conn.setRequestProperty(\"Authorization\", \"bearer YOUR_API_KEY\");\n        conn.setRequestProperty(\"x-api-version\", \"2025-09\");\n        \n        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));\n        String inputLine;\n        StringBuilder response = new StringBuilder();\n        while ((inputLine = in.readLine()) != null) {\n            response.append(inputLine);\n        }\n        in.close();\n        \n        Gson gson = new Gson();\n        Map<String, Object> data = gson.fromJson(response.toString(), Map.class);\n        System.out.println(data);\n    }\n}\n"
+      - lang: Ruby
+        source: 'require ''net/http''
+
+          require ''json''
+
+          require ''uri''
+
+
+          userId = "{{userId}}"
+
+          base_url = "https://production.runalloy.com/users/#{userId}/logs"
+
+          uri = URI(base_url)
+
+          params = { userId: userId }
+
+          uri.query = URI.encode_www_form(params)
+
+
+          http = Net::HTTP.new(uri.host, uri.port)
+
+          http.use_ssl = true
+
+
+          request = Net::HTTP::Delete.new(uri)
+
+          request[''Authorization''] = ''bearer YOUR_API_KEY''
+
+          request[''x-api-version''] = ''2025-09''
+
+
+          response = http.request(request)
+
+          data = JSON.parse(response.body)
+
+          puts data
+
+          '
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    message: Success
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Success
+      deprecated: false
+      security: []
+      tags:
+      - Users
+  /users/{userId}/credentials/{credentialId}:
+    delete:
+      summary: Delete a Credential for a user
+      description: To delete a credential via the API, you need to invoke the below endpoint.
+      operationId: delete-a-credential
+      parameters:
+      - name: credentialId
+        in: path
+        description: The credential you're looking to delete
+        schema:
+          type: string
+        required: true
+      - name: userId
+        in: path
+        description: The Id of the user associated with this credential
+        schema:
+          type: string
+        required: true
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    success: true
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+      deprecated: false
+      security: []
+      tags:
+      - Users
+  /users/batch:
+    post:
+      summary: Create a new batch of users
+      description: Creates a new user in your Embedded account. The user record acts like a "container" to store all the integrations, workflows, and credentials for any given user. Returns a user identifier.
+      operationId: batch-create-users
+      parameters:
+      - name: Authorization
+        in: header
+        description: Your Embedded API key for authorization
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - users
+              properties:
+                users:
+                  type: array
+                  description: An array of user objects to be created. Each object must contain a `username` (mandatory) and an optional `fullName`. Limited to 1000 users at a time.
+                  items:
+                    type: object
+                    properties:
+                      username:
+                        type: string
+                        description: The username of the user.
+                        example: demo@runalloy.com
+                      fullName:
+                        type: string
+                        description: The full name of the user.
+                        example: Gregg Mojica
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    message: success
+                    invalidUsers:
+                    - fullName: Missing Username
+                    - username: alreadyexists123
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: success
+                  invalidUsers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        fullName:
+                          type: string
+                          example: Missing Username
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    message: No valid users provided
+              schema:
+                oneOf:
+                - type: object
+                  properties:
+                    message:
+                      type: string
+                      example: All users already exist
+                - type: object
+                  properties:
+                    message:
+                      type: string
+                      example: No valid users provided
+        '401':
+          description: '401'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      security: []
+      tags:
+      - Users
+  /users/{userId}/integrations/{integrationId}/install-url:
+    get:
+      summary: Create an Embedded link for an integration
+      description: This endpoint generates an alloy Link. For more details on Embedded Link, please read this tutorial.
+      operationId: generate-alloy-link
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      - name: userId
+        in: query
+        description: The user to generate the Embedded Link for
+        schema:
+          type: string
+        required: true
+      - name: integrationId
+        in: path
+        description: The Id of the integration you want to generate the Embedded Link for
+        schema:
+          type: string
+        required: true
+      x-code-samples:
+      - lang: cURL
+        source: "curl -X GET \"https://production.runalloy.com/users/{userId}/integrations/{integrationId}/install-url?userId={{userId}}\" \\\n  -H \"Authorization: bearer YOUR_API_KEY\" \\\n  -H \"x-api-version: 2025-09\"\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://production.runalloy.com/users/{userId}/integrations/{integrationId}/install-url\"\nparams = {\"userId\": \"{{userId}}\"}\nheaders = {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n}\n\nresponse = requests.get(url, params=params, headers=headers)\nprint(response.json())\n"
+      - lang: JavaScript
+        source: "const userId = \"{{userId}}\";\nconst integrationId = \"{integrationId}\";\nconst url = `https://production.runalloy.com/users/${userId}/integrations/${integrationId}/install-url?userId=${userId}`;\n\nfetch(url, {\n  method: \"GET\",\n  headers: {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n  }\n})\n  .then(response => response.json())\n  .then(data => console.log(data))\n  .catch(error => console.error(\"Error:\", error));\n"
+      - lang: PHP
+        source: "<?php\n$userId = \"{{userId}}\";\n$integrationId = \"{integrationId}\";\n$url = \"https://production.runalloy.com/users/{$userId}/integrations/{$integrationId}/install-url?userId=\" . urlencode($userId);\n\n$ch = curl_init($url);\ncurl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\ncurl_setopt($ch, CURLOPT_HTTPHEADER, [\n    \"Authorization: bearer YOUR_API_KEY\",\n    \"x-api-version: 2025-09\"\n]);\n\n$response = curl_exec($ch);\ncurl_close($ch);\n$data = json_decode($response, true);\nprint_r($data);\n?>\n"
+      - lang: Go
+        source: "package main\n\nimport (\n    \"encoding/json\"\n    \"fmt\"\n    \"io\"\n    \"net/http\"\n    \"net/url\"\n)\n\nfunc main() {\n    userId := \"{{userId}}\"\n    integrationId := \"{integrationId}\"\n    baseURL := \"https://production.runalloy.com/users/\" + userId + \"/integrations/\" + integrationId + \"/install-url\"\n    params := url.Values{}\n    params.Add(\"userId\", userId)\n    fullURL := baseURL + \"?\" + params.Encode()\n\n    req, _ := http.NewRequest(\"GET\", fullURL, nil)\n    req.Header.Set(\"Authorization\", \"bearer YOUR_API_KEY\")\n    req.Header.Set(\"x-api-version\", \"2025-09\")\n\n    client := &http.Client{}\n    resp, _ := client.Do(req)\n    defer resp.Body.Close()\n\n    body, _ := io.ReadAll(resp.Body)\n    var data map[string]interface{}\n    json.Unmarshal(body, &data)\n    fmt.Println(data)\n}\n"
+      - lang: Java
+        source: "import java.net.HttpURLConnection;\nimport java.net.URL;\nimport java.io.BufferedReader;\nimport java.io.InputStreamReader;\nimport com.google.gson.Gson;\nimport java.util.Map;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String userId = \"{{userId}}\";\n        String integrationId = \"{integrationId}\";\n        String baseUrl = \"https://production.runalloy.com/users/\" + userId + \"/integrations/\" + integrationId + \"/install-url\";\n        String urlString = baseUrl + \"?userId=\" + java.net.URLEncoder.encode(userId, \"UTF-8\");\n        \n        URL url = new URL(urlString);\n        HttpURLConnection conn = (HttpURLConnection) url.openConnection();\n        conn.setRequestMethod(\"GET\");\n        conn.setRequestProperty(\"Authorization\", \"bearer YOUR_API_KEY\");\n        conn.setRequestProperty(\"x-api-version\", \"2025-09\");\n        \n        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));\n        String inputLine;\n        StringBuilder response = new StringBuilder();\n        while ((inputLine = in.readLine()) != null) {\n            response.append(inputLine);\n        }\n        in.close();\n        \n        Gson gson = new Gson();\n        Map<String, Object> data = gson.fromJson(response.toString(), Map.class);\n        System.out.println(data);\n    }\n}\n"
+      - lang: Ruby
+        source: 'require ''net/http''
+
+          require ''json''
+
+          require ''uri''
+
+
+          userId = "{{userId}}"
+
+          integrationId = "{integrationId}"
+
+          base_url = "https://production.runalloy.com/users/#{userId}/integrations/#{integrationId}/install-url"
+
+          uri = URI(base_url)
+
+          params = { userId: userId }
+
+          uri.query = URI.encode_www_form(params)
+
+
+          http = Net::HTTP.new(uri.host, uri.port)
+
+          http.use_ssl = true
+
+
+          request = Net::HTTP::Get.new(uri)
+
+          request[''Authorization''] = ''bearer YOUR_API_KEY''
+
+          request[''x-api-version''] = ''2025-09''
+
+
+          response = http.request(request)
+
+          data = JSON.parse(response.body)
+
+          puts data
+
+          '
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    url: https://app.runalloy.com/embedded-install?integrationId=XXXXXXX&token=YYYYYYYY.ZZZZZZZZZZZZZ.WWWWWWWWWWWWWW-VVVVVVVVV&forgeMode=engaged&alwaysShowCredentials=true
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    example: https://app.runalloy.com/embedded-install?integrationId=XXXXXXX&token=YYYYYYYY.ZZZZZZZZZZZZZ.WWWWWWWWWWWWWW-VVVVVVVVV&forgeMode=engaged&alwaysShowCredentials=true
+      deprecated: false
+      security: []
+      tags:
+      - Users
 components:
-  schemas:
-    User:
-      type: object
-      properties:
-        userId:
-          type: string
-        username:
-          type: string
-        fullName:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-    CreateUserRequest:
-      type: object
-      properties:
-        username:
-          type: string
-          description: Optional external username / label for the user.
-        fullName:
-          type: string
   parameters:
-    UserId:
-      name: userId
-      in: path
+    xApiVersion:
+      name: x-api-version
+      in: header
       required: true
+      description: The version of the API to use. The current API version is **2025-09**.
       schema:
         type: string
-      description: The Alloy end-user record ID.
+        default: 2025-09
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      description: 'Bearer API key in the Authorization header, e.g. `Authorization: Bearer YOUR_API_KEY`. Frontend calls use a per-user JWT instead of the master key.'
+    sec0:
+      type: apiKey
+      in: header
+      name: Authorization
+      x-bearer-format: bearer
+x-readme:
+  headers: []
+  explorer-enabled: true
+  proxy-enabled: true
+x-readme-fauxas: true

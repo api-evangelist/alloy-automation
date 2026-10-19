@@ -1,0 +1,1158 @@
+openapi: 3.2.0
+info:
+  title: Embedded 2025-09 Workflows API
+  version: '5.0'
+servers:
+- url: https://production.runalloy.com
+tags:
+- name: Workflows
+paths:
+  /workflows/install:
+    post:
+      summary: Install workflows
+      description: Installs workflows for a specified user.
+      operationId: install-workflows
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/xApiVersion'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - workflowIds
+              - credentialIds
+              - userId
+              properties:
+                workflowIds:
+                  type: array
+                  items:
+                    type: string
+                credentialIds:
+                  type: array
+                  items:
+                    type: string
+                userId:
+                  type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    installed: true
+              schema:
+                type: object
+                properties:
+                  installed:
+                    type: boolean
+                    example: true
+                    default: true
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    message: Could not install workflow(s)
+      deprecated: false
+      security: []
+      tags:
+      - Workflows
+  /workflows:
+    get:
+      summary: Retrieve a list of workflows
+      description: 'Returns a list of all active **parent** workflows associated with your Alloy Embedded account. Note this endpoint does _not_ return a list of workflows that the user has installed, but rather a list of all _available_ workflows. The `installed` flag indicates if the user has installed a copy of the workflow but does not indicate if the user has a given workflow "active".
+
+
+        For each workflow, this endpoint returns the individual apps that are required as part of the workflow. Commonly used to populate data on an integrations page.'
+      operationId: list-workflows
+      parameters:
+      - name: userId
+        in: query
+        description: 'The Id of the user you want to lookup. Returned from the Create User endpoint. Note: you can also use the Embedded user''s `username` in this field.'
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      x-code-samples:
+      - lang: cURL
+        source: "curl -X GET \"https://production.runalloy.com/workflows?userId={{userId}}\" \\\n  -H \"Authorization: bearer YOUR_API_KEY\" \\\n  -H \"x-api-version: 2025-09\"\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://production.runalloy.com/workflows\"\nparams = {\"userId\": \"{{userId}}\"}\nheaders = {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n}\n\nresponse = requests.get(url, params=params, headers=headers)\nprint(response.json())\n"
+      - lang: JavaScript
+        source: "const userId = \"{{userId}}\";\nconst url = `https://production.runalloy.com/workflows?userId=${userId}`;\n\nfetch(url, {\n  method: \"GET\",\n  headers: {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n  }\n})\n  .then(response => response.json())\n  .then(data => console.log(data))\n  .catch(error => console.error(\"Error:\", error));\n"
+      - lang: PHP
+        source: "<?php\n$userId = \"{{userId}}\";\n$url = \"https://production.runalloy.com/workflows?userId=\" . urlencode($userId);\n\n$ch = curl_init($url);\ncurl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\ncurl_setopt($ch, CURLOPT_HTTPHEADER, [\n    \"Authorization: bearer YOUR_API_KEY\",\n    \"x-api-version: 2025-09\"\n]);\n\n$response = curl_exec($ch);\ncurl_close($ch);\n$data = json_decode($response, true);\nprint_r($data);\n?>\n"
+      - lang: Go
+        source: "package main\n\nimport (\n    \"encoding/json\"\n    \"fmt\"\n    \"io\"\n    \"net/http\"\n    \"net/url\"\n)\n\nfunc main() {\n    userId := \"{{userId}}\"\n    baseURL := \"https://production.runalloy.com/workflows\"\n    params := url.Values{}\n    params.Add(\"userId\", userId)\n    fullURL := baseURL + \"?\" + params.Encode()\n\n    req, _ := http.NewRequest(\"GET\", fullURL, nil)\n    req.Header.Set(\"Authorization\", \"bearer YOUR_API_KEY\")\n    req.Header.Set(\"x-api-version\", \"2025-09\")\n\n    client := &http.Client{}\n    resp, _ := client.Do(req)\n    defer resp.Body.Close()\n\n    body, _ := io.ReadAll(resp.Body)\n    var data map[string]interface{}\n    json.Unmarshal(body, &data)\n    fmt.Println(data)\n}\n"
+      - lang: Java
+        source: "import java.net.HttpURLConnection;\nimport java.net.URL;\nimport java.io.BufferedReader;\nimport java.io.InputStreamReader;\nimport com.google.gson.Gson;\nimport java.util.Map;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String userId = \"{{userId}}\";\n        String urlString = \"https://production.runalloy.com/workflows?userId=\" + java.net.URLEncoder.encode(userId, \"UTF-8\");\n        \n        URL url = new URL(urlString);\n        HttpURLConnection conn = (HttpURLConnection) url.openConnection();\n        conn.setRequestMethod(\"GET\");\n        conn.setRequestProperty(\"Authorization\", \"bearer YOUR_API_KEY\");\n        conn.setRequestProperty(\"x-api-version\", \"2025-09\");\n        \n        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));\n        String inputLine;\n        StringBuilder response = new StringBuilder();\n        while ((inputLine = in.readLine()) != null) {\n            response.append(inputLine);\n        }\n        in.close();\n        \n        Gson gson = new Gson();\n        Map<String, Object> data = gson.fromJson(response.toString(), Map.class);\n        System.out.println(data);\n    }\n}\n"
+      - lang: Ruby
+        source: 'require ''net/http''
+
+          require ''json''
+
+          require ''uri''
+
+
+          userId = "{{userId}}"
+
+          uri = URI("https://production.runalloy.com/workflows")
+
+          params = { userId: userId }
+
+          uri.query = URI.encode_www_form(params)
+
+
+          http = Net::HTTP.new(uri.host, uri.port)
+
+          http.use_ssl = true
+
+
+          request = Net::HTTP::Get.new(uri)
+
+          request[''Authorization''] = ''bearer YOUR_API_KEY''
+
+          request[''x-api-version''] = ''2025-09''
+
+
+          response = http.request(request)
+
+          data = JSON.parse(response.body)
+
+          puts data
+
+          '
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    data:
+                    - workflowId: 6544eac8e1ee020334af4ec8
+                      name: 'Untitled Workflow #595'
+                      createdAt: '2023-11-03T12:42:48.304Z'
+                      updatedAt: '2023-11-03T13:12:45.522Z'
+                      installed: false
+                      active: false
+                      version: 1
+                      integrationId: 6544193cd8c482b3fe875101
+                      connectors:
+                      - connectorName: KnoCommerce Trigger
+                        connectorId: 3fe19002-a854-466a-b1c7-682d6fbe398a
+                        connector: knoCommerceTrigger
+                        icon: https://cdn.runalloy.com/icons/knoCommerce.png
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      security: []
+      tags:
+      - Workflows
+  /workflows/deactivate:
+    put:
+      summary: Deactivate a workflow
+      description: 'Disables all future invocations and runs for a given workflow.
+
+
+        By deactivating a workflow, this endpoint will turn off any events or webhooks a workflow is subscribed to. May be reactivated by the Reactivate workflow endpoint.'
+      operationId: deactivate-a-workflow
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - userId
+              properties:
+                userId:
+                  type: string
+                  description: 'The Id of the user you want to lookup. Returned from the Create User endpoint. Note: you can also use the Embedded user''s `username` in this field.'
+                workflowId:
+                  type: string
+                  description: The Id of the workflow to activate. If you pass this parameter, then `workflowName` is not required.
+                workflowName:
+                  type: string
+                  description: The name of the workflow to activate.  If you pass this parameter, then `workflowId` is not required.
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    activated: false
+              schema:
+                type: object
+                properties:
+                  activated:
+                    type: boolean
+                    example: false
+                    default: true
+      deprecated: false
+      security: []
+      tags:
+      - Workflows
+  /workflows/activate:
+    put:
+      summary: Activate workflow for a user
+      description: Reactivates a workflow that was previously disabled by the Disable Workflow endpoint. This endpoint requires a specified WorkflowId and returns a success/failure.
+      operationId: activate-a-workflow
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - userId
+              properties:
+                userId:
+                  type: string
+                  description: 'The Id of the user you want to lookup. Returned from the Create User endpoint. Note: you can also use the Embedded user''s `username` in this field.'
+                workflowName:
+                  type: string
+                  description: The name of the workflow to activate.  If you pass this parameter, then `workflowId` is not required.
+                workflowId:
+                  type: string
+                  description: The Id of the workflow to activate. If you pass this parameter, then `workflowName` is not required.
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    activated: true
+              schema:
+                type: object
+                properties:
+                  activated:
+                    type: boolean
+                    example: true
+                    default: true
+      deprecated: false
+      security: []
+      tags:
+      - Workflows
+  /workflows/{workflowId}/analytics:
+    get:
+      summary: Retrieve usage metrics for a workflow
+      description: This endpoint returns the `totalAppActions` (the number of times each block inside the workflow has been executed over the course of the workflow's lifetime), the `totalWorkflowRuns` (which represents the number of times the workflow has been invoked) and the `totalErrors` (the number of times the workflow has had an error).
+      operationId: get-workflow-analytics
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      - name: workflowId
+        in: path
+        description: The Id of the workflow you want to find errors for
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    totalAppActions: 14
+                    totalWorkflowRuns: 14
+                    totalErrors: 0
+              schema:
+                type: object
+                properties:
+                  totalAppActions:
+                    type: integer
+                    example: 14
+                    default: 0
+                  totalWorkflowRuns:
+                    type: integer
+                    example: 14
+                    default: 0
+                  totalErrors:
+                    type: integer
+                    example: 0
+                    default: 0
+      deprecated: false
+      security: []
+      tags:
+      - Workflows
+  /workflows/{workflowId}/logs:
+    get:
+      summary: Retrieve logs for a single workflow
+      description: 'Retrieves log data for a given workflow.
+
+        Each log includes the `executionId` (which can be used to rerun an execution), the `startedAt` and `stoppedAt` date stamps, and the JSON output of the execution.'
+      operationId: get-workflow-logs
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      - name: workflowId
+        in: path
+        description: The Id of the git workflow you want to find logs for
+        schema:
+          type: string
+        required: true
+      - name: userId
+        in: query
+        description: The Id of the user you want delete logs for. Returned from the Create User endpoint
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: page of results
+        schema:
+          type: integer
+          format: int32
+      - name: limit
+        in: query
+        description: Number of results per page (max 30, default 10)
+        schema:
+          type: integer
+          format: int32
+      - name: order
+        in: query
+        description: asc or desc for ascending/descending (default desc)
+        schema:
+          type: string
+      x-code-samples:
+      - lang: cURL
+        source: "curl -X GET \"https://production.runalloy.com/workflows/{workflowId}/logs?userId={{userId}}\" \\\n  -H \"Authorization: bearer YOUR_API_KEY\" \\\n  -H \"x-api-version: 2025-09\"\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://production.runalloy.com/workflows/{workflowId}/logs\"\nparams = {\"userId\": \"{{userId}}\"}\nheaders = {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n}\n\nresponse = requests.get(url, params=params, headers=headers)\nprint(response.json())\n"
+      - lang: JavaScript
+        source: "const userId = \"{{userId}}\";\nconst workflowId = \"{workflowId}\";\nconst url = `https://production.runalloy.com/workflows/${workflowId}/logs?userId=${userId}`;\n\nfetch(url, {\n  method: \"GET\",\n  headers: {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n  }\n})\n  .then(response => response.json())\n  .then(data => console.log(data))\n  .catch(error => console.error(\"Error:\", error));\n"
+      - lang: PHP
+        source: "<?php\n$userId = \"{{userId}}\";\n$workflowId = \"{workflowId}\";\n$url = \"https://production.runalloy.com/workflows/{$workflowId}/logs?userId=\" . urlencode($userId);\n\n$ch = curl_init($url);\ncurl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\ncurl_setopt($ch, CURLOPT_HTTPHEADER, [\n    \"Authorization: bearer YOUR_API_KEY\",\n    \"x-api-version: 2025-09\"\n]);\n\n$response = curl_exec($ch);\ncurl_close($ch);\n$data = json_decode($response, true);\nprint_r($data);\n?>\n"
+      - lang: Go
+        source: "package main\n\nimport (\n    \"encoding/json\"\n    \"fmt\"\n    \"io\"\n    \"net/http\"\n    \"net/url\"\n)\n\nfunc main() {\n    userId := \"{{userId}}\"\n    workflowId := \"{workflowId}\"\n    baseURL := \"https://production.runalloy.com/workflows/\" + workflowId + \"/logs\"\n    params := url.Values{}\n    params.Add(\"userId\", userId)\n    fullURL := baseURL + \"?\" + params.Encode()\n\n    req, _ := http.NewRequest(\"GET\", fullURL, nil)\n    req.Header.Set(\"Authorization\", \"bearer YOUR_API_KEY\")\n    req.Header.Set(\"x-api-version\", \"2025-09\")\n\n    client := &http.Client{}\n    resp, _ := client.Do(req)\n    defer resp.Body.Close()\n\n    body, _ := io.ReadAll(resp.Body)\n    var data map[string]interface{}\n    json.Unmarshal(body, &data)\n    fmt.Println(data)\n}\n"
+      - lang: Java
+        source: "import java.net.HttpURLConnection;\nimport java.net.URL;\nimport java.io.BufferedReader;\nimport java.io.InputStreamReader;\nimport com.google.gson.Gson;\nimport java.util.Map;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String userId = \"{{userId}}\";\n        String workflowId = \"{workflowId}\";\n        String baseUrl = \"https://production.runalloy.com/workflows/\" + workflowId + \"/logs\";\n        String urlString = baseUrl + \"?userId=\" + java.net.URLEncoder.encode(userId, \"UTF-8\");\n        \n        URL url = new URL(urlString);\n        HttpURLConnection conn = (HttpURLConnection) url.openConnection();\n        conn.setRequestMethod(\"GET\");\n        conn.setRequestProperty(\"Authorization\", \"bearer YOUR_API_KEY\");\n        conn.setRequestProperty(\"x-api-version\", \"2025-09\");\n        \n        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));\n        String inputLine;\n        StringBuilder response = new StringBuilder();\n        while ((inputLine = in.readLine()) != null) {\n            response.append(inputLine);\n        }\n        in.close();\n        \n        Gson gson = new Gson();\n        Map<String, Object> data = gson.fromJson(response.toString(), Map.class);\n        System.out.println(data);\n    }\n}\n"
+      - lang: Ruby
+        source: 'require ''net/http''
+
+          require ''json''
+
+          require ''uri''
+
+
+          userId = "{{userId}}"
+
+          workflowId = "{workflowId}"
+
+          base_url = "https://production.runalloy.com/workflows/#{workflowId}/logs"
+
+          uri = URI(base_url)
+
+          params = { userId: userId }
+
+          uri.query = URI.encode_www_form(params)
+
+
+          http = Net::HTTP.new(uri.host, uri.port)
+
+          http.use_ssl = true
+
+
+          request = Net::HTTP::Get.new(uri)
+
+          request[''Authorization''] = ''bearer YOUR_API_KEY''
+
+          request[''x-api-version''] = ''2025-09''
+
+
+          response = http.request(request)
+
+          data = JSON.parse(response.body)
+
+          puts data
+
+          '
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    data:
+                    - executionId: uGmauA50FBlibba3JkPfB
+                      startedAt: '2024-11-15T17:57:42.233Z'
+                      stoppedAt: '2024-11-15T17:57:42.847Z'
+                      finished: true
+                      results:
+                      - startedAt: '2024-11-15T17:57:42.233Z'
+                        stoppedAt: '2024-11-15T17:57:42.287Z'
+                        data:
+                        - - json: {}
+                            id: 1e2ef00f-af4c-405e-88b7-c71536d28ddd
+                        connectorId: 6ad63c40-1abc-4289-8287-c62ef8bb2003
+                      - startedAt: '2024-11-15T17:57:42.391Z'
+                        data:
+                        - - json: null
+                            profileId:
+                              type: profile
+                              id: 01F1EQ9A32KABYFC7Q0QNNHH33
+                              attributes:
+                                email: gregg@runalloy.com
+                                phone_number: '+12394750599'
+                                external_id: null
+                              relationships:
+                                lists:
+                                  links:
+                                    self: https://a.klaviyo.com/api/profiles/01F1EQ9A32KABYFC7Q0QNNHH33/relationships/lists/
+                                    related: https://a.klaviyo.com/api/profiles/01F1EQ9A32KABYFC7Q0QNNHH33/lists/
+                                segments:
+                                  links:
+                                    self: https://a.klaviyo.com/api/profiles/01F1EQ9A32KABYFC7Q0QNNHH33/relationships/segments/
+                                    related: https://a.klaviyo.com/api/profiles/01F1EQ9A32KABYFC7Q0QNNHH33/segments/
+                                conversation:
+                                  links:
+                                    self: https://a.klaviyo.com/api/profiles/01F1EQ9A32KABYFC7Q0QNNHH33/relationships/conversation/
+                                    related: https://a.klaviyo.com/api/profiles/01F1EQ9A32KABYFC7Q0QNNHH33/conversation/
+                              links:
+                                self: https://a.klaviyo.com/api/profiles/01F1EQ9A32KABYFC7Q0QNNHH33/
+                            statusCode: 200
+                            id: a6c68f48-4ef0-4d16-a009-3b47db6f611f
+                        stoppedAt: '2024-11-15T17:57:42.781Z'
+                        connectorId: ae331681-25a5-452c-8d21-884fada67437
+                      inputs:
+                      - connectorId: 6ad63c40-1abc-4289-8287-c62ef8bb2003
+                        data: {}
+                      - connectorId: ae331681-25a5-452c-8d21-884fada67437
+                        data:
+                          apiVersion: legacy
+                          profileFrom: emailAddress
+                          email: gregg@runalloy.com
+      deprecated: false
+      security: []
+      tags:
+      - Workflows
+  /workflows/{workflowId}/errors:
+    get:
+      summary: Retrieve all error logs for a workflow
+      description: 'Use this endpoint to get the error logs for a specific workflow.
+
+        It returns the error message, and the date stamp when the error was thrown, the block that caused the error, and the `workflowId` . Commonly used to debug workflows when they error and identify historical errors; this endpoint may be used in conjunction with the route error messages feature.
+
+
+        If there are no errors for the specified workflow, this endpoint will return an empty array.'
+      operationId: get-workflow-errors
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      - name: workflowId
+        in: path
+        description: The Id of the workflow you want to find errors for
+        schema:
+          type: string
+        required: true
+      - name: userId
+        in: query
+        description: The Id of the user
+        schema:
+          type: string
+      x-code-samples:
+      - lang: cURL
+        source: "curl -X GET \"https://production.runalloy.com/workflows/{workflowId}/errors?userId={{userId}}\" \\\n  -H \"Authorization: bearer YOUR_API_KEY\" \\\n  -H \"x-api-version: 2025-09\"\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://production.runalloy.com/workflows/{workflowId}/errors\"\nparams = {\"userId\": \"{{userId}}\"}\nheaders = {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n}\n\nresponse = requests.get(url, params=params, headers=headers)\nprint(response.json())\n"
+      - lang: JavaScript
+        source: "const userId = \"{{userId}}\";\nconst workflowId = \"{workflowId}\";\nconst url = `https://production.runalloy.com/workflows/${workflowId}/errors?userId=${userId}`;\n\nfetch(url, {\n  method: \"GET\",\n  headers: {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n  }\n})\n  .then(response => response.json())\n  .then(data => console.log(data))\n  .catch(error => console.error(\"Error:\", error));\n"
+      - lang: PHP
+        source: "<?php\n$userId = \"{{userId}}\";\n$workflowId = \"{workflowId}\";\n$url = \"https://production.runalloy.com/workflows/{$workflowId}/errors?userId=\" . urlencode($userId);\n\n$ch = curl_init($url);\ncurl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\ncurl_setopt($ch, CURLOPT_HTTPHEADER, [\n    \"Authorization: bearer YOUR_API_KEY\",\n    \"x-api-version: 2025-09\"\n]);\n\n$response = curl_exec($ch);\ncurl_close($ch);\n$data = json_decode($response, true);\nprint_r($data);\n?>\n"
+      - lang: Go
+        source: "package main\n\nimport (\n    \"encoding/json\"\n    \"fmt\"\n    \"io\"\n    \"net/http\"\n    \"net/url\"\n)\n\nfunc main() {\n    userId := \"{{userId}}\"\n    workflowId := \"{workflowId}\"\n    baseURL := \"https://production.runalloy.com/workflows/\" + workflowId + \"/errors\"\n    params := url.Values{}\n    params.Add(\"userId\", userId)\n    fullURL := baseURL + \"?\" + params.Encode()\n\n    req, _ := http.NewRequest(\"GET\", fullURL, nil)\n    req.Header.Set(\"Authorization\", \"bearer YOUR_API_KEY\")\n    req.Header.Set(\"x-api-version\", \"2025-09\")\n\n    client := &http.Client{}\n    resp, _ := client.Do(req)\n    defer resp.Body.Close()\n\n    body, _ := io.ReadAll(resp.Body)\n    var data map[string]interface{}\n    json.Unmarshal(body, &data)\n    fmt.Println(data)\n}\n"
+      - lang: Java
+        source: "import java.net.HttpURLConnection;\nimport java.net.URL;\nimport java.io.BufferedReader;\nimport java.io.InputStreamReader;\nimport com.google.gson.Gson;\nimport java.util.Map;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String userId = \"{{userId}}\";\n        String workflowId = \"{workflowId}\";\n        String baseUrl = \"https://production.runalloy.com/workflows/\" + workflowId + \"/errors\";\n        String urlString = baseUrl + \"?userId=\" + java.net.URLEncoder.encode(userId, \"UTF-8\");\n        \n        URL url = new URL(urlString);\n        HttpURLConnection conn = (HttpURLConnection) url.openConnection();\n        conn.setRequestMethod(\"GET\");\n        conn.setRequestProperty(\"Authorization\", \"bearer YOUR_API_KEY\");\n        conn.setRequestProperty(\"x-api-version\", \"2025-09\");\n        \n        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));\n        String inputLine;\n        StringBuilder response = new StringBuilder();\n        while ((inputLine = in.readLine()) != null) {\n            response.append(inputLine);\n        }\n        in.close();\n        \n        Gson gson = new Gson();\n        Map<String, Object> data = gson.fromJson(response.toString(), Map.class);\n        System.out.println(data);\n    }\n}\n"
+      - lang: Ruby
+        source: 'require ''net/http''
+
+          require ''json''
+
+          require ''uri''
+
+
+          userId = "{{userId}}"
+
+          workflowId = "{workflowId}"
+
+          base_url = "https://production.runalloy.com/workflows/#{workflowId}/errors"
+
+          uri = URI(base_url)
+
+          params = { userId: userId }
+
+          uri.query = URI.encode_www_form(params)
+
+
+          http = Net::HTTP.new(uri.host, uri.port)
+
+          http.use_ssl = true
+
+
+          request = Net::HTTP::Get.new(uri)
+
+          request[''Authorization''] = ''bearer YOUR_API_KEY''
+
+          request[''x-api-version''] = ''2025-09''
+
+
+          response = http.request(request)
+
+          data = JSON.parse(response.body)
+
+          puts data
+
+          '
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    data:
+                    - workflowId: 632531cf3beb6c98611abd09
+                      connector: shopify
+                      errorOccurredAt: '2022-09-17T22:12:34.567Z'
+                      message: The customer failed to create due to an invalid Id
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      security: []
+      tags:
+      - Workflows
+  /workflows/{workflowId}/rerun/{executionId}:
+    post:
+      summary: Rerun a single workflow execution
+      description: 'Retrieves log data for a given workflow over time. Logs are stored for a maximum of 7 days before being purged.
+
+
+        Each log includes the `executionId` (which can be used to rerun an execution), the `startedAt` and `stoppedAt` date stamps, and the JSON output of the execution.'
+      operationId: rerun-workfow
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      - name: workflowId
+        in: path
+        description: The Id of the workflow you want to find logs for
+        schema:
+          type: string
+        required: true
+      - name: executionId
+        in: path
+        description: The Id of the execution to rerun. This can be retrieved from the GET Workflow Logs endpoint
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    message: success
+                    executionId: 37e974f0-5d0c4035
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: success
+                  executionId:
+                    type: string
+                    example: 37e974f0-5d0c4035
+      deprecated: false
+      security: []
+      tags:
+      - Workflows
+  /workflows/{workflowId}:
+    delete:
+      summary: Delete a workflow
+      description: Deletes a workflow for a specific user. This endpoint does not delete a workflow for all users.
+      operationId: delete-workflow
+      parameters:
+      - name: userId
+        in: query
+        description: 'The Id of the user you want to lookup. Returned from the Create User endpoint. Note: you can also use the Embedded user''s `username` in this field.'
+        required: true
+        schema:
+          type: string
+      - name: workflowId
+        in: path
+        description: The Id of the workflow to delete
+        schema:
+          type: string
+        required: true
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      x-code-samples:
+      - lang: cURL
+        source: "curl -X DELETE \"https://production.runalloy.com/workflows/{workflowId}?userId={{userId}}\" \\\n  -H \"Authorization: bearer YOUR_API_KEY\" \\\n  -H \"x-api-version: 2025-09\"\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://production.runalloy.com/workflows/{workflowId}\"\nparams = {\"userId\": \"{{userId}}\"}\nheaders = {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n}\n\nresponse = requests.delete(url, params=params, headers=headers)\nprint(response.json())\n"
+      - lang: JavaScript
+        source: "const userId = \"{{userId}}\";\nconst workflowId = \"{workflowId}\";\nconst url = `https://production.runalloy.com/workflows/${workflowId}?userId=${userId}`;\n\nfetch(url, {\n  method: \"DELETE\",\n  headers: {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n  }\n})\n  .then(response => response.json())\n  .then(data => console.log(data))\n  .catch(error => console.error(\"Error:\", error));\n"
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    deleted: true
+              schema:
+                type: object
+                properties:
+                  deleted:
+                    type: boolean
+                    example: true
+      deprecated: false
+      security: []
+      tags:
+      - Workflows
+    get:
+      summary: Retrieve a single workflow
+      description: Find a workflow given a workflowId
+      operationId: find-a-workflow
+      parameters:
+      - name: userId
+        in: query
+        description: 'The Id of the user you want to lookup. Returned from the Create User endpoint. Note: you can also use the Embedded user''s `username` in this field.'
+        required: true
+        schema:
+          type: string
+      - name: workflowId
+        in: path
+        description: The Id of the workflow to find
+        schema:
+          type: string
+        required: true
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      x-code-samples:
+      - lang: cURL
+        source: "curl -X GET \"https://production.runalloy.com/workflows/{workflowId}?userId={{userId}}\" \\\n  -H \"Authorization: bearer YOUR_API_KEY\" \\\n  -H \"x-api-version: 2025-09\"\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://production.runalloy.com/workflows/{workflowId}\"\nparams = {\"userId\": \"{{userId}}\"}\nheaders = {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n}\n\nresponse = requests.get(url, params=params, headers=headers)\nprint(response.json())\n"
+      - lang: JavaScript
+        source: "const userId = \"{{userId}}\";\nconst workflowId = \"{workflowId}\";\nconst url = `https://production.runalloy.com/workflows/${workflowId}?userId=${userId}`;\n\nfetch(url, {\n  method: \"GET\",\n  headers: {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n  }\n})\n  .then(response => response.json())\n  .then(data => console.log(data))\n  .catch(error => console.error(\"Error:\", error));\n"
+      - lang: PHP
+        source: "<?php\n$userId = \"{{userId}}\";\n$workflowId = \"{workflowId}\";\n$url = \"https://production.runalloy.com/workflows/{$workflowId}?userId=\" . urlencode($userId);\n\n$ch = curl_init($url);\ncurl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\ncurl_setopt($ch, CURLOPT_HTTPHEADER, [\n    \"Authorization: bearer YOUR_API_KEY\",\n    \"x-api-version: 2025-09\"\n]);\n\n$response = curl_exec($ch);\ncurl_close($ch);\n$data = json_decode($response, true);\nprint_r($data);\n?>\n"
+      - lang: Go
+        source: "package main\n\nimport (\n    \"encoding/json\"\n    \"fmt\"\n    \"io\"\n    \"net/http\"\n    \"net/url\"\n)\n\nfunc main() {\n    userId := \"{{userId}}\"\n    workflowId := \"{workflowId}\"\n    baseURL := \"https://production.runalloy.com/workflows/\" + workflowId\n    params := url.Values{}\n    params.Add(\"userId\", userId)\n    fullURL := baseURL + \"?\" + params.Encode()\n\n    req, _ := http.NewRequest(\"GET\", fullURL, nil)\n    req.Header.Set(\"Authorization\", \"bearer YOUR_API_KEY\")\n    req.Header.Set(\"x-api-version\", \"2025-09\")\n\n    client := &http.Client{}\n    resp, _ := client.Do(req)\n    defer resp.Body.Close()\n\n    body, _ := io.ReadAll(resp.Body)\n    var data map[string]interface{}\n    json.Unmarshal(body, &data)\n    fmt.Println(data)\n}\n"
+      - lang: Java
+        source: "import java.net.HttpURLConnection;\nimport java.net.URL;\nimport java.io.BufferedReader;\nimport java.io.InputStreamReader;\nimport com.google.gson.Gson;\nimport java.util.Map;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String userId = \"{{userId}}\";\n        String workflowId = \"{workflowId}\";\n        String baseUrl = \"https://production.runalloy.com/workflows/\" + workflowId;\n        String urlString = baseUrl + \"?userId=\" + java.net.URLEncoder.encode(userId, \"UTF-8\");\n        \n        URL url = new URL(urlString);\n        HttpURLConnection conn = (HttpURLConnection) url.openConnection();\n        conn.setRequestMethod(\"GET\");\n        conn.setRequestProperty(\"Authorization\", \"bearer YOUR_API_KEY\");\n        conn.setRequestProperty(\"x-api-version\", \"2025-09\");\n        \n        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));\n        String inputLine;\n        StringBuilder response = new StringBuilder();\n        while ((inputLine = in.readLine()) != null) {\n            response.append(inputLine);\n        }\n        in.close();\n        \n        Gson gson = new Gson();\n        Map<String, Object> data = gson.fromJson(response.toString(), Map.class);\n        System.out.println(data);\n    }\n}\n"
+      - lang: Ruby
+        source: 'require ''net/http''
+
+          require ''json''
+
+          require ''uri''
+
+
+          userId = "{{userId}}"
+
+          workflowId = "{workflowId}"
+
+          base_url = "https://production.runalloy.com/workflows/#{workflowId}"
+
+          uri = URI(base_url)
+
+          params = { userId: userId }
+
+          uri.query = URI.encode_www_form(params)
+
+
+          http = Net::HTTP.new(uri.host, uri.port)
+
+          http.use_ssl = true
+
+
+          request = Net::HTTP::Get.new(uri)
+
+          request[''Authorization''] = ''bearer YOUR_API_KEY''
+
+          request[''x-api-version''] = ''2025-09''
+
+
+          response = http.request(request)
+
+          data = JSON.parse(response.body)
+
+          puts data
+
+          '
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    data:
+                      workflowId: 6544eac8e1ee020334af4ec8
+                      name: 'Untitled Workflow #595'
+                      createdAt: '2023-11-03T12:42:48.304Z'
+                      updatedAt: '2023-11-03T13:12:45.522Z'
+                      installed: false
+                      active: false
+                      version: 1
+                      integrationId: 6544193cd8c482b3fe875101
+                      connectors:
+                      - connectorName: KnoCommerce Trigger
+                        connectorId: 3fe19002-a854-466a-b1c7-682d6fbe398a
+                        connector: knoCommerceTrigger
+                        icon: https://cdn.runalloy.com/icons/knoCommerce.png
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      workflowId:
+                        type: string
+                        example: 61af97f3a64b5900144610d8
+                      integrationId:
+                        type: string
+                        example: 632ca935bb5c785d64d095b5
+                      name:
+                        type: string
+                        example: New Customer Created
+                      createdAt:
+                        type: string
+                        example: '2021-12-07T17:20:51.889Z'
+                      updatedAt:
+                        type: string
+                        example: '2021-12-07T17:36:32.454Z'
+                      installed:
+                        type: boolean
+                        example: true
+                        default: true
+                      active:
+                        type: boolean
+                        example: true
+                        default: true
+                      version:
+                        type: integer
+                        example: 2
+                        default: 0
+                      installedVersion:
+                        type: integer
+                        example: 1
+                        default: 0
+                      connectors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            connectorName:
+                              type: string
+                              example: Custom Event
+                            connectorId:
+                              type: string
+                              example: acd92ef8-303a-4c31-b323-c55fb2d7a41f
+                            connector:
+                              type: string
+                              example: customEvent
+                            icon:
+                              type: string
+                              example: https://cdn.runalloy.com/icons/app-event.svg
+      deprecated: false
+      security: []
+      tags:
+      - Workflows
+  /workflows/{workflowId}/users:
+    get:
+      summary: List Users by workflowId
+      description: ''
+      operationId: list-users-by-workflowid
+      parameters:
+      - name: workflowId
+        in: path
+        description: The Id of the parent workflow you would like to list users for.
+        schema:
+          type: string
+        required: true
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    data:
+                    - username: alexmcvar@runalloy.com
+                      fullName: Alex McVarish
+                      userId: 6398f116aaab31dbb69df94d
+                      workflowActive: true
+                      installedAt: '2023-11-03T18:02:28.296Z'
+                    - username: brandonl@runalloy.com
+                      fullName: Brandon Looker
+                      userId: 6398f895dk5b31dbh69df7d7
+                      workflowActive: true
+                      installedVersion: 2
+                      installedAt: '2023-11-03T18:02:28.296Z'
+                    - username: abdullah+embedded3@runalloy.com
+                      fullName: Abdullah Wali
+                      userId: 63fec7df57e0a6da84257316
+                      workflowActive: true
+                      installedAt: '2023-11-03T18:02:28.296Z'
+                    - username: devanshMehta@runalloy.com
+                      fullName: Devansh Mehta
+                      userId: 63feca0157e0a6da8425731b
+                      workflowActive: false
+                      installedVersion: 2
+                      installedAt: '2023-11-03T18:02:28.296Z'
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      security: []
+      tags:
+      - Workflows
+  /workflows/{workflowId}/upgrade:
+    put:
+      summary: Upgrade a workflow
+      description: 'This endpoint allows you as the ISV to upgrade the workflow for a specified end user.
+
+
+        In order to upgrade a workflow via this endpoint, the new workflow must have the same configurable fields as the original. If any new configurable fields were added, you will not be able to upgrade the workflow programmatically and instead would need to reinstall the workflow for the end user.'
+      operationId: upgrade-workflow
+      parameters:
+      - name: workflowId
+        in: path
+        description: Id of the parent workflow in which you are upgrading for the end user
+        schema:
+          type: string
+        required: true
+      - name: userId
+        in: query
+        description: Id of the end user you wish to upgrade the workflow for
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      x-code-samples:
+      - lang: cURL
+        source: "curl -X PUT \"https://production.runalloy.com/workflows/{workflowId}/upgrade?userId={{userId}}\" \\\n  -H \"Authorization: bearer YOUR_API_KEY\" \\\n  -H \"x-api-version: 2025-09\"\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://production.runalloy.com/workflows/{workflowId}/upgrade\"\nparams = {\"userId\": \"{{userId}}\"}\nheaders = {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n}\n\nresponse = requests.put(url, params=params, headers=headers)\nprint(response.json())\n"
+      - lang: JavaScript
+        source: "const userId = \"{{userId}}\";\nconst workflowId = \"{workflowId}\";\nconst url = `https://production.runalloy.com/workflows/${workflowId}/upgrade?userId=${userId}`;\n\nfetch(url, {\n  method: \"PUT\",\n  headers: {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n  }\n})\n  .then(response => response.json())\n  .then(data => console.log(data))\n  .catch(error => console.error(\"Error:\", error));\n"
+      - lang: PHP
+        source: "<?php\n$userId = \"{{userId}}\";\n$workflowId = \"{workflowId}\";\n$url = \"https://production.runalloy.com/workflows/{$workflowId}/upgrade?userId=\" . urlencode($userId);\n\n$ch = curl_init($url);\ncurl_setopt($ch, CURLOPT_CUSTOMREQUEST, \"PUT\");\ncurl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\ncurl_setopt($ch, CURLOPT_HTTPHEADER, [\n    \"Authorization: bearer YOUR_API_KEY\",\n    \"x-api-version: 2025-09\"\n]);\n\n$response = curl_exec($ch);\ncurl_close($ch);\n$data = json_decode($response, true);\nprint_r($data);\n?>\n"
+      - lang: Go
+        source: "package main\n\nimport (\n    \"encoding/json\"\n    \"fmt\"\n    \"io\"\n    \"net/http\"\n    \"net/url\"\n)\n\nfunc main() {\n    userId := \"{{userId}}\"\n    workflowId := \"{workflowId}\"\n    baseURL := \"https://production.runalloy.com/workflows/\" + workflowId + \"/upgrade\"\n    params := url.Values{}\n    params.Add(\"userId\", userId)\n    fullURL := baseURL + \"?\" + params.Encode()\n\n    req, _ := http.NewRequest(\"PUT\", fullURL, nil)\n    req.Header.Set(\"Authorization\", \"bearer YOUR_API_KEY\")\n    req.Header.Set(\"x-api-version\", \"2025-09\")\n\n    client := &http.Client{}\n    resp, _ := client.Do(req)\n    defer resp.Body.Close()\n\n    body, _ := io.ReadAll(resp.Body)\n    var data map[string]interface{}\n    json.Unmarshal(body, &data)\n    fmt.Println(data)\n}\n"
+      - lang: Java
+        source: "import java.net.HttpURLConnection;\nimport java.net.URL;\nimport java.io.BufferedReader;\nimport java.io.InputStreamReader;\nimport com.google.gson.Gson;\nimport java.util.Map;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String userId = \"{{userId}}\";\n        String workflowId = \"{workflowId}\";\n        String baseUrl = \"https://production.runalloy.com/workflows/\" + workflowId + \"/upgrade\";\n        String urlString = baseUrl + \"?userId=\" + java.net.URLEncoder.encode(userId, \"UTF-8\");\n        \n        URL url = new URL(urlString);\n        HttpURLConnection conn = (HttpURLConnection) url.openConnection();\n        conn.setRequestMethod(\"PUT\");\n        conn.setRequestProperty(\"Authorization\", \"bearer YOUR_API_KEY\");\n        conn.setRequestProperty(\"x-api-version\", \"2025-09\");\n        \n        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));\n        String inputLine;\n        StringBuilder response = new StringBuilder();\n        while ((inputLine = in.readLine()) != null) {\n            response.append(inputLine);\n        }\n        in.close();\n        \n        Gson gson = new Gson();\n        Map<String, Object> data = gson.fromJson(response.toString(), Map.class);\n        System.out.println(data);\n    }\n}\n"
+      - lang: Ruby
+        source: 'require ''net/http''
+
+          require ''json''
+
+          require ''uri''
+
+
+          userId = "{{userId}}"
+
+          workflowId = "{workflowId}"
+
+          base_url = "https://production.runalloy.com/workflows/#{workflowId}/upgrade"
+
+          uri = URI(base_url)
+
+          params = { userId: userId }
+
+          uri.query = URI.encode_www_form(params)
+
+
+          http = Net::HTTP.new(uri.host, uri.port)
+
+          http.use_ssl = true
+
+
+          request = Net::HTTP::Put.new(uri)
+
+          request[''Authorization''] = ''bearer YOUR_API_KEY''
+
+          request[''x-api-version''] = ''2025-09''
+
+
+          response = http.request(request)
+
+          data = JSON.parse(response.body)
+
+          puts data
+
+          '
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    upgraded: true
+              schema:
+                type: object
+                properties:
+                  upgraded:
+                    type: boolean
+                    example: true
+                    default: true
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      security: []
+      tags:
+      - Workflows
+  /workflows/{workflowId}/versions:
+    get:
+      summary: Retrieve a list of workflow versions
+      description: Returns a list of all versions available for a given workflow
+      operationId: list-versions
+      parameters:
+      - name: userId
+        in: query
+        description: 'The Id of the user you want to lookup. Returned from the Create User endpoint. Note: you can also use the Embedded user''s `username` in this field.'
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      - name: workflowId
+        in: path
+        description: The Id of the workflow you want to retrieve versions for
+        schema:
+          type: string
+        required: true
+      x-code-samples:
+      - lang: cURL
+        source: "curl -X GET \"https://production.runalloy.com/workflows/{workflowId}/versions?userId={{userId}}\" \\\n  -H \"Authorization: bearer YOUR_API_KEY\" \\\n  -H \"x-api-version: 2025-09\"\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://production.runalloy.com/workflows/{workflowId}/versions\"\nparams = {\"userId\": \"{{userId}}\"}\nheaders = {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n}\n\nresponse = requests.get(url, params=params, headers=headers)\nprint(response.json())\n"
+      - lang: JavaScript
+        source: "const userId = \"{{userId}}\";\nconst workflowId = \"{workflowId}\";\nconst url = `https://production.runalloy.com/workflows/${workflowId}/versions?userId=${userId}`;\n\nfetch(url, {\n  method: \"GET\",\n  headers: {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n  }\n})\n  .then(response => response.json())\n  .then(data => console.log(data))\n  .catch(error => console.error(\"Error:\", error));\n"
+      - lang: PHP
+        source: "<?php\n$userId = \"{{userId}}\";\n$workflowId = \"{workflowId}\";\n$url = \"https://production.runalloy.com/workflows/{$workflowId}/versions?userId=\" . urlencode($userId);\n\n$ch = curl_init($url);\ncurl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\ncurl_setopt($ch, CURLOPT_HTTPHEADER, [\n    \"Authorization: bearer YOUR_API_KEY\",\n    \"x-api-version: 2025-09\"\n]);\n\n$response = curl_exec($ch);\ncurl_close($ch);\n$data = json_decode($response, true);\nprint_r($data);\n?>\n"
+      - lang: Go
+        source: "package main\n\nimport (\n    \"encoding/json\"\n    \"fmt\"\n    \"io\"\n    \"net/http\"\n    \"net/url\"\n)\n\nfunc main() {\n    userId := \"{{userId}}\"\n    workflowId := \"{workflowId}\"\n    baseURL := \"https://production.runalloy.com/workflows/\" + workflowId + \"/versions\"\n    params := url.Values{}\n    params.Add(\"userId\", userId)\n    fullURL := baseURL + \"?\" + params.Encode()\n\n    req, _ := http.NewRequest(\"GET\", fullURL, nil)\n    req.Header.Set(\"Authorization\", \"bearer YOUR_API_KEY\")\n    req.Header.Set(\"x-api-version\", \"2025-09\")\n\n    client := &http.Client{}\n    resp, _ := client.Do(req)\n    defer resp.Body.Close()\n\n    body, _ := io.ReadAll(resp.Body)\n    var data map[string]interface{}\n    json.Unmarshal(body, &data)\n    fmt.Println(data)\n}\n"
+      - lang: Java
+        source: "import java.net.HttpURLConnection;\nimport java.net.URL;\nimport java.io.BufferedReader;\nimport java.io.InputStreamReader;\nimport com.google.gson.Gson;\nimport java.util.Map;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String userId = \"{{userId}}\";\n        String workflowId = \"{workflowId}\";\n        String baseUrl = \"https://production.runalloy.com/workflows/\" + workflowId + \"/versions\";\n        String urlString = baseUrl + \"?userId=\" + java.net.URLEncoder.encode(userId, \"UTF-8\");\n        \n        URL url = new URL(urlString);\n        HttpURLConnection conn = (HttpURLConnection) url.openConnection();\n        conn.setRequestMethod(\"GET\");\n        conn.setRequestProperty(\"Authorization\", \"bearer YOUR_API_KEY\");\n        conn.setRequestProperty(\"x-api-version\", \"2025-09\");\n        \n        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));\n        String inputLine;\n        StringBuilder response = new StringBuilder();\n        while ((inputLine = in.readLine()) != null) {\n            response.append(inputLine);\n        }\n        in.close();\n        \n        Gson gson = new Gson();\n        Map<String, Object> data = gson.fromJson(response.toString(), Map.class);\n        System.out.println(data);\n    }\n}\n"
+      - lang: Ruby
+        source: 'require ''net/http''
+
+          require ''json''
+
+          require ''uri''
+
+
+          userId = "{{userId}}"
+
+          workflowId = "{workflowId}"
+
+          base_url = "https://production.runalloy.com/workflows/#{workflowId}/versions"
+
+          uri = URI(base_url)
+
+          params = { userId: userId }
+
+          uri.query = URI.encode_www_form(params)
+
+
+          http = Net::HTTP.new(uri.host, uri.port)
+
+          http.use_ssl = true
+
+
+          request = Net::HTTP::Get.new(uri)
+
+          request[''Authorization''] = ''bearer YOUR_API_KEY''
+
+          request[''x-api-version''] = ''2025-09''
+
+
+          response = http.request(request)
+
+          data = JSON.parse(response.body)
+
+          puts data
+
+          '
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    data:
+                    - versionId: 64e176068b7928bceb2ff557
+                      versionName: Version 1
+                      lastModified: '2023-12-07T17:20:51.889Z'
+                      status: inactive
+                    - versionId: 64e1760bb03ee19a07a2ee35
+                      versionName: Version 2
+                      lastModified: '2023-12-07T17:20:51.889Z'
+                      status: active
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      security: []
+      tags:
+      - Workflows
+components:
+  parameters:
+    xApiVersion:
+      name: x-api-version
+      in: header
+      required: true
+      description: The version of the API to use. The current API version is **2025-09**.
+      schema:
+        type: string
+        default: 2025-09
+  securitySchemes:
+    sec0:
+      type: apiKey
+      in: header
+      name: Authorization
+      x-bearer-format: bearer
+x-readme:
+  headers: []
+  explorer-enabled: true
+  proxy-enabled: true
+x-readme-fauxas: true

@@ -1,0 +1,143 @@
+openapi: 3.2.0
+info:
+  title: Embedded 2025-09 Run API
+  version: '5.0'
+servers:
+- url: https://production.runalloy.com
+tags:
+- name: Run
+paths:
+  /run/event:
+    post:
+      summary: Trigger an event for a user
+      description: 'This endpoint runs a workflow that uses a **Custom Event**. Note that this endpoint cannot be used to invoke a workflow that has a Custom Webhook Trigger.
+
+
+        If you have defined a custom JSON body for the Custom Event, it should be passed into the `data` body parameter.'
+      operationId: run-event
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - event
+              - userId
+              - data
+              properties:
+                event:
+                  type: string
+                  description: The name of the custom event to run.
+                userId:
+                  type: string
+                  description: The user Id the workflow belongs to
+                data:
+                  type: object
+                  description: The key-value pairs you want to send as defined in the custom event. This data will be used in expressions during the workflow execution.
+                  additionalProperties:
+                    type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    message: Event successfully triggered
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Event successfully triggered
+      deprecated: false
+      security: []
+      tags:
+      - Run
+  /run/workflow:
+    post:
+      summary: Run Workflow
+      description: This endpoint runs a workflow that uses a **Webhook Trigger.** Note that this endpoint should not be used to invoke a workflow that has a Custom Event. If you have defined a custom JSON body for the webhook trigger, it should be passed into the `data` body parameter.
+      operationId: run-workflow
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - userId
+              - workflowId
+              - workflowName
+              - data
+              properties:
+                workflowName:
+                  type: string
+                  description: The name of the workflow to run.
+                workflowId:
+                  type: string
+                  description: The Id of the workflow to activate. If you pass this parameter, then `workflowName` is not required.
+                userId:
+                  type: string
+                  description: 'The Id of the user you want to lookup. Returned from the Create User endpoint. Note: you can also use the Embedded user''s `username` in this field.'
+                data:
+                  type: object
+                  description: The key-value pairs you want to send as defined in the webhook trigger. This data will be used in expressions during the workflow execution.
+                  example:
+                    key: value
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    message: success
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: success
+      deprecated: false
+      security: []
+      tags:
+      - Run
+components:
+  parameters:
+    xApiVersion:
+      name: x-api-version
+      in: header
+      required: true
+      description: The version of the API to use. The current API version is **2025-09**.
+      schema:
+        type: string
+        default: 2025-09
+  securitySchemes:
+    sec0:
+      type: apiKey
+      in: header
+      name: Authorization
+      x-bearer-format: bearer
+x-readme:
+  headers: []
+  explorer-enabled: true
+  proxy-enabled: true
+x-readme-fauxas: true

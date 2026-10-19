@@ -1,114 +1,105 @@
 openapi: 3.2.0
 info:
-  title: Alloy Automation Embedded & Unified Events API
-  description: Alloy Automation is an embedded integration platform (iPaaS) and Unified API for SaaS products.
-  version: 2024-03
-  contact:
-    name: Alloy Automation Support
-    url: https://docs.runalloy.com
-  termsOfService: https://runalloy.com/terms/
+  title: Embedded 2025-09 Events API
+  version: '5.0'
 servers:
-- url: https://embedded.runalloy.com/2024-03
-  description: Embedded, Connectivity, Passthrough, and Unified API (2024-03)
-security:
-- bearerAuth: []
+- url: https://production.runalloy.com
 tags:
 - name: Events
-  description: Execution events and observability.
 paths:
   /events:
     get:
-      operationId: listEvents
-      tags:
-      - Events
-      summary: List events
-      description: Lists execution and provider events for observability. Supports pagination via cursor.
+      summary: Retrieve a list of custom events
+      description: Returns a list of all Custom Events you have enabled in Alloy Embedded.
+      operationId: list-events
       parameters:
-      - name: userId
-        in: query
-        required: false
+      - name: Authorization
+        in: header
+        required: true
         schema:
           type: string
-      - $ref: '#/components/parameters/Cursor'
-      - $ref: '#/components/parameters/Limit'
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
       responses:
         '200':
-          description: A page of events
+          description: '200'
           content:
             application/json:
+              examples:
+                Result:
+                  value:
+                    data:
+                    - name: Customer Created
+                      description: This event is invoked every time a customer is created in your app
+                      body:
+                        name: Gregg
+                        email: support@runalloy.com
+                    - name: Order created
+                      description: Triggers when an order is created in ACME
+                      body:
+                        orderId: '0001'
+                        orderName: My order
+                        customerEmail: support@runalloy.com
+                        customerPhone: '1234567891'
+                    - name: Invoke Slack
+                      description: Invokes Slack
+                      body:
+                        name: New order created
               schema:
                 type: object
                 properties:
-                  events:
+                  data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Event'
-                  pageInfo:
-                    $ref: '#/components/schemas/PageInfo'
-  /events/{eventId}:
-    parameters:
-    - name: eventId
-      in: path
-      required: true
-      schema:
-        type: string
-    get:
-      operationId: getEvent
-      tags:
-      - Events
-      summary: Retrieve an event
-      responses:
-        '200':
-          description: The event
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: Customer Created
+                        description:
+                          type: string
+                          example: This event is invoked every time a customer is created in your app
+                        body:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              example: Gregg
+                            email:
+                              type: string
+                              example: support@runalloy.com
+        '400':
+          description: '400'
           content:
             application/json:
+              examples:
+                Result:
+                  value: '{}'
               schema:
-                $ref: '#/components/schemas/Event'
+                type: object
+                properties: {}
+      deprecated: false
+      security: []
+      tags:
+      - Events
 components:
   parameters:
-    Limit:
-      name: limit
-      in: query
-      required: false
-      schema:
-        type: integer
-        default: 50
-        maximum: 250
-      description: Maximum number of records to return per page.
-    Cursor:
-      name: cursor
-      in: query
-      required: false
+    xApiVersion:
+      name: x-api-version
+      in: header
+      required: true
+      description: The version of the API to use. The current API version is **2025-09**.
       schema:
         type: string
-      description: Opaque pagination cursor from a prior pageInfo.
-  schemas:
-    Event:
-      type: object
-      properties:
-        eventId:
-          type: string
-        userId:
-          type: string
-        type:
-          type: string
-        status:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        data:
-          type: object
-          additionalProperties: true
-    PageInfo:
-      type: object
-      properties:
-        hasNextPage:
-          type: boolean
-        nextCursor:
-          type: string
+        default: 2025-09
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      description: 'Bearer API key in the Authorization header, e.g. `Authorization: Bearer YOUR_API_KEY`. Frontend calls use a per-user JWT instead of the master key.'
+    sec0:
+      type: apiKey
+      in: header
+      name: Authorization
+      x-bearer-format: bearer
+x-readme:
+  headers: []
+  explorer-enabled: true
+  proxy-enabled: true
+x-readme-fauxas: true

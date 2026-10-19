@@ -1,0 +1,486 @@
+openapi: 3.2.0
+info:
+  title: Embedded 2025-09 Headless API
+  version: '5.0'
+servers:
+- url: https://production.runalloy.com
+tags:
+- name: Headless
+paths:
+  /headless/credentials:
+    post:
+      summary: Create Credential
+      description: Use this endpoint to add a credential programmatically via the API. This endpoint should be used primarily for non-OAuth blocks. If you are using custom OAuth with an OAuth block and you have the OAuth tokens already, you can add them to Alloy with this endpoint. Please reference this section of our docs for a complete tutorial on when and how to use this endpoint.
+      operationId: create-a-credential
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - credential
+              - userId
+              properties:
+                credential:
+                  type: object
+                  description: The data for the credential you want to create.
+                  properties:
+                    type:
+                      type: string
+                      description: Connector name, e.g., "netsuite".
+                    data:
+                      type: object
+                      description: Connector authentication required parameters.
+                      properties:
+                        realm:
+                          type: string
+                        consumerKey:
+                          type: string
+                        tokenId:
+                          type: string
+                        tokenSecret:
+                          type: string
+                userId:
+                  type: string
+                  description: The id of the currently logged in user
+            examples:
+              Request Example:
+                value:
+                  userId: string
+                  credential:
+                    type: netsuite
+                    data:
+                      realm: XXX
+                      consumerKey: XXX
+                      tokenId: XXX
+                      tokenSecret: XXX
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    success: true
+                    credentialId: 63252d14cc29df15cc481a76
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                    default: true
+                  credentialId:
+                    type: string
+                    example: 63252d14cc29df15cc481a76
+      deprecated: false
+      security: []
+      tags:
+      - Headless
+  /headless/oauthUrl:
+    get:
+      summary: Create OAuth Link
+      description: 'This endpoint can be used to generate an OAuth link if you want to completely white label your authentication experience. You can use this endpoint to generate a link which your users can click to redirect to the specified application without rendering the Alloy Embedded Modal.
+
+
+        Note: this endpoint **only** works with OAuth enabled integrations. To add a credential manually, please use the POST Create Credential API.
+
+
+        This endpoint takes a `userId`, `integrationId`, and `connectorName` as inputs. It should be used in conjunction with the GET Credential Metadata API. `credentialName` represents the name of the integration you want to call.
+
+
+        If the credential metadata endpoint returns any `properties,` you must pass them as query string parameters at the end of this call.
+
+        For example, to generate a `oAuthURL` for Shopify, you''ll need to add the specify `shopifySubdomain` in the query paramter of the URI. Your URI may look like `/oauthUrl?userId=YOUR_USER_ID&app=shopify&shopSubdomain=YOUR_STORE_NAME`'
+      operationId: generate-oauth-link
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      - name: userId
+        in: query
+        description: The id of the user to generate this link for
+        required: true
+        schema:
+          type: string
+      - name: app
+        in: query
+        description: The name of the app you want the user to authorize access to
+        required: true
+        schema:
+          type: string
+      x-code-samples:
+      - lang: cURL
+        source: "curl -X GET \"https://production.runalloy.com/oauthUrl?userId={{userId}}&app=shopify\" \\\n  -H \"Authorization: bearer YOUR_API_KEY\" \\\n  -H \"x-api-version: 2025-09\"\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://production.runalloy.com/oauthUrl\"\nparams = {\"userId\": \"{{userId}}\", \"app\": \"shopify\"}\nheaders = {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n}\n\nresponse = requests.get(url, params=params, headers=headers)\nprint(response.json())\n"
+      - lang: JavaScript
+        source: "const userId = \"{{userId}}\";\nconst app = \"shopify\";\nconst url = `https://production.runalloy.com/oauthUrl?userId=${userId}&app=${app}`;\n\nfetch(url, {\n  method: \"GET\",\n  headers: {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n  }\n})\n  .then(response => response.json())\n  .then(data => console.log(data))\n  .catch(error => console.error(\"Error:\", error));\n"
+      - lang: PHP
+        source: "<?php\n$userId = \"{{userId}}\";\n$app = \"shopify\";\n$url = \"https://production.runalloy.com/oauthUrl?userId=\" . urlencode($userId) . \"&app=\" . urlencode($app);\n\n$ch = curl_init($url);\ncurl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\ncurl_setopt($ch, CURLOPT_HTTPHEADER, [\n    \"Authorization: bearer YOUR_API_KEY\",\n    \"x-api-version: 2025-09\"\n]);\n\n$response = curl_exec($ch);\ncurl_close($ch);\n$data = json_decode($response, true);\nprint_r($data);\n?>\n"
+      - lang: Go
+        source: "package main\n\nimport (\n    \"encoding/json\"\n    \"fmt\"\n    \"io\"\n    \"net/http\"\n    \"net/url\"\n)\n\nfunc main() {\n    userId := \"{{userId}}\"\n    app := \"shopify\"\n    baseURL := \"https://production.runalloy.com/oauthUrl\"\n    params := url.Values{}\n    params.Add(\"userId\", userId)\n    params.Add(\"app\", app)\n    fullURL := baseURL + \"?\" + params.Encode()\n\n    req, _ := http.NewRequest(\"GET\", fullURL, nil)\n    req.Header.Set(\"Authorization\", \"bearer YOUR_API_KEY\")\n    req.Header.Set(\"x-api-version\", \"2025-09\")\n\n    client := &http.Client{}\n    resp, _ := client.Do(req)\n    defer resp.Body.Close()\n\n    body, _ := io.ReadAll(resp.Body)\n    var data map[string]interface{}\n    json.Unmarshal(body, &data)\n    fmt.Println(data)\n}\n"
+      - lang: Java
+        source: "import java.net.HttpURLConnection;\nimport java.net.URL;\nimport java.io.BufferedReader;\nimport java.io.InputStreamReader;\nimport com.google.gson.Gson;\nimport java.util.Map;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String userId = \"{{userId}}\";\n        String app = \"shopify\";\n        String urlString = \"https://production.runalloy.com/oauthUrl?userId=\" + java.net.URLEncoder.encode(userId, \"UTF-8\") + \"&app=\" + java.net.URLEncoder.encode(app, \"UTF-8\");\n        \n        URL url = new URL(urlString);\n        HttpURLConnection conn = (HttpURLConnection) url.openConnection();\n        conn.setRequestMethod(\"GET\");\n        conn.setRequestProperty(\"Authorization\", \"bearer YOUR_API_KEY\");\n        conn.setRequestProperty(\"x-api-version\", \"2025-09\");\n        \n        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));\n        String inputLine;\n        StringBuilder response = new StringBuilder();\n        while ((inputLine = in.readLine()) != null) {\n            response.append(inputLine);\n        }\n        in.close();\n        \n        Gson gson = new Gson();\n        Map<String, Object> data = gson.fromJson(response.toString(), Map.class);\n        System.out.println(data);\n    }\n}\n"
+      - lang: Ruby
+        source: 'require ''net/http''
+
+          require ''json''
+
+          require ''uri''
+
+
+          userId = "{{userId}}"
+
+          app = "shopify"
+
+          uri = URI("https://production.runalloy.com/oauthUrl")
+
+          params = { userId: userId, app: app }
+
+          uri.query = URI.encode_www_form(params)
+
+
+          http = Net::HTTP.new(uri.host, uri.port)
+
+          http.use_ssl = true
+
+
+          request = Net::HTTP::Get.new(uri)
+
+          request[''Authorization''] = ''bearer YOUR_API_KEY''
+
+          request[''x-api-version''] = ''2025-09''
+
+
+          response = http.request(request)
+
+          data = JSON.parse(response.body)
+
+          puts data
+
+          '
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    oauthUrl: https://api.runalloy.com/api/strategy/shopify/authorize?userId=xyz123abc098754&shopSubdomain=my-shoe-store
+              schema:
+                type: object
+                properties:
+                  oauthUrl:
+                    type: string
+                    example: https://api.runalloy.com/api/strategy/shopify/authorize?userId=xyz123abc098754&shopSubdomain=my-shoe-store
+      deprecated: false
+      security: []
+      tags:
+      - Headless
+  /headless/startInstallation:
+    post:
+      summary: Start Installation
+      description: This endpoint will create an installation record and return the information required to create a form for your user to fill out.
+      operationId: start-installation
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - userId
+              - integrationId
+              properties:
+                userId:
+                  type: string
+                  description: ID of the user that will install your integration
+                integrationId:
+                  type: string
+                  description: ID of the integration which is being installed
+                credentialIds:
+                  type: array
+                  description: List of credentials to be used in this installation. If the user has authorized any of the apps in the integration more than once, then this field is required. Otherwise, the user's credentials will be automatically detected.
+                  items:
+                    type: string
+                workflowIds:
+                  type: array
+                  description: A list of workflows to include in this installation, if only a subset is desired. If every workflow in the integration will be installed, this field is optional.
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    data:
+                    - workflowId: 65b7005ae9761102a64ddd3b
+                      app: netsuite
+                      blockId: 3a8a8e50-f0e5-488b-9b7b-53656e93d392
+                      fields:
+                      - name: customerEmail
+                        displayName: Customer's Email
+                        type: string
+                        required: true
+                    installationId: 65b701c2f5ba66db3bc53a68
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        workflowId:
+                          type: string
+                          example: 65b7005ae9761102a64ddd3b
+                        app:
+                          type: string
+                          example: netsuite
+                        blockId:
+                          type: string
+                          example: 3a8a8e50-f0e5-488b-9b7b-53656e93d392
+                        fields:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                                example: customerEmail
+                              displayName:
+                                type: string
+                                example: Customer's Email
+                              type:
+                                type: string
+                                example: string
+                              required:
+                                type: boolean
+                                example: true
+                                default: true
+                  installationId:
+                    type: string
+                    example: 65b701c2f5ba66db3bc53a68
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{"message":"User is not authorized to install integrations for this account"}'
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User is not authorized to install integrations for this account
+      deprecated: false
+      tags:
+      - Headless
+  /headless/completeInstallation:
+    post:
+      summary: Complete Installation
+      description: ''
+      operationId: complete-installation
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - installationId
+              - data
+              properties:
+                installationId:
+                  type: string
+                  description: ID you received when you started the installation.
+                data:
+                  type: array
+                  description: Values filled by user in your installation form
+                  items:
+                    properties:
+                      workflowId:
+                        type: string
+                      blockId:
+                        type: string
+                      fields:
+                        type: array
+                        items:
+                          properties:
+                            name:
+                              type: string
+                            value:
+                              type: string
+                          required:
+                          - name
+                          - value
+                          type: object
+                    required:
+                    - workflowId
+                    - blockId
+                    type: object
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    message: Installation completed successfully
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Installation completed successfully
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Headless
+  /headless/editInstallation:
+    post:
+      summary: Edit Installation
+      description: This endpoint allows you to edit an existing installation for a user. The `credentialIds` and `installationId` are optional parameters. If the user has authorized any of the apps in the integration more than once, then `credentialIds` is required. Otherwise, the user's credentials will be automatically detected.
+      operationId: edit-installation
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - userId
+              - integrationId
+              properties:
+                userId:
+                  type: string
+                  description: The id of the user to generate this link for.
+                  example: string
+                integrationId:
+                  type: string
+                  description: The integration you want to install.
+                  example: string
+                credentialIds:
+                  type: array
+                  items:
+                    type: string
+                  description: List of credentials to be used in this installation. If the user has authorized any of the apps in the integration more than once, then this field is required. Otherwise, the user's credentials will be automatically detected.
+                installationId:
+                  type: string
+                  description: ID you received when you started the installation.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      installationId:
+                        type: string
+                        example: 674570d5160c297be4a3ee74
+                      integrationId:
+                        type: string
+                        example: 66fa99433793749b64c1bf82
+                      userId:
+                        type: string
+                        example: 659d28e18c35f07db18fcd8c
+                      formData:
+                        type: array
+                        items: {}
+                      credentialIds:
+                        type: object
+                        additionalProperties:
+                          type: string
+                        example:
+                          klaviyoApi: 66c79e5965ede8edfa909553
+                      workflowIds:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - 66fa99453793749b64c1bfa8
+                      installedData:
+                        type: array
+                        items: {}
+                      installedAt:
+                        type: string
+                        format: date-time
+                        example: '2024-11-26T06:55:33Z'
+      tags:
+      - Headless
+components:
+  parameters:
+    xApiVersion:
+      name: x-api-version
+      in: header
+      required: true
+      description: The version of the API to use. The current API version is **2025-09**.
+      schema:
+        type: string
+        default: 2025-09
+  securitySchemes:
+    sec0:
+      type: apiKey
+      in: header
+      name: Authorization
+      x-bearer-format: bearer
+x-readme:
+  headers: []
+  explorer-enabled: true
+  proxy-enabled: true
+x-readme-fauxas: true

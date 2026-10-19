@@ -1,0 +1,229 @@
+openapi: 3.2.0
+info:
+  title: Embedded 2025-09 Metadata API
+  version: '5.0'
+servers:
+- url: https://production.runalloy.com
+tags:
+- name: Metadata
+paths:
+  /metadata/credentials:
+    get:
+      summary: Retrieve all credential structures
+      description: 'This endpoint returns a basic structure of what data must be inputted when adding a credential manually. This should be used when creating a credential using the POST credential endpoint.
+
+
+        This endpoint returns the structure of every supported block on Alloy Embedded. It returns a boolean flag called `isOauth` which indicates if the credential uses OAuth or an API key.'
+      operationId: get-credential-metadata
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    data:
+                    - connector: acuityScheduling
+                      icon: https://cdn.runalloy.com/icons/acuityScheduling.png
+                      isOauth: false
+                      properties:
+                      - name: apiKey
+                        displayName: API Key
+                      - name: userId
+                        displayName: User Id
+                    - connector: amazonBusiness
+                      icon: https://cdn.runalloy.com/icons/amazonBusiness.png
+                      isOauth: true
+                      properties:
+                      - name: regionCountry
+                        displayName: Country
+                        description: ''
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        connector:
+                          type: string
+                          example: acuityScheduling
+                        icon:
+                          type: string
+                          example: https://cdn.runalloy.com/icons/acuityScheduling.png
+                        isOauth:
+                          type: boolean
+                          example: false
+                          default: true
+                        properties:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                                example: apiKey
+                              displayName:
+                                type: string
+                                example: API Key
+      deprecated: false
+      security: []
+      tags:
+      - Metadata
+  /metadata/apps:
+    get:
+      summary: Retrieve all supported apps
+      description: Returns all the available apps currently supported by Alloy Embedded
+      operationId: list-apps
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    data:
+                    - connector: acuityScheduling
+                      icon: https://cdn.runalloy.com/icons/acuityScheduling.png
+                      type:
+                      - action
+                      - trigger
+                      oauth: false
+                    - connector: shopify
+                      icon: https://cdn.runalloy.com/icons/shopify.png
+                      type:
+                      - action
+                      - trigger
+                      oauth: true
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      security: []
+      tags:
+      - Metadata
+  /metadata/credentials/{credentialName}:
+    get:
+      summary: Retrieve credential structure for an app
+      description: ''
+      operationId: credential-medata-by-app
+      parameters:
+      - name: credentialName
+        in: path
+        description: Name of connector (camelCased, can be found in App Metadata response)
+        schema:
+          type: string
+        required: true
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    data:
+                      connector: shopify
+                      icon: https://cdn.runalloy.com/icons/shopify.png
+                      isOauth: true
+                      properties:
+                      - name: shopSubdomain
+                        displayName: Shop Subdomain
+                        description: Enter your store subdomain. If your store domain is example.myshopify.com, the subdomain would be example.
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: shopify
+                      icon:
+                        type: string
+                        example: https://cdn.runalloy.com/icons/shopify.png
+                      isOauth:
+                        type: boolean
+                        example: true
+                        default: true
+                      properties:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              example: shopSubdomain
+                            displayName:
+                              type: string
+                              example: Shop Subdomain
+                            description:
+                              type: string
+                              example: Enter your store subdomain. If your store domain is example.myshopify.com, the subdomain would be example.
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      security: []
+      tags:
+      - Metadata
+components:
+  parameters:
+    xApiVersion:
+      name: x-api-version
+      in: header
+      required: true
+      description: The version of the API to use. The current API version is **2025-09**.
+      schema:
+        type: string
+        default: 2025-09
+  securitySchemes:
+    sec0:
+      type: apiKey
+      in: header
+      name: Authorization
+      x-bearer-format: bearer
+x-readme:
+  headers: []
+  explorer-enabled: true
+  proxy-enabled: true
+x-readme-fauxas: true

@@ -1,0 +1,12 @@
+{
+ "url": "https://docs.runalloy.com/openapi/2025-09/embedded/embedded.yaml",
+ "final": "https://docs.runalloy.com/openapi/2025-09/embedded/embedded.yaml",
+ "status": 200,
+ "content_type": "text/yaml",
+ "bytes": 208837,
+ "sha256": "973aef330505c598dca9048736f92909d1dba23a8910433477c26555264941bf",
+ "fetched_at": "2026-10-19",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "re-archived: the provider's current document replaced a stale archive (roadmap#793); the old files are in openapi/_superseded/2026-10-19-stale"
+}

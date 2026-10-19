@@ -1,0 +1,394 @@
+openapi: 3.2.0
+info:
+  title: Embedded 2025-09 Installations API
+  version: '5.0'
+servers:
+- url: https://production.runalloy.com
+tags:
+- name: Installations
+paths:
+  /installations/{installationId}:
+    get:
+      summary: Get Installation
+      description: Retrieves details for a specific installation.
+      operationId: getInstallation
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      - name: installationId
+        in: path
+        required: true
+        description: The ID of the installation.
+        schema:
+          type: string
+          example: 6630f0f971184ae724f2d930
+      responses:
+        '200':
+          description: Successful response with installation details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      installationId:
+                        type: string
+                        example: 6630f0f971184ae724f2d930
+                      integrationId:
+                        type: string
+                        example: 662f950e454784bc5e7caa37
+                      userId:
+                        type: string
+                        example: 6622cd2e506ac293a3e60b00
+                      formData:
+                        type: array
+                        items:
+                          type: object
+                        example: []
+                      credentialIds:
+                        type: object
+                        additionalProperties:
+                          type: string
+                        example:
+                          shopifyApi: 66263e318dca4463fe1b480f
+                      workflowIds:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                        - 662fa657454784bc5e7cd5ea
+                      enabled:
+                        type: boolean
+                        example: false
+                    required:
+                    - installationId
+                    - integrationId
+                    - userId
+                    - formData
+                    - credentialIds
+                    - workflowIds
+                    - enabled
+                required:
+                - data
+              examples:
+                Result:
+                  value:
+                    data:
+                      installationId: 6630f0f971184ae724f2d930
+                      integrationId: 662f950e454784bc5e7caa37
+                      userId: 6622cd2e506ac293a3e60b00
+                      formData: []
+                      credentialIds:
+                        shopifyApi: 66263e318dca4463fe1b480f
+                      workflowIds:
+                      - 662fa657454784bc5e7cd5ea
+                      enabled: false
+      tags:
+      - Installations
+  /installations/{installationId}/:
+    delete:
+      summary: Delete an Installation
+      description: Deletes a specific installation by its ID.
+      operationId: deleteInstallation
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      - name: installationId
+        in: path
+        required: true
+        description: The ID of the installation.
+        schema:
+          type: string
+          example: 6630f0f971184ae724f2d930
+      responses:
+        '200':
+          description: Successful response after installation deletion.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                required:
+                - success
+              examples:
+                Result:
+                  value:
+                    success: true
+      tags:
+      - Installations
+  /installations/{installationId}/activate:
+    put:
+      summary: Activate Installation
+      description: Activates a specific installation.
+      operationId: activateInstallation
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      - name: installationId
+        in: path
+        required: true
+        description: The ID of the installation.
+        schema:
+          type: string
+          example: 6630f0f971184ae724f2d930
+      responses:
+        '200':
+          description: Successful activation response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+      tags:
+      - Installations
+  /installations/{installationId}/deactivate:
+    put:
+      summary: Deactivate Installation
+      description: Deactivates a specific installation.
+      operationId: deactivateInstallation
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      - name: installationId
+        in: path
+        required: true
+        description: The ID of the installation.
+        schema:
+          type: string
+          example: 6630f0f971184ae724f2d930
+      responses:
+        '200':
+          description: Successful deactivation response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+      tags:
+      - Installations
+  /installations/{installationId}/upgrade:
+    put:
+      summary: Upgrade Installation
+      description: Upgrades a specific installation.
+      operationId: upgradeInstallation
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      - name: installationId
+        in: path
+        required: true
+        description: The ID of the installation.
+        schema:
+          type: string
+          example: 6630f0f971184ae724f2d930
+      responses:
+        '200':
+          description: Successful upgrade response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+      tags:
+      - Installations
+  /installations:
+    get:
+      summary: Get All Installations
+      description: Retrieves all installations available in the Alloy Embedded account.
+      operationId: getAllInstallations
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      responses:
+        '200':
+          description: Successful response with a list of installations.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        installationId:
+                          type: string
+                          example: 6631155371184ae724f2d949
+                        integrationId:
+                          type: string
+                          example: 662f950e454784bc5e7caa37
+                        userId:
+                          type: string
+                          example: 6622cd2e506ac293a3e60b00
+                        formData:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              workflowId:
+                                type: string
+                                example: 66310999b37a737ba5107d5a
+                              app:
+                                type: string
+                                example: accountVariables
+                              blockId:
+                                type: string
+                                example: f7c4304a-b3d8-4088-8ca3-adeb3ddf2ce4
+                              fields:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    name:
+                                      type: string
+                                      example: variables[0].value
+                                    displayName:
+                                      type: string
+                                      example: Value
+                                    type:
+                                      type: string
+                                      example: string
+                                    required:
+                                      type: boolean
+                                      example: true
+                                  required:
+                                  - name
+                                  - displayName
+                                  - type
+                                  - required
+                            required:
+                            - workflowId
+                            - app
+                            - blockId
+                            - fields
+                          example: []
+                        credentialIds:
+                          type: object
+                          additionalProperties:
+                            type: string
+                          example:
+                            shopifyApi: 66263e318dca4463fe1b480f
+                        workflowIds:
+                          type: array
+                          items:
+                            type: string
+                          example:
+                          - 662fa657454784bc5e7cd5ea
+                        installedAt:
+                          type: string
+                          format: date-time
+                          example: '2024-04-30T16:00:05.041Z'
+                        enabled:
+                          type: boolean
+                          example: false
+                      required:
+                      - installationId
+                      - integrationId
+                      - userId
+                      - formData
+                      - credentialIds
+                      - workflowIds
+                      - installedAt
+                      - enabled
+                required:
+                - data
+              examples:
+                Result:
+                  value:
+                    data:
+                    - installationId: 6631155371184ae724f2d949
+                      integrationId: 662f950e454784bc5e7caa37
+                      userId: 6622cd2e506ac293a3e60b00
+                      formData: []
+                      credentialIds:
+                        shopifyApi: 66263e318dca4463fe1b480f
+                      workflowIds:
+                      - 662fa657454784bc5e7cd5ea
+                      installedAt: '2024-04-30T16:00:05.041Z'
+                      enabled: false
+                    - installationId: 66322c61182c8c5270980ed3
+                      integrationId: 66310993b37a737ba5107d1e
+                      userId: 6622cd2e506ac293a3e60b00
+                      formData:
+                      - workflowId: 66310999b37a737ba5107d5a
+                        app: accountVariables
+                        blockId: f7c4304a-b3d8-4088-8ca3-adeb3ddf2ce4
+                        fields:
+                        - name: variables[0].value
+                          displayName: Value
+                          type: string
+                          required: true
+                      credentialIds:
+                        shopifyApi: 66263e318dca4463fe1b480f
+                      workflowIds:
+                      - 66310999b37a737ba5107d5a
+                      installedAt: '2024-05-01T11:50:14.043Z'
+                      enabled: false
+      tags:
+      - Installations
+components:
+  parameters:
+    xApiVersion:
+      name: x-api-version
+      in: header
+      required: true
+      description: The version of the API to use. The current API version is **2025-09**.
+      schema:
+        type: string
+        default: 2025-09
+  securitySchemes:
+    sec0:
+      type: apiKey
+      in: header
+      name: Authorization
+      x-bearer-format: bearer
+x-readme:
+  headers: []
+  explorer-enabled: true
+  proxy-enabled: true
+x-readme-fauxas: true

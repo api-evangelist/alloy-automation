@@ -1,0 +1,324 @@
+openapi: 3.2.0
+info:
+  title: Embedded 2025-09 Analytics API
+  version: '5.0'
+servers:
+- url: https://production.runalloy.com
+tags:
+- name: Analytics
+paths:
+  /analytics/usage:
+    get:
+      summary: Get Analytics Usage
+      description: Returns a list of all app actions usage data.
+      operationId: get-app-actions-usage
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      responses:
+        '200':
+          description: Success (Example)
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    data:
+                      startDate: '2023-12-27'
+                      endDate: '2024-12-26'
+                      executionsLimit: 0
+                      sevenDays: 14
+                      thirtyDays: 90
+                      lastThreeMonths: 1300
+                      billingCycle: 2096
+                      appActions: 2096
+                      apiActions: 0
+      tags:
+      - Analytics
+  /analytics/detail-usage-time:
+    get:
+      summary: Get Analytics Detailed Usage Time
+      description: Returns app actions usage based on a given time period.
+      operationId: get-detail-usage-time
+      parameters:
+      - name: timePeriod
+        in: query
+        required: false
+        description: The time period for usage data. Default time-period is `current-billing-cycle`
+        schema:
+          type: string
+          example: 7-days
+          enum:
+          - 7-days
+          - 30-days
+          - 3-months
+          - current-billing-cycle
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      responses:
+        '200':
+          description: Success (Example)
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    data:
+                      startDate: '2023-12-27'
+                      endDate: '2024-12-27'
+                      totalActions: 0
+                      data:
+                      - appActions: 37
+                        month: Jan-24
+                        year: 2024
+                        date: '2024-01-02'
+                        apiActions: 0
+                        count: 37
+                      - appActions: 41
+                        month: Feb-24
+                        year: 2024
+                        date: '2024-02-04'
+                        apiActions: 0
+                        count: 41
+                      - appActions: 55
+                        month: Mar-24
+                        year: 2024
+                        date: '2024-03-02'
+                        apiActions: 0
+                        count: 55
+                      - appActions: 431
+                        month: Apr-24
+                        year: 2024
+                        date: '2024-04-01'
+                        apiActions: 0
+                        count: 431
+                      - appActions: 148
+                        month: May-24
+                        year: 2024
+                        date: '2024-05-05'
+                        apiActions: 0
+                        count: 148
+                      - appActions: 6
+                        month: Jun-24
+                        year: 2024
+                        date: '2024-06-27'
+                        apiActions: 0
+                        count: 6
+                      - appActions: 28
+                        month: Jul-24
+                        year: 2024
+                        date: '2024-07-10'
+                        apiActions: 0
+                        count: 28
+                      - appActions: 70
+                        month: Aug-24
+                        year: 2024
+                        date: '2024-08-05'
+                        apiActions: 0
+                        count: 70
+                      - appActions: 234
+                        month: Sep-24
+                        year: 2024
+                        date: '2024-09-12'
+                        apiActions: 0
+                        count: 234
+                      - appActions: 956
+                        month: Oct-24
+                        year: 2024
+                        date: '2024-10-13'
+                        apiActions: 0
+                        count: 956
+                      - appActions: 90
+                        month: Nov-24
+                        year: 2024
+                        date: '2024-11-07'
+                        apiActions: 0
+                        count: 90
+                      timePeriod: current-billing-cycle
+      tags:
+      - Analytics
+  /analytics/detail-usage-integration:
+    get:
+      summary: Get Analytics Detailed Usage By Integration
+      description: Returns usage data for a specific integration.
+      operationId: get-detail-usage-integration
+      parameters:
+      - name: timePeriod
+        in: query
+        required: false
+        description: The time period for usage data.
+        schema:
+          type: string
+          enum:
+          - 7-days
+          - 30-days
+          - 3-months
+          - current-billing-cycle
+          example: 7-days
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      - name: integrationId
+        in: query
+        required: true
+        description: The ID of the integration.
+        schema:
+          type: string
+          example: 66fabcb533a7e961c65fad51
+      responses:
+        '200':
+          description: Success (Example)
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    data:
+                      integrationName: Variable Selector
+                      integrationId: 673dc357c2f5556954bd4b45
+                      integrationCreatedDate: '2024-11-20T11:09:11.090Z'
+                      isDeleted: false
+                      startDate: '2023-12-27'
+                      endDate: '2024-12-27'
+                      totalActions: 0
+                      data:
+                      - month: Nov-24
+                        date: '2024-11-19'
+                        isDeleted: false
+                        name: variable Selector
+                        integrationId: 673dc357c2f5556954bd4b45
+                        integrationCreatedDate: '2024-11-20'
+                        count: 14
+                      timePeriod: current-billing-cycle
+      tags:
+      - Analytics
+  /analytics/detail-usage-user:
+    get:
+      summary: Get Analytics Detailed Usage By User
+      description: Retrieves usage data for a specific user.
+      operationId: get-detail-usage-user
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      - name: userId
+        in: query
+        required: true
+        description: The ID of the user.
+        schema:
+          type: string
+          example: y66wqtzdeu94q5xawwjxc
+      - name: timePeriod
+        in: query
+        required: false
+        description: The time period for usage data.
+        schema:
+          type: string
+          enum:
+          - 7-days
+          - 30-days
+          - 3-months
+          - current-billing-cycle
+          example: 7-days
+      x-code-samples:
+      - lang: cURL
+        source: "curl -X GET \"https://production.runalloy.com/analytics/detail-usage-user?userId={{userId}}\" \\\n  -H \"Authorization: bearer YOUR_API_KEY\" \\\n  -H \"x-api-version: 2025-09\"\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://production.runalloy.com/analytics/detail-usage-user\"\nparams = {\"userId\": \"{{userId}}\"}\nheaders = {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n}\n\nresponse = requests.get(url, params=params, headers=headers)\nprint(response.json())\n"
+      - lang: JavaScript
+        source: "const userId = \"{{userId}}\";\nconst url = `https://production.runalloy.com/analytics/detail-usage-user?userId=${userId}`;\n\nfetch(url, {\n  method: \"GET\",\n  headers: {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n  }\n})\n  .then(response => response.json())\n  .then(data => console.log(data))\n  .catch(error => console.error(\"Error:\", error));\n"
+      responses:
+        '200':
+          description: Success (Example)
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    data:
+                      userName: demo@runalloy.com
+                      userId: 659d28e18c35f07db18fcd8c
+                      userCreatedDate: '2024-01-09T11:07:13.963Z'
+                      isDeleted: false
+                      startDate: '2023-12-27'
+                      endDate: '2024-12-27'
+                      totalActions: 0
+                      data:
+                      - month: Mar-24
+                        userName: demo@runalloy.com
+                        isDeleted: false
+                        date: '2024-03-10'
+                        userId: 659d28e18c35f07db18fcd8c
+                        userCreatedDate: '2024-01-09'
+                        apiActions: 0
+                        count: 7
+                        appActions: 7
+                      - month: Jun-24
+                        userName: demo@runalloy.com
+                        isDeleted: false
+                        date: '2024-06-30'
+                        userId: 659d28e18c35f07db18fcd8c
+                        userCreatedDate: '2024-01-09'
+                        apiActions: 0
+                        count: 2
+                        appActions: 2
+                      - month: Aug-24
+                        userName: demo@runalloy.com
+                        isDeleted: false
+                        date: '2024-08-05'
+                        userId: 659d28e18c35f07db18fcd8c
+                        userCreatedDate: '2024-01-09'
+                        apiActions: 0
+                        count: 22
+                        appActions: 22
+                      - month: Sep-24
+                        userName: demo@runalloy.com
+                        isDeleted: false
+                        date: '2024-09-29'
+                        userId: 659d28e18c35f07db18fcd8c
+                        userCreatedDate: '2024-01-09'
+                        apiActions: 0
+                        count: 2
+                        appActions: 2
+                      timePeriod: current-billing-cycle
+      tags:
+      - Analytics
+components:
+  parameters:
+    xApiVersion:
+      name: x-api-version
+      in: header
+      required: true
+      description: The version of the API to use. The current API version is **2025-09**.
+      schema:
+        type: string
+        default: 2025-09
+  securitySchemes:
+    sec0:
+      type: apiKey
+      in: header
+      name: Authorization
+      x-bearer-format: bearer
+x-readme:
+  headers: []
+  explorer-enabled: true
+  proxy-enabled: true
+x-readme-fauxas: true

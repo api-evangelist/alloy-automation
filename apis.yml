@@ -58,34 +58,6 @@ created: '2026-07-01'
 modified: '2026-10-06'
 specificationVersion: '0.23'
 apis:
-- aid: alloy-automation:alloy-automation-connectivity-api
-  name: Alloy Automation Connectivity API
-  description: Discover resources/actions and execute typed actions.
-  humanURL: https://docs.runalloy.com/reference/embedded/get-a-user
-  baseURL: https://embedded.runalloy.com/2024-03
-  tags:
-  - Connectivity
-  properties:
-  - type: OpenAPI
-    url: openapi/alloy-automation-connectivity-api-openapi.yml
-  - type: APIReference
-    url: https://docs.runalloy.com/reference/embedded/get-a-user
-  - type: PostmanCollection
-    url: collections/alloy-automation.postman_collection.json
-  - type: OpenCollection
-    url: collections/alloy-automation.opencollection.json
-  - type: APIReference
-    url: https://docs.runalloy.com/reference/embedded/generate-jwt-token/
-  - type: APIReference
-    url: https://docs.runalloy.com/reference/get-credential-metadata
-  - type: Documentation
-    url: https://docs.runalloy.com/connectivity-api/quick-start
-  - type: Documentation
-    url: https://docs.runalloy.com/embedded/passthrough-api
-  - type: Documentation
-    url: https://docs.runalloy.com/unified-api/bigcommerce-collection/
-  - type: APIReference
-    url: https://docs.runalloy.com/reference/unified-api/create-account-1/
 - aid: alloy-automation:alloy-automation-credentials-api
   name: Alloy Automation Credentials API
   description: Third-party connections held by a user, plus credential metadata.
@@ -202,118 +174,6 @@ apis:
     url: https://docs.runalloy.com/unified-api/bigcommerce-collection/
   - type: APIReference
     url: https://docs.runalloy.com/reference/unified-api/create-account-1/
-- aid: alloy-automation:alloy-automation-unified-accounting-api
-  name: Alloy Automation Unified Accounting API
-  description: Normalized accounting objects (accounts, invoices).
-  humanURL: https://docs.runalloy.com/reference/embedded/get-a-user
-  baseURL: https://embedded.runalloy.com/2024-03
-  tags:
-  - Unified Accounting
-  properties:
-  - type: OpenAPI
-    url: openapi/alloy-automation-unified-accounting-api-openapi.yml
-  - type: APIReference
-    url: https://docs.runalloy.com/reference/embedded/get-a-user
-  - type: PostmanCollection
-    url: collections/alloy-automation.postman_collection.json
-  - type: OpenCollection
-    url: collections/alloy-automation.opencollection.json
-  - type: APIReference
-    url: https://docs.runalloy.com/reference/embedded/generate-jwt-token/
-  - type: APIReference
-    url: https://docs.runalloy.com/reference/get-credential-metadata
-  - type: Documentation
-    url: https://docs.runalloy.com/connectivity-api/quick-start
-  - type: Documentation
-    url: https://docs.runalloy.com/embedded/passthrough-api
-  - type: Documentation
-    url: https://docs.runalloy.com/unified-api/bigcommerce-collection/
-  - type: APIReference
-    url: https://docs.runalloy.com/reference/unified-api/create-account-1/
-- aid: alloy-automation:alloy-automation-unified-commerce-api
-  name: Alloy Automation Unified Commerce API
-  description: Normalized commerce objects (products, orders, customers).
-  humanURL: https://docs.runalloy.com/reference/embedded/get-a-user
-  baseURL: https://embedded.runalloy.com/2024-03
-  tags:
-  - Unified Commerce
-  properties:
-  - type: OpenAPI
-    url: openapi/alloy-automation-unified-commerce-api-openapi.yml
-  - type: APIReference
-    url: https://docs.runalloy.com/reference/embedded/get-a-user
-  - type: PostmanCollection
-    url: collections/alloy-automation.postman_collection.json
-  - type: OpenCollection
-    url: collections/alloy-automation.opencollection.json
-  - type: APIReference
-    url: https://docs.runalloy.com/reference/embedded/generate-jwt-token/
-  - type: APIReference
-    url: https://docs.runalloy.com/reference/get-credential-metadata
-  - type: Documentation
-    url: https://docs.runalloy.com/connectivity-api/quick-start
-  - type: Documentation
-    url: https://docs.runalloy.com/embedded/passthrough-api
-  - type: Documentation
-    url: https://docs.runalloy.com/unified-api/bigcommerce-collection/
-  - type: APIReference
-    url: https://docs.runalloy.com/reference/unified-api/create-account-1/
-- aid: alloy-automation:alloy-automation-unified-crm-api
-  name: Alloy Automation Unified CRM API
-  description: Normalized CRM objects (contacts, companies, deals).
-  humanURL: https://docs.runalloy.com/reference/embedded/get-a-user
-  baseURL: https://embedded.runalloy.com/2024-03
-  tags:
-  - Unified CRM
-  properties:
-  - type: OpenAPI
-    url: openapi/alloy-automation-unified-crm-api-openapi.yml
-  - type: APIReference
-    url: https://docs.runalloy.com/reference/embedded/get-a-user
-  - type: PostmanCollection
-    url: collections/alloy-automation.postman_collection.json
-  - type: OpenCollection
-    url: collections/alloy-automation.opencollection.json
-  - type: APIReference
-    url: https://docs.runalloy.com/reference/embedded/generate-jwt-token/
-  - type: APIReference
-    url: https://docs.runalloy.com/reference/get-credential-metadata
-  - type: Documentation
-    url: https://docs.runalloy.com/connectivity-api/quick-start
-  - type: Documentation
-    url: https://docs.runalloy.com/embedded/passthrough-api
-  - type: Documentation
-    url: https://docs.runalloy.com/unified-api/bigcommerce-collection/
-  - type: APIReference
-    url: https://docs.runalloy.com/reference/unified-api/create-account-1/
-- aid: alloy-automation:alloy-automation-user-tokens-api
-  name: Alloy Automation User Tokens API
-  description: Per-user JWTs for rendering the embedded frontend.
-  humanURL: https://docs.runalloy.com/reference/embedded/get-a-user
-  baseURL: https://embedded.runalloy.com/2024-03
-  tags:
-  - User Tokens
-  properties:
-  - type: OpenAPI
-    url: openapi/alloy-automation-user-tokens-api-openapi.yml
-  - type: APIReference
-    url: https://docs.runalloy.com/reference/embedded/get-a-user
-  - type: PostmanCollection
-    url: collections/alloy-automation.postman_collection.json
-  - type: OpenCollection
-    url: collections/alloy-automation.opencollection.json
-  - type: APIReference
-    url: https://docs.runalloy.com/reference/embedded/generate-jwt-token/
-  - type: APIReference
-    url: https://docs.runalloy.com/reference/get-credential-metadata
-  - type: Documentation
-    url: https://docs.runalloy.com/connectivity-api/quick-start
-  - type: Documentation
-    url: https://docs.runalloy.com/embedded/passthrough-api
-  - type: Documentation
-    url: https://docs.runalloy.com/unified-api/bigcommerce-collection/
-  - type: APIReference
-    url: https://docs.runalloy.com/reference/unified-api/create-account-1/
 - aid: alloy-automation:alloy-automation-users-api
   name: Alloy Automation Users API
   description: End-user records that scope credentials, integrations, and executions.
@@ -326,6 +186,202 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/alloy-automation-users-api-openapi.yml
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/embedded/get-a-user
+  - type: PostmanCollection
+    url: collections/alloy-automation.postman_collection.json
+  - type: OpenCollection
+    url: collections/alloy-automation.opencollection.json
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/embedded/generate-jwt-token/
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/get-credential-metadata
+  - type: Documentation
+    url: https://docs.runalloy.com/connectivity-api/quick-start
+  - type: Documentation
+    url: https://docs.runalloy.com/embedded/passthrough-api
+  - type: Documentation
+    url: https://docs.runalloy.com/unified-api/bigcommerce-collection/
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/unified-api/create-account-1/
+- aid: alloy-automation:alloy-automation-analytics-api
+  name: Alloy Automation Analytics API
+  description: The Analytics API from Alloy Automation — 4 operation(s) for analytics.
+  humanURL: https://docs.runalloy.com/reference/embedded/get-a-user
+  baseURL: https://embedded.runalloy.com/2024-03
+  tags:
+  - Analytics
+  properties:
+  - type: OpenAPI
+    url: openapi/alloy-automation-analytics-api-openapi.yml
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/embedded/get-a-user
+  - type: PostmanCollection
+    url: collections/alloy-automation.postman_collection.json
+  - type: OpenCollection
+    url: collections/alloy-automation.opencollection.json
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/embedded/generate-jwt-token/
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/get-credential-metadata
+  - type: Documentation
+    url: https://docs.runalloy.com/connectivity-api/quick-start
+  - type: Documentation
+    url: https://docs.runalloy.com/embedded/passthrough-api
+  - type: Documentation
+    url: https://docs.runalloy.com/unified-api/bigcommerce-collection/
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/unified-api/create-account-1/
+- aid: alloy-automation:alloy-automation-headless-api
+  name: Alloy Automation Headless API
+  description: The Headless API from Alloy Automation — 5 operation(s) for headless.
+  humanURL: https://docs.runalloy.com/reference/embedded/get-a-user
+  baseURL: https://embedded.runalloy.com/2024-03
+  tags:
+  - Headless
+  properties:
+  - type: OpenAPI
+    url: openapi/alloy-automation-headless-api-openapi.yml
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/embedded/get-a-user
+  - type: PostmanCollection
+    url: collections/alloy-automation.postman_collection.json
+  - type: OpenCollection
+    url: collections/alloy-automation.opencollection.json
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/embedded/generate-jwt-token/
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/get-credential-metadata
+  - type: Documentation
+    url: https://docs.runalloy.com/connectivity-api/quick-start
+  - type: Documentation
+    url: https://docs.runalloy.com/embedded/passthrough-api
+  - type: Documentation
+    url: https://docs.runalloy.com/unified-api/bigcommerce-collection/
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/unified-api/create-account-1/
+- aid: alloy-automation:alloy-automation-installations-api
+  name: Alloy Automation Installations API
+  description: The Installations API from Alloy Automation — 6 operation(s) for installations.
+  humanURL: https://docs.runalloy.com/reference/embedded/get-a-user
+  baseURL: https://embedded.runalloy.com/2024-03
+  tags:
+  - Installations
+  properties:
+  - type: OpenAPI
+    url: openapi/alloy-automation-installations-api-openapi.yml
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/embedded/get-a-user
+  - type: PostmanCollection
+    url: collections/alloy-automation.postman_collection.json
+  - type: OpenCollection
+    url: collections/alloy-automation.opencollection.json
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/embedded/generate-jwt-token/
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/get-credential-metadata
+  - type: Documentation
+    url: https://docs.runalloy.com/connectivity-api/quick-start
+  - type: Documentation
+    url: https://docs.runalloy.com/embedded/passthrough-api
+  - type: Documentation
+    url: https://docs.runalloy.com/unified-api/bigcommerce-collection/
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/unified-api/create-account-1/
+- aid: alloy-automation:alloy-automation-logs-api
+  name: Alloy Automation Logs API
+  description: The Logs API from Alloy Automation — 2 operation(s) for logs.
+  humanURL: https://docs.runalloy.com/reference/embedded/get-a-user
+  baseURL: https://embedded.runalloy.com/2024-03
+  tags:
+  - Logs
+  properties:
+  - type: OpenAPI
+    url: openapi/alloy-automation-logs-api-openapi.yml
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/embedded/get-a-user
+  - type: PostmanCollection
+    url: collections/alloy-automation.postman_collection.json
+  - type: OpenCollection
+    url: collections/alloy-automation.opencollection.json
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/embedded/generate-jwt-token/
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/get-credential-metadata
+  - type: Documentation
+    url: https://docs.runalloy.com/connectivity-api/quick-start
+  - type: Documentation
+    url: https://docs.runalloy.com/embedded/passthrough-api
+  - type: Documentation
+    url: https://docs.runalloy.com/unified-api/bigcommerce-collection/
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/unified-api/create-account-1/
+- aid: alloy-automation:alloy-automation-metadata-api
+  name: Alloy Automation Metadata API
+  description: The Metadata API from Alloy Automation — 3 operation(s) for metadata.
+  humanURL: https://docs.runalloy.com/reference/embedded/get-a-user
+  baseURL: https://embedded.runalloy.com/2024-03
+  tags:
+  - Metadata
+  properties:
+  - type: OpenAPI
+    url: openapi/alloy-automation-metadata-api-openapi.yml
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/embedded/get-a-user
+  - type: PostmanCollection
+    url: collections/alloy-automation.postman_collection.json
+  - type: OpenCollection
+    url: collections/alloy-automation.opencollection.json
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/embedded/generate-jwt-token/
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/get-credential-metadata
+  - type: Documentation
+    url: https://docs.runalloy.com/connectivity-api/quick-start
+  - type: Documentation
+    url: https://docs.runalloy.com/embedded/passthrough-api
+  - type: Documentation
+    url: https://docs.runalloy.com/unified-api/bigcommerce-collection/
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/unified-api/create-account-1/
+- aid: alloy-automation:alloy-automation-run-api
+  name: Alloy Automation Run API
+  description: The Run API from Alloy Automation — 2 operation(s) for run.
+  humanURL: https://docs.runalloy.com/reference/embedded/get-a-user
+  baseURL: https://embedded.runalloy.com/2024-03
+  tags:
+  - Run
+  properties:
+  - type: OpenAPI
+    url: openapi/alloy-automation-run-api-openapi.yml
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/embedded/get-a-user
+  - type: PostmanCollection
+    url: collections/alloy-automation.postman_collection.json
+  - type: OpenCollection
+    url: collections/alloy-automation.opencollection.json
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/embedded/generate-jwt-token/
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/get-credential-metadata
+  - type: Documentation
+    url: https://docs.runalloy.com/connectivity-api/quick-start
+  - type: Documentation
+    url: https://docs.runalloy.com/embedded/passthrough-api
+  - type: Documentation
+    url: https://docs.runalloy.com/unified-api/bigcommerce-collection/
+  - type: APIReference
+    url: https://docs.runalloy.com/reference/unified-api/create-account-1/
+- aid: alloy-automation:alloy-automation-workflows-api
+  name: Alloy Automation Workflows API
+  description: The Workflows API from Alloy Automation — 12 operation(s) for workflows.
+  humanURL: https://docs.runalloy.com/reference/embedded/get-a-user
+  baseURL: https://embedded.runalloy.com/2024-03
+  tags:
+  - Workflows
+  properties:
+  - type: OpenAPI
+    url: openapi/alloy-automation-workflows-api-openapi.yml
   - type: APIReference
     url: https://docs.runalloy.com/reference/embedded/get-a-user
   - type: PostmanCollection

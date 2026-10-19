@@ -1,77 +1,92 @@
 openapi: 3.2.0
 info:
-  title: Alloy Automation Embedded & Unified Passthrough API
-  description: Alloy Automation is an embedded integration platform (iPaaS) and Unified API for SaaS products.
-  version: 2024-03
-  contact:
-    name: Alloy Automation Support
-    url: https://docs.runalloy.com
-  termsOfService: https://runalloy.com/terms/
+  title: Embedded 2025-09 Passthrough API
+  version: '5.0'
 servers:
-- url: https://embedded.runalloy.com/2024-03
-  description: Embedded, Connectivity, Passthrough, and Unified API (2024-03)
-security:
-- bearerAuth: []
+- url: https://production.runalloy.com
 tags:
 - name: Passthrough
-  description: Raw proxied requests to a provider via a stored credential.
 paths:
   /passthrough:
     post:
-      operationId: passthroughRequest
-      tags:
-      - Passthrough
-      summary: Make a passthrough request
-      description: Makes a raw, authenticated request to a third-party API using a stored credentialId. Alloy attaches the provider auth and refreshes tokens; you supply the provider's native request path, method, headers, and body.
+      summary: Send passthrough request
+      description: This endpoint makes it easy to send a passthrough request to the underlying Third Party App using a specified credentialId. It returns the raw data coming from the Third Party App.
+      operationId: send-passthrough-request
       parameters:
-      - name: credentialId
-        in: query
+      - name: Authorization
+        in: header
         required: true
         schema:
           type: string
-        description: The end-user credential ID to authenticate the request with.
+          default: bearer YOUR_API_KEY
+      - name: credentialId
+        in: query
+        required: true
+        description: The credentialId for this integration.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/xApiVersion'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PassthroughRequest'
+              type: object
+              properties:
+                method:
+                  type: string
+                  enum:
+                  - GET
+                  - POST
+                  - PUT
+                  - DELETE
+                  - PATCH
+                  example: GET
+                path:
+                  type: string
+                  example: /some/path
+                body:
+                  type:
+                  - object
+                  - 'null'
+                query:
+                  type:
+                  - object
+                  - 'null'
+                extraHeaders:
+                  type:
+                  - object
+                  - 'null'
       responses:
         '200':
-          description: The proxied provider response
+          description: '200'
           content:
             application/json:
-              schema:
-                type: object
-                additionalProperties: true
+              examples:
+                Result:
+                  value: ''
+      deprecated: false
+      security: []
+      tags:
+      - Passthrough
 components:
-  schemas:
-    PassthroughRequest:
-      type: object
-      required:
-      - method
-      - path
-      properties:
-        method:
-          type: string
-          enum:
-          - GET
-          - POST
-          - PUT
-          - PATCH
-          - DELETE
-        path:
-          type: string
-          description: The provider-native request path, e.g. /admin/api/2024-01/orders.json
-        headers:
-          type: object
-          additionalProperties:
-            type: string
-        body:
-          type: object
-          additionalProperties: true
+  parameters:
+    xApiVersion:
+      name: x-api-version
+      in: header
+      required: true
+      description: The version of the API to use. The current API version is **2025-09**.
+      schema:
+        type: string
+        default: 2025-09
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      description: 'Bearer API key in the Authorization header, e.g. `Authorization: Bearer YOUR_API_KEY`. Frontend calls use a per-user JWT instead of the master key.'
+    sec0:
+      type: apiKey
+      in: header
+      name: Authorization
+      x-bearer-format: bearer
+x-readme:
+  headers: []
+  explorer-enabled: true
+  proxy-enabled: true
+x-readme-fauxas: true

@@ -1,0 +1,399 @@
+openapi: 3.2.0
+info:
+  title: Embedded 2025-09 Logs API
+  version: '5.0'
+servers:
+- url: https://production.runalloy.com
+tags:
+- name: Logs
+paths:
+  /logs:
+    get:
+      summary: Retrieve logs for all workflows
+      description: 'This endpoint gives you direct programmatic access to the logs for ALL your workflows.
+
+
+        This allows you to build first-class observability for customers or pipe data into the internal monitoring tools you use. You may also choose to use this endpoint to stream logs in real-time to a third-party logging service to enable alerting for your end-users.
+
+
+        Learn more about logs in Alloy.
+
+
+        Use the query parameters to filter, sort, and paginate logs. See the `example` fields for each parameter for valid values. A sample request URL is:
+
+
+        `https://production.runalloy.com/logs?filters=[{"columns":{"value":"message"},"operators":{"value":"equals"},"userinput":{"value":"executionError"},"condition":{"value":"and"}}]&workflowId=67ef017d8eaeb50b18e635a1&associatedUserId=67a21c7d10e1dee8d5ec3a3d&skip=0&limit=10&sortBy=createdAt&sortOrder=desc`'
+      operationId: get-logs
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - name: filters
+        in: query
+        required: false
+        description: "Array of filter objects to narrow down logs based on specific criteria.\nPass as a JSON-encoded array string in the query parameter.\n\nExample:\n  [\n    {\n      \"columns\": {\n        \"value\": \"message\" | \"data.executionId\" | \"forgeWorkflowId\" | \"createdAt\" | \"userId\" | \"forgeWorkflow.integrationId._id\" | \"workflowVersion\"\n      },\n      \"operators\": {\n        \"value\": \"notequals\" | \"equals\" | \"greaterthan\" | \"lessthan\" | \"equals\" | \"contains\" | \"notcontains\" | \"notequals\"\n      },\n      \"userinput\": { \"value\": String },\n      \"condition\": { \"value\": \"and\" }\n    }\n  ]\n"
+        schema:
+          type: string
+          example: '[{"columns":{"value":"message"},"operators":{"value":"equals"},"userinput":{"value":"executionError"},"condition":{"value":"and"}}]'
+      - name: workflowId
+        in: query
+        required: false
+        description: To filter by a given workflow instead of all workflows of all users.
+        schema:
+          type: string
+          example: 67ef017d8eaeb50b18e635a1
+      - name: associatedUserId
+        in: query
+        required: false
+        description: To filter user-specific logs instead of all users.
+        schema:
+          type: string
+          example: 67a21c7d10e1dee8d5ec3a3d
+      - name: skip
+        in: query
+        required: false
+        description: Amount of docs to skip.
+        schema:
+          type: integer
+          example: 0
+      - name: limit
+        in: query
+        required: false
+        description: Amount of docs to return (page size).
+        schema:
+          type: integer
+          example: 10
+      - name: sortBy
+        in: query
+        required: false
+        description: Sort by (createdAt, completedAt, message, userId).
+        schema:
+          type: string
+          enum:
+          - createdAt
+          - completedAt
+          - message
+          - userId
+          example: createdAt
+      - name: sortOrder
+        in: query
+        required: false
+        description: Sort order (asc or desc).
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          example: desc
+      responses:
+        '200':
+          description: Logs retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  notifications:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                          example: 68110feaa81a0e507fbdd36a
+                        message:
+                          type: string
+                          enum:
+                          - executionError
+                          - executionFinished
+                          - executionStarted
+                          example: executionError
+                        data:
+                          type: object
+                          properties:
+                            executionId:
+                              type: string
+                              example: 68110fea7d181f356acd1bf1
+                            executionUuid:
+                              type: string
+                              example: 35SnGU0DUSNP5L26fsmnq
+                        startedAt:
+                          type: string
+                          format: date-time
+                          example: '2025-04-29T17:44:10.336Z'
+                        completedAt:
+                          type: string
+                          format: date-time
+                          example: '2025-04-29T17:44:10.432Z'
+                        createdAt:
+                          type: string
+                          format: date-time
+                          example: '2025-04-29T17:44:10.432Z'
+                        customVersion:
+                          type: boolean
+                          example: false
+                        workflowVersion:
+                          type: integer
+                          example: 1
+                        teamId:
+                          type: string
+                          example: 63fcaa053522280b5357aeec
+                        forgeWorkflowId:
+                          type: string
+                          example: 67ef017d8eaeb50b18e635a1
+                        workflowId:
+                          type: string
+                          example: 67ef01ed8eaeb50b18e646ea
+                        userId:
+                          type: string
+                          example: 67a21c7d10e1dee8d5ec3a3d
+                        user:
+                          type: object
+                          properties:
+                            email:
+                              type: string
+                              example: eduardo.souza@runalloy.com
+                            fullName:
+                              type: string
+                              example: Eduardo Souza
+                        forgeWorkflow:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              example: order_id example
+                            integrationId:
+                              type: object
+                              properties:
+                                _id:
+                                  type: string
+                                  example: 67d8875977ce6522e517a382
+                                name:
+                                  type: string
+                                  example: Eduardo looper
+                                blockId:
+                                  type: string
+                                  example: MuK2Kk9lu0v8N86brS3x
+                                icon:
+                                  type: string
+                                  example: https://cdn.runalloy.com/icons/alloy-logo.png
+                  lastFetched:
+                    type: string
+                    format: date-time
+                    example: '2025-04-29T17:46:38.237Z'
+                  pagination:
+                    type: object
+                    properties:
+                      totalItems:
+                        type: integer
+                        example: 4
+                      totalPages:
+                        type: integer
+                        example: 1
+                      currentPage:
+                        type: integer
+                        example: 1
+                      pageSize:
+                        type: integer
+                        example: 10
+              examples:
+                Result:
+                  value:
+                    notifications:
+                    - _id: 68110feaa81a0e507fbdd36a
+                      message: executionError
+                      data:
+                        executionId: 68110fea7d181f356acd1bf1
+                        executionUuid: 35SnGU0DUSNP5L26fsmnq
+                      startedAt: '2025-04-29T17:44:10.336Z'
+                      completedAt: '2025-04-29T17:44:10.432Z'
+                      createdAt: '2025-04-29T17:44:10.432Z'
+                      customVersion: false
+                      workflowVersion: 1
+                      teamId: 63fcaa053522280b5357aeec
+                      forgeWorkflowId: 67ef017d8eaeb50b18e635a1
+                      workflowId: 67ef01ed8eaeb50b18e646ea
+                      userId: 67a21c7d10e1dee8d5ec3a3d
+                      user:
+                        email: eduardo.souza@runalloy.com
+                        fullName: Eduardo Souza
+                      forgeWorkflow:
+                        name: order_id example
+                        integrationId:
+                          _id: 67d8875977ce6522e517a382
+                          name: Eduardo looper
+                          blockId: MuK2Kk9lu0v8N86brS3x
+                          icon: https://cdn.runalloy.com/icons/alloy-logo.png
+                    lastFetched: '2025-04-29T17:46:38.237Z'
+                    pagination:
+                      totalItems: 4
+                      totalPages: 1
+                      currentPage: 1
+                      pageSize: 10
+      deprecated: false
+      tags:
+      - Logs
+  /logs/{id}:
+    get:
+      summary: Retrieve logs for a specific execution
+      description: Fetches the logs and execution details for a workflow by its execution ID.
+      operationId: get-logs-by-id
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - name: id
+        in: path
+        required: true
+        description: The execution ID for which to retrieve logs.
+        schema:
+          type: string
+          example: 68110fea7d181f356acd1bf1
+      responses:
+        '200':
+          description: Logs for the specified execution retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: 68110fea7d181f356acd1bf1
+                      executionMode:
+                        type: string
+                        enum:
+                        - cli
+                        - error
+                        - internal
+                        - manual
+                        - retry
+                        - trigger
+                        - webhook
+                        example: cli
+                      executionUuid:
+                        type: string
+                        example: 35SnGU0DUSNP5L26fsmnq
+                      workflowId:
+                        type: string
+                        example: 67ef01ed8eaeb50b18e646ea
+                      userId:
+                        type: string
+                        example: 67a21c7d10e1dee8d5ec3a3d
+                      forgeWorkflowId:
+                        type: string
+                        example: 67ef017d8eaeb50b18e635a1
+                      finished:
+                        type: boolean
+                        example: true
+                      retries:
+                        type: array
+                        items: {}
+                        example: []
+                      actions:
+                        type: integer
+                        example: 3
+                      metadata:
+                        type: object
+                        additionalProperties:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              example: Step Name
+                            subtitle:
+                              type: string
+                              example: Step Subtitle
+                            icon:
+                              type: string
+                              example: https://cdn.runalloy.com/icons/alloy-logo.png
+                            type:
+                              type: string
+                              example: action
+                            inputs:
+                              type: object
+                              example:
+                                key: value
+                      runData:
+                        type: object
+                        additionalProperties:
+                          type: object
+                          properties:
+                            error:
+                              type:
+                              - string
+                              - 'null'
+                              example: null
+                            data:
+                              type:
+                              - array
+                              - 'null'
+                              items:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    json:
+                                      type: object
+                                      example:
+                                        output: result
+                                    statusCode:
+                                      type:
+                                      - integer
+                                      - 'null'
+                                      example: 200
+                                    id:
+                                      type: string
+                                      example: block-uuid
+                      connections:
+                        type: object
+                        additionalProperties:
+                          type: object
+                          properties:
+                            main:
+                              type: array
+                              items:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    block:
+                                      type: string
+                                      example: block-uuid
+                                    type:
+                                      type: string
+                                      example: action
+                                    index:
+                                      type: integer
+                                      example: 0
+                      startedAt:
+                        type: string
+                        format: date-time
+                        example: '2025-04-29T17:44:10.336Z'
+                      stoppedAt:
+                        type: string
+                        format: date-time
+                        example: '2025-04-29T17:44:10.393Z'
+      tags:
+      - Logs
+components:
+  securitySchemes:
+    sec0:
+      type: apiKey
+      in: header
+      name: Authorization
+      x-bearer-format: bearer
+x-readme:
+  headers: []
+  explorer-enabled: true
+  proxy-enabled: true
+x-readme-fauxas: true

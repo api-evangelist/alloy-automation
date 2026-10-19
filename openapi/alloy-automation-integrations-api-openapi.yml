@@ -1,66 +1,450 @@
 openapi: 3.2.0
 info:
-  title: Alloy Automation Embedded & Unified Integrations API
-  description: Alloy Automation is an embedded integration platform (iPaaS) and Unified API for SaaS products.
-  version: 2024-03
-  contact:
-    name: Alloy Automation Support
-    url: https://docs.runalloy.com
-  termsOfService: https://runalloy.com/terms/
+  title: Embedded 2025-09 Integrations API
+  version: '5.0'
 servers:
-- url: https://embedded.runalloy.com/2024-03
-  description: Embedded, Connectivity, Passthrough, and Unified API (2024-03)
-security:
-- bearerAuth: []
+- url: https://production.runalloy.com
 tags:
 - name: Integrations
-  description: Available connectors and a user's enabled integrations.
 paths:
   /integrations:
     get:
-      operationId: listIntegrations
-      tags:
-      - Integrations
-      summary: List integrations / connectors
-      description: Lists the connectors available to power your integration marketplace, or the integrations enabled for a specific user when userId is supplied.
+      summary: Retrieve a list of all integrations
+      description: Returns all the available integrations in your Alloy Embedded Account. Includes integrations/apps you've created an "integration" for, their workflows and statuses. If `installed` equals `true`, the `installedVersion` key will show the currently installed version.
+      operationId: list-integrations
       parameters:
-      - name: userId
-        in: query
-        required: false
+      - name: Authorization
+        in: header
+        required: true
         schema:
           type: string
-        description: When present, scopes the list to a user's enabled integrations.
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      - name: userId
+        in: query
+        description: 'The Id used to identify the user. Note: you can also use the Embedded user''s `username` in this field.'
+        required: true
+        schema:
+          type: string
+      x-code-samples:
+      - lang: cURL
+        source: "curl -X GET \"https://production.runalloy.com/integrations?userId={{userId}}\" \\\n  -H \"Authorization: bearer YOUR_API_KEY\" \\\n  -H \"x-api-version: 2025-09\"\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://production.runalloy.com/integrations\"\nparams = {\"userId\": \"{{userId}}\"}\nheaders = {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n}\n\nresponse = requests.get(url, params=params, headers=headers)\nprint(response.json())\n"
+      - lang: JavaScript
+        source: "const userId = \"{{userId}}\";\nconst url = `https://production.runalloy.com/integrations?userId=${userId}`;\n\nfetch(url, {\n  method: \"GET\",\n  headers: {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n  }\n})\n  .then(response => response.json())\n  .then(data => console.log(data))\n  .catch(error => console.error(\"Error:\", error));\n"
+      - lang: PHP
+        source: "<?php\n$userId = \"{{userId}}\";\n$url = \"https://production.runalloy.com/integrations?userId=\" . urlencode($userId);\n\n$ch = curl_init($url);\ncurl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\ncurl_setopt($ch, CURLOPT_HTTPHEADER, [\n    \"Authorization: bearer YOUR_API_KEY\",\n    \"x-api-version: 2025-09\"\n]);\n\n$response = curl_exec($ch);\ncurl_close($ch);\n$data = json_decode($response, true);\nprint_r($data);\n?>\n"
+      - lang: Go
+        source: "package main\n\nimport (\n    \"encoding/json\"\n    \"fmt\"\n    \"io\"\n    \"net/http\"\n    \"net/url\"\n)\n\nfunc main() {\n    userId := \"{{userId}}\"\n    baseURL := \"https://production.runalloy.com/integrations\"\n    params := url.Values{}\n    params.Add(\"userId\", userId)\n    fullURL := baseURL + \"?\" + params.Encode()\n\n    req, _ := http.NewRequest(\"GET\", fullURL, nil)\n    req.Header.Set(\"Authorization\", \"bearer YOUR_API_KEY\")\n    req.Header.Set(\"x-api-version\", \"2025-09\")\n\n    client := &http.Client{}\n    resp, _ := client.Do(req)\n    defer resp.Body.Close()\n\n    body, _ := io.ReadAll(resp.Body)\n    var data map[string]interface{}\n    json.Unmarshal(body, &data)\n    fmt.Println(data)\n}\n"
+      - lang: Java
+        source: "import java.net.HttpURLConnection;\nimport java.net.URL;\nimport java.io.BufferedReader;\nimport java.io.InputStreamReader;\nimport com.google.gson.Gson;\nimport java.util.Map;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String userId = \"{{userId}}\";\n        String urlString = \"https://production.runalloy.com/integrations?userId=\" + java.net.URLEncoder.encode(userId, \"UTF-8\");\n        \n        URL url = new URL(urlString);\n        HttpURLConnection conn = (HttpURLConnection) url.openConnection();\n        conn.setRequestMethod(\"GET\");\n        conn.setRequestProperty(\"Authorization\", \"bearer YOUR_API_KEY\");\n        conn.setRequestProperty(\"x-api-version\", \"2025-09\");\n        \n        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));\n        String inputLine;\n        StringBuilder response = new StringBuilder();\n        while ((inputLine = in.readLine()) != null) {\n            response.append(inputLine);\n        }\n        in.close();\n        \n        Gson gson = new Gson();\n        Map<String, Object> data = gson.fromJson(response.toString(), Map.class);\n        System.out.println(data);\n    }\n}\n"
+      - lang: Ruby
+        source: 'require ''net/http''
+
+          require ''json''
+
+          require ''uri''
+
+
+          userId = "{{userId}}"
+
+          uri = URI("https://production.runalloy.com/integrations")
+
+          params = { userId: userId }
+
+          uri.query = URI.encode_www_form(params)
+
+
+          http = Net::HTTP.new(uri.host, uri.port)
+
+          http.use_ssl = true
+
+
+          request = Net::HTTP::Get.new(uri)
+
+          request[''Authorization''] = ''bearer YOUR_API_KEY''
+
+          request[''x-api-version''] = ''2025-09''
+
+
+          response = http.request(request)
+
+          data = JSON.parse(response.body)
+
+          puts data
+
+          '
       responses:
         '200':
-          description: A list of integrations
+          description: '200'
           content:
             application/json:
+              examples:
+                Result:
+                  value:
+                    data:
+                    - integrationId: 66326843cc9cdb107221f222
+                      description: ''
+                      primaryConnector: Shopify
+                      installed: false
+                      icon: https://cdn.runalloy.com/icons/shopify.png
+                      workflows:
+                      - workflowId: 66326849cc9cdb107221f342
+                        name: 'Untitled Workflow #346'
+                        installed: false
+                        active: false
+                        version: 1
+                        connectors:
+                        - name: On Installation Trigger
+                          id: 4762a899-8f38-44d9-a091-f4b6eaba386e
+                          connector: onInstallationTrigger
+                          icon: https://cdn.runalloy.com/icons/OnIntegrationInstallation.svg
+                          subtitle: On Installation Trigger
+                        - name: Shopify
+                          id: 0679a48c-e0f9-455a-91f2-48a739bac9d7
+                          connector: shopify
+                          icon: https://cdn.runalloy.com/icons/shopify.png
+                          subtitle: Gets a list of all Products
+                      credentials:
+                      - PA_Sn1sp8Of8p5JICNiJ
+                      - shopify
               schema:
                 type: object
                 properties:
-                  integrations:
+                  data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Integration'
+                      type: object
+                      properties:
+                        integrationId:
+                          type: string
+                          example: 63ea758e82c3074141968bb9
+                        app:
+                          type: string
+                          example: Magento
+                        installed:
+                          type: boolean
+                          example: false
+                          default: true
+                        icon:
+                          type: string
+                          example: https://cdn.runalloy.com/icons/magento.png
+                        workflows:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              workflowId:
+                                type: string
+                                example: 63ea75a2fcf2e2c72e805ddc
+                              name:
+                                type: string
+                                example: Magento Order Sync
+                              installed:
+                                type: boolean
+                                example: true
+                                default: true
+                              version:
+                                type: integer
+                                example: 1
+                                default: 0
+                              installedVersion:
+                                type: integer
+                                example: 1
+                                default: 0
+                              active:
+                                type: boolean
+                                example: true
+                                default: true
+                              blocks:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    name:
+                                      type: string
+                                      example: Custom Event
+                                    id:
+                                      type: string
+                                      example: bc9202b2-8e7e-47d4-9416-5ba6b319fa2a
+                                    type:
+                                      type: string
+                                      example: customEvent
+                                    icon:
+                                      type: string
+                                      example: https://cdn.runalloy.com/icons/app-event.svg
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      security: []
+      tags:
+      - Integrations
+  /integrations/{integrationId}:
+    get:
+      summary: Retrieve a single integration
+      description: Finds a specific integration for a user
+      operationId: get-an-integration
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      - name: integrationId
+        in: path
+        description: This API parameter allows you to filter results based on the integrationId or the integrationName (also referred to as 'app'). The integration name (app) is a custom name that you have set for your integration. When using the integration name (app), provide the name of the integration you want to filter for (e.g. 'shopify order sync' or 'magento product creation'). You can obtain the integration name (app) from the List Integrations endpoint under the 'app' parameter, or by checking your UI. Either integrationId or integrationName must be provided but it cannot be both.
+        schema:
+          type: string
+        required: true
+      - name: userId
+        in: query
+        description: 'The Id used to identify the user. Note: you can also use the Embedded user''s `username` in this field.'
+        required: true
+        schema:
+          type: string
+      x-code-samples:
+      - lang: cURL
+        source: "curl -X GET \"https://production.runalloy.com/integrations/{integrationId}?userId={{userId}}\" \\\n  -H \"Authorization: bearer YOUR_API_KEY\" \\\n  -H \"x-api-version: 2025-09\"\n"
+      - lang: Python
+        source: "import requests\n\nurl = \"https://production.runalloy.com/integrations/{integrationId}\"\nparams = {\"userId\": \"{{userId}}\"}\nheaders = {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n}\n\nresponse = requests.get(url, params=params, headers=headers)\nprint(response.json())\n"
+      - lang: JavaScript
+        source: "const userId = \"{{userId}}\";\nconst integrationId = \"{integrationId}\";\nconst url = `https://production.runalloy.com/integrations/${integrationId}?userId=${userId}`;\n\nfetch(url, {\n  method: \"GET\",\n  headers: {\n    \"Authorization\": \"bearer YOUR_API_KEY\",\n    \"x-api-version\": \"2025-09\"\n  }\n})\n  .then(response => response.json())\n  .then(data => console.log(data))\n  .catch(error => console.error(\"Error:\", error));\n"
+      - lang: PHP
+        source: "<?php\n$userId = \"{{userId}}\";\n$integrationId = \"{integrationId}\";\n$url = \"https://production.runalloy.com/integrations/{$integrationId}?userId=\" . urlencode($userId);\n\n$ch = curl_init($url);\ncurl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\ncurl_setopt($ch, CURLOPT_HTTPHEADER, [\n    \"Authorization: bearer YOUR_API_KEY\",\n    \"x-api-version: 2025-09\"\n]);\n\n$response = curl_exec($ch);\ncurl_close($ch);\n$data = json_decode($response, true);\nprint_r($data);\n?>\n"
+      - lang: Go
+        source: "package main\n\nimport (\n    \"encoding/json\"\n    \"fmt\"\n    \"io\"\n    \"net/http\"\n    \"net/url\"\n)\n\nfunc main() {\n    userId := \"{{userId}}\"\n    integrationId := \"{integrationId}\"\n    baseURL := \"https://production.runalloy.com/integrations/\" + integrationId\n    params := url.Values{}\n    params.Add(\"userId\", userId)\n    fullURL := baseURL + \"?\" + params.Encode()\n\n    req, _ := http.NewRequest(\"GET\", fullURL, nil)\n    req.Header.Set(\"Authorization\", \"bearer YOUR_API_KEY\")\n    req.Header.Set(\"x-api-version\", \"2025-09\")\n\n    client := &http.Client{}\n    resp, _ := client.Do(req)\n    defer resp.Body.Close()\n\n    body, _ := io.ReadAll(resp.Body)\n    var data map[string]interface{}\n    json.Unmarshal(body, &data)\n    fmt.Println(data)\n}\n"
+      - lang: Java
+        source: "import java.net.HttpURLConnection;\nimport java.net.URL;\nimport java.io.BufferedReader;\nimport java.io.InputStreamReader;\nimport com.google.gson.Gson;\nimport java.util.Map;\n\npublic class Example {\n    public static void main(String[] args) throws Exception {\n        String userId = \"{{userId}}\";\n        String integrationId = \"{integrationId}\";\n        String baseUrl = \"https://production.runalloy.com/integrations/\" + integrationId;\n        String urlString = baseUrl + \"?userId=\" + java.net.URLEncoder.encode(userId, \"UTF-8\");\n        \n        URL url = new URL(urlString);\n        HttpURLConnection conn = (HttpURLConnection) url.openConnection();\n        conn.setRequestMethod(\"GET\");\n        conn.setRequestProperty(\"Authorization\", \"bearer YOUR_API_KEY\");\n        conn.setRequestProperty(\"x-api-version\", \"2025-09\");\n        \n        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));\n        String inputLine;\n        StringBuilder response = new StringBuilder();\n        while ((inputLine = in.readLine()) != null) {\n            response.append(inputLine);\n        }\n        in.close();\n        \n        Gson gson = new Gson();\n        Map<String, Object> data = gson.fromJson(response.toString(), Map.class);\n        System.out.println(data);\n    }\n}\n"
+      - lang: Ruby
+        source: 'require ''net/http''
+
+          require ''json''
+
+          require ''uri''
+
+
+          userId = "{{userId}}"
+
+          integrationId = "{integrationId}"
+
+          base_url = "https://production.runalloy.com/integrations/#{integrationId}"
+
+          uri = URI(base_url)
+
+          params = { userId: userId }
+
+          uri.query = URI.encode_www_form(params)
+
+
+          http = Net::HTTP.new(uri.host, uri.port)
+
+          http.use_ssl = true
+
+
+          request = Net::HTTP::Get.new(uri)
+
+          request[''Authorization''] = ''bearer YOUR_API_KEY''
+
+          request[''x-api-version''] = ''2025-09''
+
+
+          response = http.request(request)
+
+          data = JSON.parse(response.body)
+
+          puts data
+
+          '
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    data:
+                      integrationId: 66326843cc9cdb107221f222
+                      app: Shopify
+                      installed: false
+                      icon: https://cdn.runalloy.com/icons/shopify.png
+                      workflows:
+                      - workflowId: 66326849cc9cdb107221f342
+                        name: 'Untitled Workflow #346'
+                        installed: false
+                        active: false
+                        version: 1
+                        connectors:
+                        - name: On Installation Trigger
+                          id: 4762a899-8f38-44d9-a091-f4b6eaba386e
+                          connector: onInstallationTrigger
+                          icon: https://cdn.runalloy.com/icons/OnIntegrationInstallation.svg
+                          subtitle: On Installation Trigger
+                        - name: Shopify
+                          id: 0679a48c-e0f9-455a-91f2-48a739bac9d7
+                          connector: shopify
+                          icon: https://cdn.runalloy.com/icons/shopify.png
+                          subtitle: Gets a list of all Products
+                        - name: Shopify
+                          id: 24ed5879-4aa9-4a2c-b8dc-afe6413c1ca7
+                          connector: shopify
+                          icon: https://cdn.runalloy.com/icons/shopify.png
+                          subtitle: Shopify
+                      credentials:
+                      - shopify
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      integrationId:
+                        type: string
+                        example: 63ea758e82c3074141968bb9
+                      app:
+                        type: string
+                        example: Magento
+                      installed:
+                        type: boolean
+                        example: false
+                        default: true
+                      icon:
+                        type: string
+                        example: https://cdn.runalloy.com/icons/magento.png
+                      workflows:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            workflowId:
+                              type: string
+                              example: 63ea75a2fcf2e2c72e805ddc
+                            name:
+                              type: string
+                              example: Magento Order Sync
+                            installed:
+                              type: boolean
+                              example: true
+                              default: true
+                            version:
+                              type: integer
+                              example: 1
+                              default: 0
+                            installedVersion:
+                              type: integer
+                              example: 1
+                              default: 0
+                            active:
+                              type: boolean
+                              example: true
+                              default: true
+                            blocks:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  name:
+                                    type: string
+                                    example: Custom Event
+                                  id:
+                                    type: string
+                                    example: bc9202b2-8e7e-47d4-9416-5ba6b319fa2a
+                                  type:
+                                    type: string
+                                    example: customEvent
+                                  icon:
+                                    type: string
+                                    example: https://cdn.runalloy.com/icons/app-event.svg
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      security: []
+      tags:
+      - Integrations
+  /integrations/all:
+    get:
+      summary: Get All Integrations
+      description: Retrieves all integrations available in the Alloy Embedded account.
+      operationId: getAllIntegrations
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          default: bearer YOUR_API_KEY
+      - $ref: '#/components/parameters/xApiVersion'
+      responses:
+        '200':
+          description: Successful response with a list of integrations.
+          content:
+            application/json:
+              examples:
+                Result:
+                  value:
+                    data:
+                    - integrationId: 67120234ea0bb132f61455d3
+                      description: ''
+                      primaryConnector: Variable Selector
+                      icon: https://cdn.runalloy.com/icons/shopify.png
+                      workflows:
+                      - workflowId: 673f2573ef641065fce767a7
+                        name: 'Untitled Workflow #6'
+                        version: 1
+                        connectors:
+                        - name: On Installation Trigger
+                          id: c911ec0a-0016-40c0-9c04-b46c8e9e2751
+                          connector: onInstallationTrigger
+                          icon: https://cdn.runalloy.com/icons/OnIntegrationInstallation.svg
+                          subtitle: On Installation Trigger
+                        - name: Shopify
+                          id: de156f05-db36-439a-a237-5c6d9f6b1515
+                          connector: shopify
+                          icon: https://cdn.runalloy.com/icons/shopify.png
+                          subtitle: Gets a list of all Abandoned Checkouts
+                      credentials:
+                      - shopify
+      deprecated: false
+      security: []
+      tags:
+      - Integrations
 components:
-  schemas:
-    Integration:
-      type: object
-      properties:
-        connectorId:
-          type: string
-        name:
-          type: string
-        category:
-          type: string
-        authType:
-          type: string
-          enum:
-          - oauth2
-          - apiKey
-          - basic
+  parameters:
+    xApiVersion:
+      name: x-api-version
+      in: header
+      required: true
+      description: The version of the API to use. The current API version is **2025-09**.
+      schema:
+        type: string
+        default: 2025-09
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      description: 'Bearer API key in the Authorization header, e.g. `Authorization: Bearer YOUR_API_KEY`. Frontend calls use a per-user JWT instead of the master key.'
+    sec0:
+      type: apiKey
+      in: header
+      name: Authorization
+      x-bearer-format: bearer
+x-readme:
+  headers: []
+  explorer-enabled: true
+  proxy-enabled: true
+x-readme-fauxas: true
