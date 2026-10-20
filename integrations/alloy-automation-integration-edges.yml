@@ -1,3 +1,20 @@
+generated: '2026-10-20'
+method: searched
+source:
+- slack/integrations/slack-integration-edges.yml
+- https://zapier.com/apps/alloy-automation/integrations
+- https://n8n.io/integrations/alloy-automation/
+- https://composio.dev/toolkits/alloy-automation
+- https://monid.ai/tools/alloy-automation
+checked:
+- gorgias/integrations/gorgias-integration-edges.yml
+- slack/integrations/slack-integration-edges.yml
+- https://composio.dev/toolkits/alloy-automation
+- https://monid.ai/tools/alloy-automation
+- https://n8n.io/integrations/alloy-automation/
+- https://zapier.com/apps/alloy-automation/integrations
+summary: null
+marketplace_apps: []
 edges:
 - partner_name: Gorgias (own)
   partner: gorgias
@@ -32,10 +49,4 @@ edges:
   detected: '2026-10-18'
   detected_by: mirror-platform-listings.py
   category: Slack app
-generated: '2026-10-18'
-method: searched
-source:
-- slack/integrations/slack-integration-edges.yml
-checked:
-- gorgias/integrations/gorgias-integration-edges.yml
-- slack/integrations/slack-integration-edges.yml
+templates: []
