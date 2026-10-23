@@ -397,3 +397,9 @@ x-readme:
   explorer-enabled: true
   proxy-enabled: true
 x-readme-fauxas: true
+x-provenance:
+  method: harvested
+  publisher: Alloy Automation
+  source: https://docs.runalloy.com/openapi/2025-09/embedded/embedded.yaml
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
