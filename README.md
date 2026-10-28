@@ -1,4 +1,4 @@
-# Alloy Automation (alloy-automation)
+# Alloy Automation
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,298 +66,142 @@
 
 Alloy Automation (runalloy.com) is an embedded integration platform (iPaaS) and Unified API for SaaS products. Its Embedded product lets you drop white-labeled, end-user-facing integrations into your app, while the Connectivity and Unified API provide a single REST interface for connecting to hundreds of third-party platforms across commerce, CRM, and accounting. All APIs use dated versioning (2024-03), a Bearer API key, and per-user credentials/tokens.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/alloy-automation/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/alloy-automation/refs/heads/main/apis.yml)
+**Areas:** iPaaS · Integration · Unified API · Embedded · Software-as-a-Service · Automation
 
-## Tags
+## Alloy Automation on APIs.io
 
-- iPaaS
-- Integration
-- Unified API
-- Embedded
-- SaaS
-- Automation
+Everything profiled for Alloy Automation is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/alloy-automation/](https://apis.io/providers/alloy-automation/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (10)
 
-- **Created:** 2026-07-01
-- **Modified:** 2026-07-01
+- [Alloy Automation Connectivity API](https://apis.io/apis/alloy-automation/alloy-automation-connectivity-api/) — Discover resources/actions and execute typed actions.
+- [Alloy Automation Credentials API](https://apis.io/apis/alloy-automation/alloy-automation-credentials-api/) — Third-party connections held by a user, plus credential metadata.
+- [Alloy Automation Events API](https://apis.io/apis/alloy-automation/alloy-automation-events-api/) — Execution events and observability.
+- [Alloy Automation Integrations API](https://apis.io/apis/alloy-automation/alloy-automation-integrations-api/) — Available connectors and a user's enabled integrations.
+- [Alloy Automation Passthrough API](https://apis.io/apis/alloy-automation/alloy-automation-passthrough-api/) — Raw proxied requests to a provider via a stored credential.
+- [Alloy Automation Unified Accounting API](https://apis.io/apis/alloy-automation/alloy-automation-unified-accounting-api/) — Normalized accounting objects (accounts, invoices).
+- [Alloy Automation Unified Commerce API](https://apis.io/apis/alloy-automation/alloy-automation-unified-commerce-api/) — Normalized commerce objects (products, orders, customers).
+- [Alloy Automation Unified CRM API](https://apis.io/apis/alloy-automation/alloy-automation-unified-crm-api/) — Normalized CRM objects (contacts, companies, deals).
+- [Alloy Automation User Tokens API](https://apis.io/apis/alloy-automation/alloy-automation-user-tokens-api/) — Per-user JWTs for rendering the embedded frontend.
+- [Alloy Automation Users API](https://apis.io/apis/alloy-automation/alloy-automation-users-api/) — End-user records that scope credentials, integrations, and executions.
 
-## APIs
+### Published properties
 
-### Alloy Automation Connectivity API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-Discover resources/actions and execute typed actions.
+#### MCP servers (1)
 
-- **Human URL:** [https://docs.runalloy.com/reference/embedded/get-a-user](https://docs.runalloy.com/reference/embedded/get-a-user)
-- **Base URL:** `https://embedded.runalloy.com/2024-03`
+Model Context Protocol servers that expose the API to agents.
 
-#### Tags
+- [alloy-automation](https://apis.io/servers/alloy-automation/alloy-automation/)
 
-- Connectivity
+#### Agentic access (1)
 
-#### Properties
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- [OpenAPI](openapi/alloy-automation-connectivity-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/alloy-automation-connectivity-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/alloy-automation-connectivity-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [API Reference](https://docs.runalloy.com/reference/embedded/get-a-user)
-- [Postman Collection](collections/alloy-automation.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/alloy-automation.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [API Reference](https://docs.runalloy.com/reference/embedded/generate-jwt-token/)
-- [API Reference](https://docs.runalloy.com/reference/get-credential-metadata)
-- [Documentation](https://docs.runalloy.com/connectivity-api/quick-start)
-- [Documentation](https://docs.runalloy.com/embedded/passthrough-api)
-- [Documentation](https://docs.runalloy.com/unified-api/bigcommerce-collection/)
-- [API Reference](https://docs.runalloy.com/reference/unified-api/create-account-1/)
+- [Alloy Automation Agentic Access](https://apis.io/agentic-access/alloy-automation/alloy-automation-agentic-access/)
 
-### Alloy Automation Credentials API
+#### Collections (11)
 
-Third-party connections held by a user, plus credential metadata.
+Postman and Open Collection request collections.
 
-- **Human URL:** [https://docs.runalloy.com/reference/embedded/get-a-user](https://docs.runalloy.com/reference/embedded/get-a-user)
-- **Base URL:** `https://embedded.runalloy.com/2024-03`
+- [Alloy Automation Embedded & Unified API](https://apis.io/collections/alloy-automation/open-alloy-automation/)
+- [Alloy Automation Embedded & Unified Connectivity API](https://apis.io/collections/alloy-automation/open-alloy-automation-connectivity-api/)
+- [Alloy Automation Embedded & Unified Connectivity Credentials API](https://apis.io/collections/alloy-automation/open-alloy-automation-credentials-api/)
+- [Alloy Automation Embedded & Unified Connectivity Events API](https://apis.io/collections/alloy-automation/open-alloy-automation-events-api/)
+- [Alloy Automation Embedded & Unified Connectivity Integrations API](https://apis.io/collections/alloy-automation/open-alloy-automation-integrations-api/)
+- [Alloy Automation Embedded & Unified Connectivity Passthrough API](https://apis.io/collections/alloy-automation/open-alloy-automation-passthrough-api/)
+- [Alloy Automation Embedded & Unified Connectivity Unified Accounting API](https://apis.io/collections/alloy-automation/open-alloy-automation-unified-accounting-api/)
+- [Alloy Automation Embedded & Unified Connectivity Unified Commerce API](https://apis.io/collections/alloy-automation/open-alloy-automation-unified-commerce-api/)
+- [Alloy Automation Embedded & Unified Connectivity Unified CRM API](https://apis.io/collections/alloy-automation/open-alloy-automation-unified-crm-api/)
+- [Alloy Automation Embedded & Unified Connectivity User Tokens API](https://apis.io/collections/alloy-automation/open-alloy-automation-user-tokens-api/)
+- [Alloy Automation Embedded & Unified Connectivity Users API](https://apis.io/collections/alloy-automation/open-alloy-automation-users-api/)
 
-#### Tags
+#### Security (2)
 
-- Credentials
+Authentication, trust centre, and vulnerability disclosure.
 
-#### Properties
+- [Alloy Automation Authentication](https://apis.io/security/alloy-automation/alloy-automation-authentication/)
+- [Alloy Automation Domain Security](https://apis.io/security/alloy-automation/alloy-automation-domain-security/)
 
-- [OpenAPI](openapi/alloy-automation-credentials-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/alloy-automation-credentials-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/alloy-automation-credentials-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [API Reference](https://docs.runalloy.com/reference/embedded/get-a-user)
-- [Postman Collection](collections/alloy-automation.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/alloy-automation.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [API Reference](https://docs.runalloy.com/reference/embedded/generate-jwt-token/)
-- [API Reference](https://docs.runalloy.com/reference/get-credential-metadata)
-- [Documentation](https://docs.runalloy.com/connectivity-api/quick-start)
-- [Documentation](https://docs.runalloy.com/embedded/passthrough-api)
-- [Documentation](https://docs.runalloy.com/unified-api/bigcommerce-collection/)
-- [API Reference](https://docs.runalloy.com/reference/unified-api/create-account-1/)
+#### Plans and pricing (1)
 
-### Alloy Automation Events API
+Published plans, tiers and prices.
 
-Execution events and observability.
+- [Alloy Automation Plans Pricing](https://apis.io/plans/alloy-automation/alloy-automation-plans-pricing/)
 
-- **Human URL:** [https://docs.runalloy.com/reference/embedded/get-a-user](https://docs.runalloy.com/reference/embedded/get-a-user)
-- **Base URL:** `https://embedded.runalloy.com/2024-03`
+#### Rate limits (1)
 
-#### Tags
+Published request limits.
 
-- Events
+- [Alloy Automation Rate Limits](https://apis.io/rate-limits/alloy-automation/alloy-automation-rate-limits/)
 
-#### Properties
+#### FinOps (1)
 
-- [OpenAPI](openapi/alloy-automation-events-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/alloy-automation-events-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/alloy-automation-events-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [API Reference](https://docs.runalloy.com/reference/embedded/get-a-user)
-- [Postman Collection](collections/alloy-automation.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/alloy-automation.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [API Reference](https://docs.runalloy.com/reference/embedded/generate-jwt-token/)
-- [API Reference](https://docs.runalloy.com/reference/get-credential-metadata)
-- [Documentation](https://docs.runalloy.com/connectivity-api/quick-start)
-- [Documentation](https://docs.runalloy.com/embedded/passthrough-api)
-- [Documentation](https://docs.runalloy.com/unified-api/bigcommerce-collection/)
-- [API Reference](https://docs.runalloy.com/reference/unified-api/create-account-1/)
+What the API costs to run, by operation.
 
-### Alloy Automation Integrations API
+- [Alloy Automation Finops](https://apis.io/finops/alloy-automation/alloy-automation-finops/)
 
-Available connectors and a user's enabled integrations.
+## Where to find this API
 
-- **Human URL:** [https://docs.runalloy.com/reference/embedded/get-a-user](https://docs.runalloy.com/reference/embedded/get-a-user)
-- **Base URL:** `https://embedded.runalloy.com/2024-03`
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-#### Tags
-
-- Integrations
-
-#### Properties
-
-- [OpenAPI](openapi/alloy-automation-integrations-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/alloy-automation-integrations-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/alloy-automation-integrations-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [API Reference](https://docs.runalloy.com/reference/embedded/get-a-user)
-- [Postman Collection](collections/alloy-automation.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/alloy-automation.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [API Reference](https://docs.runalloy.com/reference/embedded/generate-jwt-token/)
-- [API Reference](https://docs.runalloy.com/reference/get-credential-metadata)
-- [Documentation](https://docs.runalloy.com/connectivity-api/quick-start)
-- [Documentation](https://docs.runalloy.com/embedded/passthrough-api)
-- [Documentation](https://docs.runalloy.com/unified-api/bigcommerce-collection/)
-- [API Reference](https://docs.runalloy.com/reference/unified-api/create-account-1/)
-
-### Alloy Automation Passthrough API
-
-Raw proxied requests to a provider via a stored credential.
-
-- **Human URL:** [https://docs.runalloy.com/reference/embedded/get-a-user](https://docs.runalloy.com/reference/embedded/get-a-user)
-- **Base URL:** `https://embedded.runalloy.com/2024-03`
-
-#### Tags
-
-- Passthrough
-
-#### Properties
-
-- [OpenAPI](openapi/alloy-automation-passthrough-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/alloy-automation-passthrough-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/alloy-automation-passthrough-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [API Reference](https://docs.runalloy.com/reference/embedded/get-a-user)
-- [Postman Collection](collections/alloy-automation.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/alloy-automation.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [API Reference](https://docs.runalloy.com/reference/embedded/generate-jwt-token/)
-- [API Reference](https://docs.runalloy.com/reference/get-credential-metadata)
-- [Documentation](https://docs.runalloy.com/connectivity-api/quick-start)
-- [Documentation](https://docs.runalloy.com/embedded/passthrough-api)
-- [Documentation](https://docs.runalloy.com/unified-api/bigcommerce-collection/)
-- [API Reference](https://docs.runalloy.com/reference/unified-api/create-account-1/)
-
-### Alloy Automation Unified Accounting API
-
-Normalized accounting objects (accounts, invoices).
-
-- **Human URL:** [https://docs.runalloy.com/reference/embedded/get-a-user](https://docs.runalloy.com/reference/embedded/get-a-user)
-- **Base URL:** `https://embedded.runalloy.com/2024-03`
-
-#### Tags
-
-- Unified Accounting
-
-#### Properties
-
-- [OpenAPI](openapi/alloy-automation-unified-accounting-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/alloy-automation-unified-accounting-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/alloy-automation-unified-accounting-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [API Reference](https://docs.runalloy.com/reference/embedded/get-a-user)
-- [Postman Collection](collections/alloy-automation.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/alloy-automation.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [API Reference](https://docs.runalloy.com/reference/embedded/generate-jwt-token/)
-- [API Reference](https://docs.runalloy.com/reference/get-credential-metadata)
-- [Documentation](https://docs.runalloy.com/connectivity-api/quick-start)
-- [Documentation](https://docs.runalloy.com/embedded/passthrough-api)
-- [Documentation](https://docs.runalloy.com/unified-api/bigcommerce-collection/)
-- [API Reference](https://docs.runalloy.com/reference/unified-api/create-account-1/)
-
-### Alloy Automation Unified Commerce API
-
-Normalized commerce objects (products, orders, customers).
-
-- **Human URL:** [https://docs.runalloy.com/reference/embedded/get-a-user](https://docs.runalloy.com/reference/embedded/get-a-user)
-- **Base URL:** `https://embedded.runalloy.com/2024-03`
-
-#### Tags
-
-- Unified Commerce
-
-#### Properties
-
-- [OpenAPI](openapi/alloy-automation-unified-commerce-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/alloy-automation-unified-commerce-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/alloy-automation-unified-commerce-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [API Reference](https://docs.runalloy.com/reference/embedded/get-a-user)
-- [Postman Collection](collections/alloy-automation.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/alloy-automation.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [API Reference](https://docs.runalloy.com/reference/embedded/generate-jwt-token/)
-- [API Reference](https://docs.runalloy.com/reference/get-credential-metadata)
-- [Documentation](https://docs.runalloy.com/connectivity-api/quick-start)
-- [Documentation](https://docs.runalloy.com/embedded/passthrough-api)
-- [Documentation](https://docs.runalloy.com/unified-api/bigcommerce-collection/)
-- [API Reference](https://docs.runalloy.com/reference/unified-api/create-account-1/)
-
-### Alloy Automation Unified CRM API
-
-Normalized CRM objects (contacts, companies, deals).
-
-- **Human URL:** [https://docs.runalloy.com/reference/embedded/get-a-user](https://docs.runalloy.com/reference/embedded/get-a-user)
-- **Base URL:** `https://embedded.runalloy.com/2024-03`
-
-#### Tags
-
-- Unified CRM
-
-#### Properties
-
-- [OpenAPI](openapi/alloy-automation-unified-crm-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/alloy-automation-unified-crm-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/alloy-automation-unified-crm-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [API Reference](https://docs.runalloy.com/reference/embedded/get-a-user)
-- [Postman Collection](collections/alloy-automation.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/alloy-automation.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [API Reference](https://docs.runalloy.com/reference/embedded/generate-jwt-token/)
-- [API Reference](https://docs.runalloy.com/reference/get-credential-metadata)
-- [Documentation](https://docs.runalloy.com/connectivity-api/quick-start)
-- [Documentation](https://docs.runalloy.com/embedded/passthrough-api)
-- [Documentation](https://docs.runalloy.com/unified-api/bigcommerce-collection/)
-- [API Reference](https://docs.runalloy.com/reference/unified-api/create-account-1/)
-
-### Alloy Automation User Tokens API
-
-Per-user JWTs for rendering the embedded frontend.
-
-- **Human URL:** [https://docs.runalloy.com/reference/embedded/get-a-user](https://docs.runalloy.com/reference/embedded/get-a-user)
-- **Base URL:** `https://embedded.runalloy.com/2024-03`
-
-#### Tags
-
-- User Tokens
-
-#### Properties
-
-- [OpenAPI](openapi/alloy-automation-user-tokens-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/alloy-automation-user-tokens-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/alloy-automation-user-tokens-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [API Reference](https://docs.runalloy.com/reference/embedded/get-a-user)
-- [Postman Collection](collections/alloy-automation.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/alloy-automation.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [API Reference](https://docs.runalloy.com/reference/embedded/generate-jwt-token/)
-- [API Reference](https://docs.runalloy.com/reference/get-credential-metadata)
-- [Documentation](https://docs.runalloy.com/connectivity-api/quick-start)
-- [Documentation](https://docs.runalloy.com/embedded/passthrough-api)
-- [Documentation](https://docs.runalloy.com/unified-api/bigcommerce-collection/)
-- [API Reference](https://docs.runalloy.com/reference/unified-api/create-account-1/)
-
-### Alloy Automation Users API
-
-End-user records that scope credentials, integrations, and executions.
-
-- **Human URL:** [https://docs.runalloy.com/reference/embedded/get-a-user](https://docs.runalloy.com/reference/embedded/get-a-user)
-- **Base URL:** `https://embedded.runalloy.com/2024-03`
-
-#### Tags
-
-- Users
-
-#### Properties
-
-- [OpenAPI](openapi/alloy-automation-users-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/alloy-automation-users-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/alloy-automation-users-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [API Reference](https://docs.runalloy.com/reference/embedded/get-a-user)
-- [Postman Collection](collections/alloy-automation.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/alloy-automation.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [API Reference](https://docs.runalloy.com/reference/embedded/generate-jwt-token/)
-- [API Reference](https://docs.runalloy.com/reference/get-credential-metadata)
-- [Documentation](https://docs.runalloy.com/connectivity-api/quick-start)
-- [Documentation](https://docs.runalloy.com/embedded/passthrough-api)
-- [Documentation](https://docs.runalloy.com/unified-api/bigcommerce-collection/)
-- [API Reference](https://docs.runalloy.com/reference/unified-api/create-account-1/)
-
-## Common Properties
-
-- [Agentic Access](agentic-access/alloy-automation-agentic-access.yml)
-- [Domain Security](security/alloy-automation-domain-security.yml)
-- [Authentication](authentication/alloy-automation-authentication.yml)
-- [GitHub Organization](https://github.com/alloy-automation)
-- [LinkedIn](https://www.linkedin.com/company/alloy-automation)
 - [Website](https://runalloy.com)
 - [Documentation](https://docs.runalloy.com)
-- [Plans](plans/alloy-automation-plans-pricing.yml)
-- [Rate Limits](rate-limits/alloy-automation-rate-limits.yml)
-- [Fin Ops](finops/alloy-automation-finops.yml)
+- [Blog](https://runalloy.com/blog/)
+- [GitHub](https://github.com/alloy-automation)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 26.5** — thin · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 68.3 |
+| Contract quality | 46.2 |
+| Contract governance | 0.0 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 32.1 |
+| Access clarity | 7.9 |
+
+**Agent readiness 31.9** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | verified |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 11.8** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/alloy-automation/](https://apis.io/providers/alloy-automation/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Alloy Automation: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/alloy-automation/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
